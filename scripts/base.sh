@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 set -x
@@ -47,6 +47,43 @@ if [ ! -f .installed ]; then
 	make install PREFIX=$DEST
 	touch .installed
 fi
+
+######### ###################################################################
+# LBZIP2 # ###################################################################
+######### ###################################################################
+
+LBZIP2_VERSION=2.5
+
+cd $SRC/lbzip2
+
+if [ ! -f .extracted ]; then
+	rm -rf lbzip2-${LBZIP2_VERSION}
+	tar zxvf lbzip2-${LBZIP2_VERSION}.tar.gz
+	touch .extracted
+fi
+
+cd lbzip2-${LBZIP2_VERSION}
+
+if [ ! -f .configured ]; then
+        LDFLAGS=$LDFLAGS \
+        CPPFLAGS=$CPPFLAGS \
+        CFLAGS=$CFLAGS \
+        CXXFLAGS=$CXXFLAGS \
+        $CONFIGURE \
+	--prefix=$PREFIX
+        touch .configured
+fi
+
+if [ ! -f .built ]; then
+	$MAKE
+	touch .built
+fi
+
+if [ ! -f .installed ]; then
+        make install DESTDIR=$BASE
+        touch .installed
+fi
+
 
 
 ######## ####################################################################
@@ -410,13 +447,13 @@ fi
 # LIBPCAP # #################################################################
 ########### #################################################################
 
-LIBPCAP_VERSION=1.8.1
+LIBPCAP_VERSION=git-1.8.1
 
 cd $SRC/libpcap
 
 if [ ! -f .extracted ]; then
 	rm -rf libpcap-${LIBPCAP_VERSION}
-	tar zxvf libpcap-${LIBPCAP_VERSION}.tar.gz
+	tar xvf libpcap-${LIBPCAP_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1056,7 +1093,7 @@ if [ ! -f .configured ]; then
 	CXXFLAGS=$CXXFLAGS \
 	$CONFIGURE \
 	--enable-pcregrep-libz \
-	--enable-pcregrep-libbz2 \
+	--enable-pcregrep-bzip2 \
 	--enable-pcretest-libreadline \
 	--enable-unicode-properties \
 	--enable-jit
@@ -1865,3 +1902,130 @@ if [ ! -f .installed ]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+
+########### #################################################################
+# BOOST   # #################################################################
+########### #################################################################
+
+BOOST_VERSION=1-66-0
+cd $SRC/boost
+
+BOOST_BLD_DIR="/tmp/build-boost"
+rm -f .extracted
+
+
+
+if [ ! -f .extracted ]; then
+	rm -rf $BOOST_BLD_DIR && mkdir $BOOST_BLD_DIR
+	rm -rf boost-${BOOST_VERSION}
+	tar xjf boost-${BOOST_VERSION}.tar.bz2
+	touch .extracted
+fi
+
+cd boost-${BOOST_VERSION}
+
+BOOST_PREFIX="$HOME/router/tomatoware/mmc"
+#BOOST_PREFIX="."
+export PATH="/opt/tomatoware/arm-soft-mmc/usr/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+TOOLPT1="gcc"
+TOOLPT2=" "
+TOOLPT3="arm-linux-g++"
+
+echo  "using $TOOLPT1 : $TOOLPT2 : $TOOLPT3 ;" > /home/jeffrey/user-config.jam
+
+
+if [ ! -f .configured ]; then
+	LDFLAGS=$LDFLAGS \
+	CPPFLAGS=$CPPFLAGS \
+	CFLAGS=$CFLAGS \
+	CXXFLAGS=$CXXFLAGS \
+	./bootstrap.sh \
+		--prefix=$BOOST_PREFIX \
+		address-model=32 \
+		link=shared \
+		--without-libraries=python \
+		threading=multi
+	touch .configured
+fi
+
+#BOOST_BLD_DBG="-d+13 -o/tmp/test"
+BOOST_BLD_DBG=""
+
+#-with-python-root=../Python-${PYTHON_VERSION}-native
+#-with-python-root=../Python-${PYTHON_VERSION}-native
+#rm -f .built
+
+if [ ! -f .built ]; then
+	echo; echo "BUILDING"; echo; echo; echo "using $TOOLPT1 : $TOOLPT2 : $TOOLPT3 ;"; echo; echo;
+	CC='arm-linux-g++' LDFLAGS=$LDFLAGS CPPFLAGS=$CPPFLAGS CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS && \
+	./bjam --toolset=gcc-7.3.0 "$BOOST_BLD_DBG" --build-dir="$BOOST_BLD_DIR" install
+	## operations are: "install" or "stage"
+	touch .built
+fi
+
+################## ##########################################################
+# LIBTINS        # ##########################################################
+################## ##########################################################
+
+LIBTINS_VERSION=4.05
+
+cd $SRC/libtins
+
+if [ ! -f .extracted ]; then
+	rm -rf libtins-${LIBTINS_VERSION}
+	tar zxvf libtins-${LIBTINS_VERSION}.tar.gz
+	touch .extracted
+fi
+
+cd libtins-${LIBTINS_VERSION}
+
+#if [ ! -f .built_native ]; then
+#	cmake .
+#	make
+#	touch .built_native
+#fi
+
+#cd ../mysql-connector-c-${LIBMYSQLCLIENT_VERSION}-src
+#if [ ! -f .patched ]; then
+#	patch -p1 < $PATCHES/libmysqlclient/libmysqlclient.patch
+#	touch .patched
+#fi
+
+if [ ! -f .configured ]; then
+	rm -rf build && cd build && \
+	cmake \
+	-DCMAKE_INSTALL_PREFIX=$PREFIX \
+	-DLIBTINS_ENABLE_CXX11=1 \
+	-DLIBTINS_BUILD_STATIC=1 \
+	-DLIBTINS_BUILD_SHARED=1 \
+	-DLIBTINS_ENABLE_WPA2=1 \
+	-DLIBTINS_ENABLE_ACK_TRACKER=1 \
+	-DCMAKE_C_COMPILER=`which $DESTARCH-linux-gcc` \
+	-DCMAKE_CXX_COMPILER=`which $DESTARCH-linux-g++` \
+	-DHAVE_GCC_ATOMIC_BUILTINS=1 \
+	-DCMAKE_C_FLAGS="$CFLAGS" \
+	-DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+	-DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" \
+	../
+        touch .configured
+fi
+
+if [ ! -f .built ]; then
+	make
+	touch .built
+fi
+
+if [ ! -f .installed ]; then
+	sed -i 's/\/usr\/local/\/mmc\/usr\/local/g' src/cmake_install.cmake
+	make install DESTDIR=$BASE
+	cp -r $DEST/include/libtins/libtins/ $DEST/include/
+	rm -rf $DEST/include/libtins/libtins
+	touch .installed
+fi
+
+#if [ ! -f .linked ]; then
+#	ln -sf libtins.a $DEST/lib/libtins.a
+#	ln -sf libtins.so $DEST/lib/libtins.so
+#	touch .linked
+#fi

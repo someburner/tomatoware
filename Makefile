@@ -1,6 +1,6 @@
 include config.mk
 
-tomatoware:toolchain
+tomatoware: toolchain
 	./scripts/base.sh
 	./scripts/buildroot.sh
 	./scripts/asterisk.sh
@@ -9,8 +9,16 @@ tomatoware:toolchain
 toolchain:
 	./scripts/toolchain.sh
 
-clean:
-	git clean -fdxq && git reset --hard
+#clean:
+#	git clean -fdxq && git reset --hard
+
+reset:
+	cd src
+	find . -name .extracted | xargs -r rm -f || true
+	find . -name .patched | xargs -r rm -f || true
+	find . -name .built | xargs -r rm -f || true
+	find . -name .configured | -r xargs rm -f || true
+	find . -name .installed | -r xargs rm -f || true
 
 toolchain-clean:
 	rm -rf toolchain

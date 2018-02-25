@@ -276,7 +276,7 @@ fi
 # GCC # #####################################################################
 ####### #####################################################################
 
-GCC_VERSION=7.2.0
+GCC_VERSION=7.3.0
 
 mkdir -p $SRC/gcc && cd $SRC/gcc
 
@@ -292,8 +292,8 @@ cd gcc-${GCC_VERSION}
 if [ ! -f .patched ]; then
 	cp $PATCHES/gcc/gcc-7.2.0-specs-1.patch .
 	sed -i 's,\/opt,'"$PREFIX"',g' gcc-7.2.0-specs-1.patch
-	patch -p1 < gcc-7.2.0-specs-1.patch
-	patch -p1 < $PATCHES/gcc/0810-arm-softfloat-libgcc.patch
+#	patch -p1 < gcc-7.2.0-specs-1.patch
+#	patch -p1 < $PATCHES/gcc/0810-arm-softfloat-libgcc.patch
 	touch .patched
 fi
 
@@ -851,7 +851,7 @@ fi
 # UTIL-LINUX # ##############################################################
 ############## ##############################################################
 
-UTIL_LINUX_VERSION=2.31
+UTIL_LINUX_VERSION=2.32
 
 cd $SRC/util-linux
 
@@ -1025,7 +1025,7 @@ if [ ! -f .configured ]; then
 	CPPFLAGS=$CPPFLAGS \
 	CFLAGS=$CFLAGS \
 	CXXFLAGS=$CXXFLAGS \
-	$CONFIGURE
+	$CONFIGURE --with-bzip2=lbzip2 \
 	touch .configured
 fi
 
