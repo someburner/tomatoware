@@ -1,0 +1,15 @@
+# Build flags
+.packaged
+
+# build data
+home/
+mmc/
+mnt/
+usr/
+toolchain/
+
+# Build artifacts
+*-mmc.tgz
+*-mnt.tgz
+*-opt.tgz
+
