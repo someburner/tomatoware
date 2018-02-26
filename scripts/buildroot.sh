@@ -14,6 +14,7 @@ CFLAGS=$EXTRACFLAGS
 CXXFLAGS=$CFLAGS
 CONFIGURE="./configure --prefix=$PREFIX --host=$DESTARCH-linux"
 MAKE="make -j`nproc`"
+HOST_CMAKE=`which cmake`
 
 ######## ####################################################################
 # GLIB # ####################################################################
@@ -815,8 +816,8 @@ if ! [[ -f .configured ]]; then
 	-DCMAKE_INSTALL_PREFIX=$PREFIX \
 	-DCMAKE_INCLUDE_PATH=$DEST/include \
 	-DCMAKE_LIBRARY_PATH=$DEST/lib \
-	-DCMAKE_C_COMPILER=`which $DESTARCH-linux-gcc` \
-	-DCMAKE_CXX_COMPILER=`which $DESTARCH-linux-g++` \
+	-DCMAKE_C_COMPILER="$DESTARCH-linux-gcc" \
+	-DCMAKE_CXX_COMPILER="$DESTARCH-linux-g++" \
 	-DCMAKE_C_FLAGS="$CFLAGS" \
 	-DCMAKE_CXX_FLAGS="$CXXFLAGS" \
 	-DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" \
