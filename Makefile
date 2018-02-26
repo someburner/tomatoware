@@ -9,7 +9,9 @@ tomatoware: toolchain
 toolchain:
 	./scripts/toolchain.sh
 
-#clean:
+clean: toolchain-clean
+	rm -rf mmc usr home lib var
+
 #	git clean -fdxq && git reset --hard
 
 reset:

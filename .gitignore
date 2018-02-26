@@ -6,6 +6,8 @@ home/
 mmc/
 mnt/
 usr/
+lib/
+var/
 toolchain/
 !src/toolchain/
 

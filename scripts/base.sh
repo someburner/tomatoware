@@ -1007,7 +1007,7 @@ if ! [[ -f .configured ]]; then
 	-DCMAKE_CXX_FLAGS="$CXXFLAGS" \
 	-DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" \
 	./
-        touch .configured
+	touch .configured
 fi
 
 if ! [[ -f .built ]]; then
@@ -1959,8 +1959,6 @@ LIBTINS_VERSION=4.0
 
 cd $SRC/libtins
 
-rm -f .extracted
-
 if ! [[ -f .extracted ]]; then
 	rm -rf libtins-${LIBTINS_VERSION}
 	tar xf libtins-${LIBTINS_VERSION}.tar.gz
@@ -1969,24 +1967,24 @@ fi
 
 cd $SRC/libtins/libtins-${LIBTINS_VERSION}
 
-rm -f .configured
-
 if ! [[ -f .configured ]]; then
-	rm -rf build && mkdir build && cd build
-	cmake .. \
-	-DCMAKE_INSTALL_PREFIX=$DEST \
+	rm -rf build
+	mkdir build
+	cd build
+	cmake \
 	-DLIBTINS_ENABLE_CXX11=1 \
 	-DLIBTINS_BUILD_SHARED=1 \
 	-DLIBTINS_ENABLE_WPA2=1 \
 	-DLIBTINS_ENABLE_ACK_TRACKER=1 \
 	-DCROSS_COMPILING=1 \
-	-DCMAKE_C_COMPILER="arm-linux-gcc" \
-	-DCMAKE_CXX_COMPILER="arm-linux-g++" \
+	-DCMAKE_INSTALL_PREFIX=$PREFIX \
+	-DCMAKE_C_COMPILER=$DESTARCH-linux-gcc \
+	-DCMAKE_CXX_COMPILER=$DESTARCH-linux-g++ \
 	-DCMAKE_FIND_ROOT_PATH=$DEST \
 	-DCMAKE_C_FLAGS="$CFLAGS" \
 	-DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-	-DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"
-	cd ..
+	-DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" ..
+	cd $SRC/libtins/libtins-${LIBTINS_VERSION}
 	touch .configured
 fi
 
@@ -2001,17 +1999,17 @@ fi
 
 if ! [[ -f .installed ]]; then
 	cd build
-	make install
+	make install DESTDIR=$BASE
 	cd ..
 	touch .installed
 fi
 
-#echo "failme"
 
-#exit 1
+################## ##########################################################
+# END            # ##########################################################
+################## ##########################################################
 
-#if [ ! -f .linked ]; then
-#	ln -sf libtins.a $DEST/lib/libtins.a
-#	ln -sf libtins.so $DEST/lib/libtins.so
-#	touch .linked
-#fi
+echo; echo "base.sh install complete"; echo;
+
+
+#### end
