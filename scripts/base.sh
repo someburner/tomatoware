@@ -17,6 +17,8 @@ CXXFLAGS=$CFLAGS
 CONFIGURE="./configure --prefix=$PREFIX --host=$DESTARCH-linux"
 MAKE="make -j`nproc`"
 
+BOOST_BLD_DIR="/tmp/build-boost"
+
 ######### ###################################################################
 # BZIP2 # ###################################################################
 ######### ###################################################################
@@ -1902,12 +1904,9 @@ fi
 ########### #################################################################
 # BOOST   # #################################################################
 ########### #################################################################
-
 BOOST_VERSION=1-66-0
-cd $SRC/boost
 
-BOOST_BLD_DIR="/tmp/build-boost"
-#rm -f .extracted
+cd $SRC/boost
 
 if ! [[ -f .extracted ]]; then
 	rm -rf $BOOST_BLD_DIR && mkdir $BOOST_BLD_DIR
@@ -1918,16 +1917,11 @@ fi
 
 cd boost-${BOOST_VERSION}
 
-BOOST_PREFIX="$HOME/router/tomatoware/mmc"
-#BOOST_PREFIX="."
-#export PATH="/opt/tomatoware/arm-soft-mmc/usr/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-
 TOOLPT1="gcc"
 TOOLPT2=" "
 TOOLPT3="arm-linux-g++"
 
-echo  "using $TOOLPT1 : $TOOLPT2 : $TOOLPT3 ;" > /home/jeffrey/user-config.jam
-
+echo  "using $TOOLPT1 : $TOOLPT2 : $TOOLPT3 ;" > $HOME/user-config.jam
 
 if ! [[ -f .configured ]]; then
 	LDFLAGS=$LDFLAGS \
@@ -1935,20 +1929,17 @@ if ! [[ -f .configured ]]; then
 	CFLAGS=$CFLAGS \
 	CXXFLAGS=$CXXFLAGS \
 	./bootstrap.sh \
-		--prefix=$BOOST_PREFIX \
+		--prefix=$DEST \
 		address-model=32 \
 		link=shared \
 		--without-libraries=python \
 		threading=multi
 	touch .configured
 fi
+#-with-python-root=../Python-${PYTHON_VERSION}-native
 
 #BOOST_BLD_DBG="-d+13 -o/tmp/test"
 BOOST_BLD_DBG=""
-
-#-with-python-root=../Python-${PYTHON_VERSION}-native
-#-with-python-root=../Python-${PYTHON_VERSION}-native
-#rm -f .built
 
 if ! [[ -f .built ]]; then
 	echo; echo "BUILDING"; echo; echo; echo "using $TOOLPT1 : $TOOLPT2 : $TOOLPT3 ;"; echo; echo;
@@ -1957,6 +1948,8 @@ if ! [[ -f .built ]]; then
 	## operations are: "install" or "stage"
 	touch .built
 fi
+
+rm -f $HOME/user-config.jam
 
 ################## ##########################################################
 # LIBTINS        # ##########################################################
@@ -1981,7 +1974,7 @@ rm -f .configured
 if ! [[ -f .configured ]]; then
 	rm -rf build && mkdir build && cd build
 	cmake .. \
-	-DCMAKE_INSTALL_PREFIX=/$HOME/router/tomatoware/mmc \
+	-DCMAKE_INSTALL_PREFIX=$DEST \
 	-DLIBTINS_ENABLE_CXX11=1 \
 	-DLIBTINS_BUILD_SHARED=1 \
 	-DLIBTINS_ENABLE_WPA2=1 \
@@ -1989,7 +1982,7 @@ if ! [[ -f .configured ]]; then
 	-DCROSS_COMPILING=1 \
 	-DCMAKE_C_COMPILER="arm-linux-gcc" \
 	-DCMAKE_CXX_COMPILER="arm-linux-g++" \
-	-DCMAKE_FIND_ROOT_PATH=$HOME/router/tomatoware/mmc \
+	-DCMAKE_FIND_ROOT_PATH=$DEST \
 	-DCMAKE_C_FLAGS="$CFLAGS" \
 	-DCMAKE_CXX_FLAGS="$CXXFLAGS" \
 	-DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"
