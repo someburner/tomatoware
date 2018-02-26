@@ -19,7 +19,8 @@ binutils/binutils-2.29/
 binutils/build-binutils/
 bison/.extracted
 bison/bison-3.0.4/
-boost/
+boost/.extracted
+boost/boost-1-66-0
 bzip2/.extracted
 bzip2/bzip2-1.0.6/
 check/.extracted
@@ -71,7 +72,8 @@ iksemel/.extracted
 iksemel/iksemel-1.5/
 jansson/.extracted
 jansson/jansson-2.11/
-lbzip2/
+lbzip2/.extracted
+lbzip2/lbzip2-2.5
 libevent/.extracted
 libevent/libevent-2.0.22-stable/
 libffi/.extracted
@@ -91,7 +93,8 @@ libreadline/.extracted
 libreadline/readline-7.0/
 libsigc++/.extracted
 libsigc++/libsigc++-2.4.1/
-libtins/
+libtins/.extracted
+libtins/libtins-4.0
 libtool/.extracted
 libtool/libtool-2.4.6/
 libxml2/.extracted
@@ -124,7 +127,6 @@ par2cmdline/.extracted
 par2cmdline/par2cmdline-0.8.0/
 patch/.extracted
 patch/patch-2.7.6/
-pcapx/
 pcre/.extracted
 pcre/pcre-8.41/
 perl/.extracted
@@ -155,7 +157,6 @@ texinfo/texinfo-6.5/
 tmux/.extracted
 tmux/tmux-2.6/
 toolchain/.old/
-toolchain/dl/
 tz/.extracted
 tz/tz-native/
 tz/tz/
@@ -180,4 +181,3 @@ zlib/.extracted
 zlib/zlib-1.2.11/
 zsh/.extracted
 zsh/zsh-5.4.2/
-chain/

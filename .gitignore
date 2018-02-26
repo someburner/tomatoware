@@ -7,9 +7,9 @@ mmc/
 mnt/
 usr/
 toolchain/
+!src/toolchain/
 
 # Build artifacts
 *-mmc.tgz
 *-mnt.tgz
 *-opt.tgz
-
