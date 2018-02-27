@@ -2041,6 +2041,13 @@ case "$1" in
 	;;
 esac
 
+TINS_LD_FLAGS="";
+case "$2" in
+	"1") TINS_LD_FLAGS="$LDFLAGS -lssl -lcrypto ";;
+	  *) TINS_LD_FLAGS="$LDFLAGS ";
+	;;
+esac
+
 if ! [[ -f ".extracted-$1" ]]; then
 	rm -rf "libtins-${LIBTINS_VERSION}-$1"
 	tar xf libtins-${LIBTINS_VERSION}.tar.gz
@@ -2062,11 +2069,11 @@ if ! [[ -f ".configured-$1" ]]; then
 		-DCMAKE_CXX_COMPILER="$DESTARCH-linux-g++" \
 		-DCMAKE_C_FLAGS="$CFLAGS" \
 		-DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-		-DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" \
+		-DCMAKE_EXE_LINKER_FLAGS="$TINS_LD_FLAGS" \
 		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
 		-DLIBTINS_ENABLE_CXX11=1 \
 		-DLIBTINS_BUILD_SHARED=$SHARED_OR_STATIC \
-		-DLIBTINS_ENABLE_WPA2=$_TINS_WPA2_SET \
+		-DLIBTINS_ENABLE_WPA2=$2 \
 		-DLIBTINS_ENABLE_ACK_TRACKER=1 \
 		-DCROSS_COMPILING=1 \
 		./ && \
@@ -2088,12 +2095,13 @@ fi
 
 do_LIBTINS() {
 LIBTINS_VERSION=4.0
-_TINS_WPA2_SET=0
+## NOTE: this requires ssl/libcrypto
 
 cd $SRC/libtins
 
-do_LIBTINS_STEP "static";
-do_LIBTINS_STEP "shared";
+### static/shared, 1/0 for WPA2
+do_LIBTINS_STEP "static" "1";
+do_LIBTINS_STEP "shared" "1";
 
 }
 
