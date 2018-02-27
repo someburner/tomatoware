@@ -1937,7 +1937,7 @@ if ! [[ -f .configured ]]; then
 	touch .configured
 fi
 #-with-python-root=../Python-${PYTHON_VERSION}-native
-
+https://github.com/someburner/libtins/commit/4330cb8e54cb9d415a966227bf44bfeae5c48b89
 #BOOST_BLD_DBG="-d+13 -o/tmp/test"
 BOOST_BLD_DBG=""
 
@@ -1956,6 +1956,7 @@ rm -f $HOME/user-config.jam
 ################## ##########################################################
 
 LIBTINS_VERSION=4.0
+_TINS_WPA2_SET=0
 
 cd $SRC/libtins
 
@@ -1968,24 +1969,27 @@ fi
 cd $SRC/libtins/libtins-${LIBTINS_VERSION}
 
 if ! [[ -f .configured ]]; then
-	rm -rf build
-	mkdir build
-	cd build
+	PATH=$SRC/libtins/libtins-${LIBTINS_VERSION}/bin:$PATH \
 	cmake \
-	-DLIBTINS_ENABLE_CXX11=1 \
-	-DLIBTINS_BUILD_SHARED=1 \
-	-DLIBTINS_ENABLE_WPA2=1 \
-	-DLIBTINS_ENABLE_ACK_TRACKER=1 \
-	-DCROSS_COMPILING=1 \
-	-DCMAKE_INSTALL_PREFIX=$PREFIX \
-	-DCMAKE_C_COMPILER=$DESTARCH-linux-gcc \
-	-DCMAKE_CXX_COMPILER=$DESTARCH-linux-g++ \
-	-DCMAKE_FIND_ROOT_PATH=$DEST \
-	-DCMAKE_C_FLAGS="$CFLAGS" \
-	-DCMAKE_CXX_FLAGS="$CXXFLAGS" \
-	-DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" ..
-	cd $SRC/libtins/libtins-${LIBTINS_VERSION}
-	touch .configured
+		-DCMAKE_INSTALL_PREFIX=$PREFIX \
+		-DCMAKE_INCLUDE_PATH=$DEST/include \
+		-DCMAKE_LIBRARY_PATH=$DEST/lib \
+		-DCMAKE_C_COMPILER="$DESTARCH-linux-gcc" \
+		-DCMAKE_CXX_COMPILER="$DESTARCH-linux-g++" \
+		-DCMAKE_C_FLAGS="$CFLAGS" \
+		-DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+		-DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" \
+		-DOPENSSL_ROOT_DIR=$DEST \
+		-DOPENSSL_LIBRARIES=$DEST/lib \
+		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+		-DLIBTINS_ENABLE_CXX11=1 \
+		-DLIBTINS_BUILD_SHARED=1 \
+		-DLIBTINS_ENABLE_WPA2=$_TINS_WPA2_SET \
+		-DLIBTINS_ENABLE_ACK_TRACKER=1 \
+		-DCROSS_COMPILING=1 \
+		./ && \
+		touch .configured
+	echo "configured"
 fi
 
 cd $SRC/libtins/libtins-${LIBTINS_VERSION}

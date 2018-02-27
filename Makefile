@@ -9,11 +9,6 @@ tomatoware: toolchain
 toolchain:
 	./scripts/toolchain.sh
 
-clean: toolchain-clean
-	rm -rf mmc usr home lib var
-
-#	git clean -fdxq && git reset --hard
-
 reset:
 	cd src
 	find . -name .extracted | xargs -r rm -f || true
@@ -25,3 +20,10 @@ reset:
 toolchain-clean:
 	rm -rf toolchain
 	rm -rf /opt/tomatoware/$(DESTARCH)-$(FLOAT)$(subst /,-,$(PREFIX))
+
+clean: toolchain-clean
+	rm -rf mmc usr home lib var
+	./scripts/clean.sh
+
+
+#	git clean -fdxq && git reset --hard
