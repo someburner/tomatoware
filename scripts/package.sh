@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 set -x
@@ -7,8 +7,9 @@ BASE=`pwd`
 DEST=$BASE$PREFIX
 SRC=$BASE/src
 
-if [ -f $BASE/.packaged ]; then
-exit
+if [[ -f $BASE/.packaged ]]; then
+	echo "$BASE/.packaged exists, remove to create tgz"
+	exit
 fi
 
 if [ "$DESTARCH" = "arm" ]; then
@@ -56,67 +57,53 @@ sed -i 's,\/opt\/tomatoware\/'"$DESTARCH"'-'"$FLOAT"''"${PREFIX////-}"'\/usr\/bi
 cp $SRC/.autorun $DEST
 sed -i 's,\/opt,'"$PREFIX"',g' $DEST/.autorun
 
+
 #Create $PREFIX/etc/profile
 mkdir -p $DEST/tmp
 cd $DEST/etc
 
-echo "#" >> profile
+echo "#!/bin/sh" > profile
+echo "" >> profile
 echo "# Please note it's not a system-wide settings, it's only for a current" >> profile
 echo "# terminal session. Point your f\w (if necessery) to execute $PREFIX/etc/profile" >> profile
 echo "# at console logon." >> profile
-echo "#" >> profile
 echo "" >> profile
 
-echo "### Term info" >> profile
+if [ $PREFIX = "/opt" ];
+then
+	echo "export PATH='/opt/usr/sbin:/opt/sbin:/opt/bin:/opt/bin/go/bin:/opt/go/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin'" >> profile
+else
+	echo "export PATH='$PREFIX/sbin:$PREFIX/bin:$PREFIX/bin/go/bin:$PREFIX/go/bin:/opt/usr/sbin:/opt/sbin:/opt/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin'" >> profile
+fi
+
 echo "export TERM=xterm" >> profile
 echo "export TERMINFO=$PREFIX/share/terminfo" >> profile
-echo "" >> profile
-
-echo "### Directories" >> profile
 echo "export TMP=$PREFIX/tmp" >> profile
 echo "export TEMP=$PREFIX/tmp" >> profile
 echo "export TMPDIR=$PREFIX/tmp" >> profile
-echo "" >> profile
-
-echo "### Common build env options" >> profile
 echo "export PKG_CONFIG_LIBDIR=$PREFIX/lib/pkgconfig" >> profile
 echo "export CONFIG_SHELL=$PREFIX/bin/bash" >> profile
 echo "export M4=$PREFIX/bin/m4" >> profile
 echo "export GOPATH=$PREFIX/go" >> profile
 echo "" >> profile
-
-echo "### Build static by default." >> profile
+echo "# An influential go environment variable for creating static binaries." >> profile
+echo "# Build static by default." >> profile
 echo "export CGO_ENABLED=0" >> profile
 echo "" >> profile
-
-echo "### Localization" >> profile
+echo "# You may define localization" >> profile
 echo "#export LANG='ru_RU.UTF-8'" >> profile
 echo "#export LC_ALL='ru_RU.UTF-8'" >> profile
 echo "" >> profile
-
-echo "### Path" >> profile
-if [ $PREFIX = "/opt" ];
-then
-	echo "export PATH=/opt/usr/sbin:/opt/sbin:/opt/bin:/opt/bin/go/bin:/opt/go/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin" >> profile
-else
-	echo "export PATH=$PREFIX/sbin:$PREFIX/bin:$PREFIX/bin/go/bin:$PREFIX/go/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin" >> profile
-fi
-echo "" >> profile
-
-echo "### Aliases" >> profile
 echo "alias ls='ls --color'" >> profile
-echo "alias la='ls -lah'" >> profile
 
 chmod +x profile
 
 #Create tarball of the compiled project.
 cd $BASE$PREFIX
-chmod 777 tmp/
+chmod 1777 tmp/
 
-fakeroot-tcp tar vcjf $BASE/$DESTARCH-$FLOAT${PREFIX////-}.tar.bz2 $DESTARCH-buildroot-linux-uclibc$GNUEABI bin/ docs/ etc/ include/ lib/ libexec/ man/ sbin/ $SCRIPTS share/ ssl/ tmp/ usr/ var/ .autorun .vimrc
+fakeroot-tcp tar zvcf $BASE/$DESTARCH-$FLOAT${PREFIX////-}.tgz $DESTARCH-buildroot-linux-uclibc$GNUEABI bin/ docs/ etc/ include/ lib/ libexec/ man/ sbin/ $SCRIPTS share/ ssl/ tmp/ usr/ var/ .autorun .vimrc
 touch $BASE/.packaged
-
-
 
 
 

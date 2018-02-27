@@ -1,6 +1,4 @@
-#!/bin/bash
-
-##/usr/bin/env bash
+#!/usr/bin/env bash
 
 set -e
 set -x
@@ -20,47 +18,46 @@ MAKE="make -j`nproc`"
 BOOST_BLD_DIR="/tmp/build-boost"
 
 
-
 base_main() {
-	do_BZIP2;
-	do_LBZIP2;
-	do_ZLIB;
-	do_LZO;
-	do_XZ_UTILS;
-	do_GZIP;
-	do_UNZIP;
-	do_UNRAR;
-	do_OPENSSL;
-	do_LIBICONV;
-	do_GETTEXT;
-	do_FLEX;
-	do_CURL;
-	do_EXPAT;
-	do_LIBPCAP;
-
-	do_LIBFFI;
-	do_NCURSES;
-	do_LIBREADLINE;
-	do_LIBGDBM;
-	do_TCL;
-	do_BDB;
+	# do_BZIP2;
+	# do_LBZIP2;
+	# do_ZLIB;
+	# do_LZO;
+	# do_XZ_UTILS;
+	# do_GZIP;
+	# do_UNZIP;
+	# do_UNRAR;
+	# do_OPENSSL;
+	# do_LIBICONV;
+	# do_GETTEXT;
+	# do_FLEX;
+	# do_CURL;
+	# do_EXPAT;
+	# do_LIBPCAP;
+	#
+	# do_LIBFFI;
+	# do_NCURSES;
+	# do_LIBREADLINE;
+	# do_LIBGDBM;
+	# do_TCL;
+	# do_BDB;
 	# do_SQLITE;
-	do_LIBXML;
-	do_LIBXSLT;
-	do_LIBSIGCpp;
-	do_LIBEVENT;
-
-	do_PCRE;
-	do_STRACE;
-	do_PAM;
-	do_OPENSSH;
-	do_BASH;
-	do_SCREEN;
-
-	do_BOOST;
-	do_LIBTINS;
-
-	do_GIT;
+	# do_LIBXML;
+	# do_LIBXSLT;
+	# do_LIBSIGCpp;
+	# do_LIBEVENT;
+	#
+	# do_PCRE;
+	# do_STRACE;
+	# do_PAM;
+	# do_OPENSSH;
+	# do_BASH;
+	# do_SCREEN;
+	#
+	# do_BOOST;
+	# do_LIBTINS;
+	#
+	# do_GIT;
 	# do_LIBMYSQLCLIENT;
 	# do_PERL;
 	# do_PYTHON27
@@ -69,12 +66,12 @@ base_main() {
 	# do_YENC;
 	# do_pyOpenSSL;
 	# do_PAR2CMDLINE;
-
-	do_HTOP;
-	do_TMUX;
-
+	#
+	# do_HTOP;
+	# do_TMUX;
+	#
 	# do_ZSH;
-	do_VIM;
+	# do_VIM;
 }
 
 
@@ -526,7 +523,7 @@ fi
 # LIBPCAP # #################################################################
 ########### #################################################################
 do_LIBPCAP() {
-LIBPCAP_VERSION=git-1.8.1
+LIBPCAP_VERSION=1.8.1
 
 cd $SRC/libpcap
 
@@ -2035,7 +2032,12 @@ TOOLPT1="gcc"
 TOOLPT2=" "
 TOOLPT3="arm-linux-g++"
 
+# I have done this for a long time by modifying my user-config.jam as follows:
+#  using gcc : : /<path to custom gcc>/bin/g++ : <linkflags>"-Wl,-rpath -Wl,/<path to custom gcc>/lib64"
+
 echo  "using $TOOLPT1 : $TOOLPT2 : $TOOLPT3 ;" > $HOME/user-config.jam
+
+BOOST_LIBRARIES=atomic,chrono,date_time,filesystem,regex,serialization,thread,signals,thread,timer,system
 
 if ! [[ -f .configured ]]; then
 	LDFLAGS=$LDFLAGS \
@@ -2046,25 +2048,30 @@ if ! [[ -f .configured ]]; then
 		--prefix=$DEST \
 		--libdir=$DEST/lib \
 		--includedir=$DEST/include \
-		--layout=tagged \
-		--without-libraries=python \
+		--with-libraries=$BOOST_LIBRARIES \
 		address-model=32 \
 		link=shared \
 		runtime-link=shared \
 		threading=multi
 	touch .configured
 fi
+
 #-with-python-root=../Python-${PYTHON_VERSION}-native
 # https://github.com/someburner/libtins/commit/4330cb8e54cb9d415a966227bf44bfeae5c48b89
 #BOOST_BLD_DBG="-d+13 -o/tmp/test"
 BOOST_BLD_DBG=""
 
+## NOTE: bjam == b2 >.<
+## http://www.boost.org/build/doc/html/bbv2/overview/invocation.html
 if ! [[ -f .built ]]; then
 	echo; echo "BUILDING"; echo; echo; echo "using $TOOLPT1 : $TOOLPT2 : $TOOLPT3 ;"; echo; echo;
 	#####
-	PATH=$BOOST_BLD_DIR:$PATH CC="$DESTARCH-linux-gcc" CXX="$DESTARCH-linux-g++" \
-		LDFLAGS=$LDFLAGS CPPFLAGS=$CPPFLAGS CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS && \
-		./bjam --toolset=gcc-7.3.0 "$BOOST_BLD_DBG" --build-dir="$BOOST_BLD_DIR" install || true
+	PATH=$BOOST_BLD_DIR:$PATH CC="$DESTARCH-linux-gcc" CXX="$DESTARCH-linux-g++" AR="$DESTARCH-linux-ar" \
+	LDFLAGS=$LDFLAGS CPPFLAGS=$CPPFLAGS CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS && \
+	./b2 -a install \
+		--no-mpi --no-python --no-samples --no-tests --disable-long-double \
+		--toolset=gcc-7.3.0 --build-dir="$BOOST_BLD_DIR" \
+		include=static,shared link=static,shared cxxflags=-fPIC
 	## operations are: "install" or "stage"
 	touch .built
 fi
@@ -2075,22 +2082,32 @@ rm -f $HOME/user-config.jam
 ################## ##########################################################
 # LIBTINS        # ##########################################################
 ################## ##########################################################
-do_LIBTINS() {
-LIBTINS_VERSION=4.0
-_TINS_WPA2_SET=0
 
+## Tins wont do both at once as-is
+## So just do it twice
+do_LIBTINS_STEP() {
 cd $SRC/libtins
 
-if ! [[ -f .extracted ]]; then
-	rm -rf libtins-${LIBTINS_VERSION}
+local SHARED_OR_STATIC=1; # shared
+case "$1" in
+	"static") SHARED_OR_STATIC=0;;
+	"shared") SHARED_OR_STATIC=1;;
+	*) echo "Invalid arg for do_LIBTINS_STEP. Must be \"shared\" or \"static\"";
+	echo; exit 1;
+	;;
+esac
+
+if ! [[ -f ".extracted-$1" ]]; then
+	rm -rf "libtins-${LIBTINS_VERSION}-$1"
 	tar xf libtins-${LIBTINS_VERSION}.tar.gz
-	touch .extracted
+	mv libtins-${LIBTINS_VERSION} libtins-${LIBTINS_VERSION}-$1
+	touch ".extracted-$1"
 fi
 
-cd $SRC/libtins/libtins-${LIBTINS_VERSION}
+cd $SRC/libtins/libtins-${LIBTINS_VERSION}-$1
 
-if ! [[ -f .configured ]]; then
-	PATH=$SRC/libtins/libtins-${LIBTINS_VERSION}/bin:$BOOST_BLD_DIR:$PATH \
+if ! [[ -f ".configured-$1" ]]; then
+	PATH=$SRC/libtins/libtins-${LIBTINS_VERSION}-$1/bin:$BOOST_BLD_DIR:$PATH \
 	cmake \
 		-DCMAKE_INSTALL_PREFIX=$PREFIX \
 		-DCMAKE_INCLUDE_PATH=$DEST/include \
@@ -2102,11 +2119,9 @@ if ! [[ -f .configured ]]; then
 		-DCMAKE_C_FLAGS="$CFLAGS" \
 		-DCMAKE_CXX_FLAGS="$CXXFLAGS" \
 		-DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" \
-		-DOPENSSL_ROOT_DIR=$DEST \
-		-DOPENSSL_LIBRARIES=$DEST/lib \
 		-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
 		-DLIBTINS_ENABLE_CXX11=1 \
-		-DLIBTINS_BUILD_SHARED=1 \
+		-DLIBTINS_BUILD_SHARED=$SHARED_OR_STATIC \
 		-DLIBTINS_ENABLE_WPA2=$_TINS_WPA2_SET \
 		-DLIBTINS_ENABLE_ACK_TRACKER=1 \
 		-DCROSS_COMPILING=1 \
@@ -2115,21 +2130,27 @@ if ! [[ -f .configured ]]; then
 	echo "configured"
 fi
 
-cd $SRC/libtins/libtins-${LIBTINS_VERSION}
-
-if ! [[ -f .built ]]; then
-	cd build
+cd $SRC/libtins/libtins-${LIBTINS_VERSION}-$1
+if ! [[ -f ".built-$1" ]]; then
 	make
-	cd ..
-	touch .built
+	touch ".built-$1"
 fi
 
-if ! [[ -f .installed ]]; then
-	cd build
+if ! [[ -f ".installed-$1" ]]; then
 	make install DESTDIR=$BASE
-	cd ..
-	touch .installed
+	touch ".installed-$1"
 fi
+}
+
+do_LIBTINS() {
+LIBTINS_VERSION=4.0
+_TINS_WPA2_SET=0
+
+cd $SRC/libtins
+
+do_LIBTINS_STEP "static";
+do_LIBTINS_STEP "shared";
+
 }
 
 
@@ -2137,8 +2158,8 @@ fi
 # END            # ##########################################################
 ################## ##########################################################
 
-base_main;
-# base_original_order;
+# base_main;
+base_original_order;
 
 
 

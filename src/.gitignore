@@ -93,7 +93,7 @@ libreadline/.extracted
 libreadline/readline-7.0/
 libsigc++/.extracted
 libsigc++/libsigc++-2.4.1/
-libtins/.extracted
+libtins/.extracted-*
 libtins/libtins-4.0
 libtool/.extracted
 libtool/libtool-2.4.6/

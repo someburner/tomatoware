@@ -19,6 +19,7 @@ reset:
 
 toolchain-clean:
 	rm -rf toolchain
+	rm -rf src/gcc
 	rm -rf /opt/tomatoware/*-soft-*
 
 clean: toolchain-clean

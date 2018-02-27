@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 set -x
@@ -7,9 +7,9 @@ export BASE=`pwd`
 export SRC=$BASE/src
 export PATCHES=$BASE/patches
 
-GCCVER="7.3.0"
+GCCVER="7.2.0"
 UCLIBCVER="1.0.28"
-BUILDROOTVER="2018.02-rc2"
+BUILDROOTVER="2017.08"
 TOOLCHAINDIR="/opt/tomatoware/$DESTARCH-$FLOAT${PREFIX////-}"
 
 

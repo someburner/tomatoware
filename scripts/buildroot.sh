@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 set -x
@@ -16,9 +16,51 @@ CONFIGURE="./configure --prefix=$PREFIX --host=$DESTARCH-linux"
 MAKE="make -j`nproc`"
 HOST_CMAKE=`which cmake`
 
+buildroot_main() {
+	do_GLIB;
+	do_PKG_CONFIG;
+	do_GMP;
+	do_MPFR;
+	do_MPC;
+	do_BINUTILS;
+	do_GCC;
+	do_AUTOCONF;
+	do_AUTOMAKE;
+	do_BISON;
+	do_CHECK;
+	do_COREUTILS;
+	do_DIFFUTILS;
+	do_FINDUTILS;
+	do_GAWK;
+	do_LIBTOOL;
+	do_M4;
+	do_MAKE;
+	do_CMAKE;
+	do_UTIL_LINUX;
+	do_PATCH;
+	do_WGET;
+	do_GREP;
+	do_TAR;
+	do_SED;
+	do_TEXINFO;
+	do_CPIO;
+	do_FILE;
+	do_DISTCC;
+	do_UPX;
+}
+
+buildroot_original_order() {
+do_GLIB; do_PKG_CONFIG; do_GMP; do_MPFR; do_MPC; do_BINUTILS; do_GCC;
+do_AUTOCONF; do_AUTOMAKE; do_BISON; do_CHECK; do_COREUTILS; do_DIFFUTILS;
+do_FINDUTILS; do_GAWK; do_LIBTOOL; do_M4; do_MAKE; do_CMAKE; do_UTIL_LINUX;
+do_PATCH; do_WGET; do_GREP; do_TAR; do_SED; do_TEXINFO; do_CPIO; do_FILE;
+do_DISTCC; do_UPX;
+}
+
 ######## ####################################################################
 # GLIB # ####################################################################
 ######## ####################################################################
+do_GLIB() {
 
 GLIB_VERSION=2.26.1
 
@@ -73,11 +115,12 @@ if ! [[ -f .edit_sed ]]; then
 	$DEST/lib/libglib-2.0.la
 	touch .edit_sed
 fi
+}
 
 ############## ##############################################################
-# PKG-CONFIG # ##############################################################
+# PKG_CONFIG # ##############################################################
 ############## ##############################################################
-
+do_PKG_CONFIG() {
 PKG_CONFIG_VERSION=0.29.2
 
 cd $SRC/pkg-config
@@ -111,11 +154,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ####### #####################################################################
 # GMP # #####################################################################
 ####### #####################################################################
-
+do_GMP() {
 GMP_VERSION=6.1.2
 
 cd $SRC/gmp
@@ -147,10 +191,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ######## ####################################################################
 # MPFR # ####################################################################
 ######## ####################################################################
+do_MPFR() {
 
 MPFR_VERSION=4.0.1
 
@@ -188,10 +234,12 @@ if ! [[ -f .edit_sed ]]; then
 	$DEST/lib/libmpfr.la
 	touch .edit_sed
 fi
+}
 
 ####### #####################################################################
 # MPC # #####################################################################
 ####### #####################################################################
+do_MPC() {
 
 MPC_VERSION=1.1.0
 
@@ -225,11 +273,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ############ ################################################################
 # BINUTILS # ################################################################
 ############ ################################################################
-
+do_BINUTILS() {
 BINUTILS_VERSION=2.29
 
 cd $SRC/binutils
@@ -268,18 +317,20 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ####### #####################################################################
 # GCC # #####################################################################
 ####### #####################################################################
+do_GCC() {
 
-GCC_VERSION=7.3.0
+GCC_VERSION=7.2.0
 
 mkdir -p $SRC/gcc && cd $SRC/gcc
 
 if ! [[ -f .extracted ]]; then
 	rm -rf gcc-${GCC_VERSION} gcc-build
-	tar xf $SRC/toolchain/dl/gcc-${GCC_VERSION}.tar.xz -C $SRC/gcc
+	tar xvJf $SRC/toolchain/dl/gcc-${GCC_VERSION}.tar.xz -C $SRC/gcc
 	mkdir gcc-build
 	touch .extracted
 fi
@@ -287,9 +338,9 @@ fi
 cd gcc-${GCC_VERSION}
 
 if ! [[ -f .patched ]]; then
-#	cp $PATCHES/gcc/gcc-7.2.0-specs-1.patch .
-#	sed -i 's,\/opt,'"$PREFIX"',g' gcc-7.2.0-specs-1.patch
-#	patch -p1 < gcc-7.2.0-specs-1.patch
+	cp $PATCHES/gcc/gcc-7.2.0-specs-1.patch .
+	sed -i 's,\/opt,'"$PREFIX"',g' gcc-7.2.0-specs-1.patch
+	patch -p1 < gcc-7.2.0-specs-1.patch
 	patch -p1 < $PATCHES/gcc/0810-arm-softfloat-libgcc.patch
 	touch .patched
 fi
@@ -304,7 +355,9 @@ fi
 
 if [[ "$DESTARCH" == "arm" ]]; then
 	os=arm-buildroot-linux-uclibcgnueabi
-	gccextraconfig="--with-abi=aapcs-linux --with-cpu=cortex-a9 --with-mode=arm"
+	gccextraconfig="--with-abi=aapcs-linux
+			--with-cpu=cortex-a9
+			--with-mode=arm"
 fi
 
 if ! [[ -f .configured ]]; then
@@ -332,7 +385,6 @@ if ! [[ -f .configured ]]; then
 	--disable-libmudflap \
 	--disable-libsanitizer \
 	--disable-libssp \
-	--disable-libstdcxx-pch \
 	--disable-multilib \
 	--disable-nls \
 	--disable-werror \
@@ -341,6 +393,7 @@ if ! [[ -f .configured ]]; then
 	$gccextraconfig
 	touch .configured
 fi
+# --disable-libstdcxx-pch
 
 if ! [[ -f .built ]]; then
 	$MAKE
@@ -363,11 +416,12 @@ fi
 if ! [[ -f $DEST/bin/$DESTARCH-linux-g++ ]]; then
 	ln -s g++ $DEST/bin/$DESTARCH-linux-g++
 fi
+}
 
 ############ ################################################################
 # AUTOCONF # ################################################################
 ############ ################################################################
-
+do_AUTOCONF() {
 AUTOCONF_VERSION=2.69
 
 cd $SRC/autoconf
@@ -398,11 +452,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ############ ################################################################
 # AUTOMAKE # ################################################################
 ############ ################################################################
-
+do_AUTOMAKE() {
 AUTOMAKE_VERSION=1.15.1
 
 cd $SRC/automake
@@ -433,11 +488,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ######### ###################################################################
 # BISON # ###################################################################
 ######### ###################################################################
-
+do_BISON() {
 BISON_VERSION=3.0.4
 
 cd $SRC/bison
@@ -474,11 +530,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ######### ###################################################################
 # CHECK # ###################################################################
 ######### ###################################################################
-
+do_CHECK() {
 CHECK_VERSION=0.10.0
 
 cd $SRC/check
@@ -509,11 +566,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ############# ###############################################################
 # COREUTILS # ###############################################################
 ############# ###############################################################
-
+do_COREUTILS() {
 COREUTILS_VERSION=8.25
 
 cd $SRC/coreutils
@@ -555,11 +613,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ############# ###############################################################
 # DIFFUTILS # ###############################################################
 ############# ###############################################################
-
+do_DIFFUTILS() {
 DIFFUTILS_VERSION=3.6
 
 cd $SRC/diffutils
@@ -590,11 +649,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ############# ###############################################################
 # FINDUTILS # ###############################################################
 ############# ###############################################################
-
+do_FINDUTILS() {
 FINDUTILS_VERSION=4.5.19
 
 cd $SRC/findutils
@@ -626,10 +686,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ######## ####################################################################
 # GAWK # ####################################################################
 ######## ####################################################################
+do_GAWK() {
 
 GAWK_VERSION=4.2.0
 
@@ -667,11 +729,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########### #################################################################
 # LIBTOOL # #################################################################
 ########### #################################################################
-
+do_LIBTOOL() {
 LIBTOOL_VERSION=2.4.6
 
 cd $SRC/libtool
@@ -702,10 +765,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ###### ######################################################################
 # M4 # ######################################################################
 ###### ######################################################################
+do_M4() {
 
 M4_VERSION=1.4.18
 
@@ -742,10 +807,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ######## ####################################################################
 # MAKE # ####################################################################
 ######## ####################################################################
+do_MAKE() {
 
 MAKE_VERSION=4.2.1
 
@@ -777,11 +844,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ######### ###################################################################
 # CMAKE # ###################################################################
 ######### ###################################################################
-
+do_CMAKE() {
 CMAKE_VERSION=3.10.2
 
 cd $SRC/cmake
@@ -828,7 +896,9 @@ if ! [[ -f .configured ]]; then
 fi
 
 if ! [[ -f .edit_sed ]]; then
-	sed -i '/cmake_install/s/bin\/cmake/\/usr\/bin\/cmake/g' Makefile
+	#sed -i '/cmake_install/s/bin\/cmake/\/usr\/bin\/cmake/g' Makefile
+	sed -i "s|/usr/bin/cmake|$HOST_CMAKE|g" Makefile
+	# sed -i "s|/cmake_install/s/bin|$HOST_CMAKE|g" Makefile
 	touch .edit_sed
 fi
 
@@ -841,12 +911,14 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ############## ##############################################################
-# UTIL-LINUX # ##############################################################
+# UTIL_LINUX # ##############################################################
 ############## ##############################################################
+do_UTIL_LINUX() {
 
-UTIL_LINUX_VERSION=2.32
+UTIL_LINUX_VERSION=2.31
 
 cd $SRC/util-linux
 
@@ -860,10 +932,10 @@ fi
 
 cd util-linux-${UTIL_LINUX_VERSION}
 
-#if ! [[ -f .patched ]] && [[ "$DESTARCH" == "mipsel" ]]; then
-#	sed -i 's,epoll_create1,epoll_create,g' ./libmount/src/monitor.c
-#	touch .patched
-#fi
+if ! [[ -f .patched ]] && [[ "$DESTARCH" == "mipsel" ]]; then
+	sed -i 's,epoll_create1,epoll_create,g' ./libmount/src/monitor.c
+	touch .patched
+fi
 
 if ! [[ -f .configured ]]; then
 	LDFLAGS=$LDFLAGS \
@@ -890,10 +962,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ######### ###################################################################
 # PATCH # ###################################################################
 ######### ###################################################################
+do_PATCH() {
 
 PATCH_VERSION=2.7.6
 
@@ -925,10 +999,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ######## ####################################################################
 # WGET # ####################################################################
 ######## ####################################################################
+do_WGET() {
 
 WGET_VERSION=1.19.4
 
@@ -965,10 +1041,12 @@ if ! [[ -f .installed ]]; then
 fi
 
 unset PKG_CONFIG_LIBDIR
+}
 
 ######## ####################################################################
 # GREP # ####################################################################
 ######## ####################################################################
+do_GREP() {
 
 GREP_VERSION=3.1
 
@@ -1000,10 +1078,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ####### #####################################################################
 # TAR # #####################################################################
 ####### #####################################################################
+do_TAR() {
 
 TAR_VERSION=1.30
 
@@ -1035,10 +1115,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ####### #####################################################################
 # SED # #####################################################################
 ####### #####################################################################
+do_SED() {
 
 SED_VERSION=4.4
 
@@ -1070,11 +1152,12 @@ if ! [[ -f .installed ]]; then
         make install DESTDIR=$BASE
         touch .installed
 fi
+}
 
 ########### #################################################################
 # TEXINFO # #################################################################
 ########### #################################################################
-
+do_TEXINFO() {
 TEXINFO_VERSION=6.5
 
 cd $SRC/texinfo
@@ -1105,10 +1188,12 @@ if ! [[ -f .installed ]]; then
         make install DESTDIR=$BASE
         touch .installed
 fi
+}
 
 ######## ####################################################################
 # CPIO # ####################################################################
 ######## ####################################################################
+do_CPIO() {
 
 CPIO_VERSION=2.12
 
@@ -1140,10 +1225,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ######## ####################################################################
 # FILE # ####################################################################
 ######## ####################################################################
+do_FILE() {
 
 FILE_VERSION=5.32
 
@@ -1190,10 +1277,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########## ##################################################################
 # DISTCC # ##################################################################
 ########## ##################################################################
+do_DISTCC() {
 
 DISTCC_VERSION=3.1
 
@@ -1234,11 +1323,12 @@ if ! [[ -f .installed ]]; then
 fi
 
 unset PYTHON_CROSS
+}
 
 ####### #####################################################################
 # UPX # #####################################################################
 ####### #####################################################################
-
+do_UPX() {
 UCL_VERSION=1.03
 UPX_VERSION=3.94
 
@@ -1285,3 +1375,16 @@ if ! [[ -f .installed ]]; then
 fi
 
 unset UPX_UCLDIR
+}
+
+
+####### #####################################################################
+# END # #####################################################################
+####### #####################################################################
+
+
+buildroot_main;
+# buildroot_original_order;
+
+
+##### END

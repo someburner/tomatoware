@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 set -x
@@ -23,7 +23,7 @@ NETTLE_VERSION=3.4
 
 cd $SRC/nettle
 
-if [ ! -f .extracted ]; then
+if ! [[ -f .extracted ]]; then
 	rm -rf nettle-${NETTLE_VERSION}
 	tar zxvf nettle-${NETTLE_VERSION}.tar.gz
 	touch .extracted
@@ -31,7 +31,7 @@ fi
 
 cd nettle-${NETTLE_VERSION}
 
-if [ ! -f .configured ]; then
+if ! [[ -f .configured ]]; then
 	LDFLAGS=$LDFLAGS \
 	CPPFLAGS=$CPPFLAGS \
 	CFLAGS=$CFLAGS \
@@ -40,12 +40,12 @@ if [ ! -f .configured ]; then
 	touch .configured
 fi
 
-if [ ! -f .built ]; then
+if ! [[ -f .built ]]; then
 	$MAKE
 	touch .built
 fi
 
-if [ ! -f .installed ]; then
+if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
@@ -60,7 +60,7 @@ export PKG_CONFIG_LIBDIR=$DEST/lib/pkgconfig
 
 cd $SRC/gnutls
 
-if [ ! -f .extracted ]; then
+if ! [[ -f .extracted ]]; then
 	rm -rf gnutls-${GNUTLS_VERSION}
 	tar xvJf gnutls-${GNUTLS_VERSION}.tar.xz
 	touch .extracted
@@ -68,7 +68,7 @@ fi
 
 cd gnutls-${GNUTLS_VERSION}
 
-if [ ! -f .configured ]; then
+if ! [[ -f .configured ]]; then
 	LDFLAGS=$LDFLAGS \
 	CPPFLAGS=$CPPFLAGS \
 	CFLAGS=$CFLAGS \
@@ -83,24 +83,24 @@ if [ ! -f .configured ]; then
 	touch .configured
 fi
 
-if [ ! -f .built ]; then
+if ! [[ -f .built ]]; then
 	$MAKE
 	touch .built
 fi
 
-if [ ! -f .installed ]; then
+if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
 
-if [ ! -f .installed_binary ]; then
-	cp ../libgnutls-config $DEST/bin        
+if ! [[ -f .installed_binary ]]; then
+	cp ../libgnutls-config $DEST/bin
 	touch .installed_binary
 fi
 
 unset PKG_CONFIG_LIBDIR
 
-if [ ! -f .edit_sed ]; then
+if ! [[ -f .edit_sed ]]; then
 
 	sed -i 's,'"$PREFIX"'\/lib\/libiconv.la,'"$DEST"'\/lib\/libiconv.la,g' \
 	$DEST/lib/libgnutls.la
@@ -124,7 +124,7 @@ export PKG_CONFIG_PATH=$DEST/lib/pkgconfig
 
 cd $SRC/iksemel
 
-if [ ! -f .extracted ]; then
+if ! [[ -f .extracted ]]; then
 	rm -rf iksemel-${IKSEMEL_VERSION}
 	tar zxvf iksemel-${IKSEMEL_VERSION}.tar.gz
 	touch .extracted
@@ -132,7 +132,7 @@ fi
 
 cd iksemel-${IKSEMEL_VERSION}
 
-if [ ! -f .configured ]; then
+if ! [[ -f .configured ]]; then
 	./autogen.sh
 	LDFLAGS=$LDFLAGS \
 	CPPFLAGS=$CPPFLAGS \
@@ -144,12 +144,12 @@ if [ ! -f .configured ]; then
 	touch .configured
 fi
 
-if [ ! -f .built ]; then
+if ! [[ -f .built ]]; then
 	$MAKE
 	touch .built
 fi
 
-if [ ! -f .installed ]; then
+if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
@@ -164,7 +164,7 @@ SRTP_VERSION=2.1.0
 
 cd $SRC/srtp
 
-if [ ! -f .extracted ]; then
+if ! [[ -f .extracted ]]; then
 	rm -rf libsrtp-${SRTP_VERSION}
 	tar zxvf libsrtp-${SRTP_VERSION}.tar.gz
 	touch .extracted
@@ -172,7 +172,7 @@ fi
 
 cd libsrtp-${SRTP_VERSION}
 
-if [ ! -f .configured ]; then
+if ! [[ -f .configured ]]; then
 	LDFLAGS=$LDFLAGS \
 	CPPFLAGS=$CPPFLAGS \
 	CFLAGS=$CFLAGS \
@@ -181,12 +181,12 @@ if [ ! -f .configured ]; then
 	touch .configured
 fi
 
-if [ ! -f .built ]; then
+if ! [[ -f .built ]]; then
 	$MAKE
 	touch .built
 fi
 
-if [ ! -f .installed ]; then
+if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
@@ -199,7 +199,7 @@ UNIXODBC_VERSION=2.3.5
 
 cd $SRC/odbc
 
-if [ ! -f .extracted ]; then
+if ! [[ -f .extracted ]]; then
 	rm -rf unixODBC-${UNIXODBC_VERSION}
 	tar zxvf unixODBC-${UNIXODBC_VERSION}.tar.gz
 	touch .extracted
@@ -207,7 +207,7 @@ fi
 
 cd unixODBC-${UNIXODBC_VERSION}
 
-if [ ! -f .configured ]; then
+if ! [[ -f .configured ]]; then
 	LDFLAGS=$LDFLAGS \
 	CPPFLAGS=$CPPFLAGS \
 	CFLAGS=$CFLAGS \
@@ -217,12 +217,12 @@ if [ ! -f .configured ]; then
 	touch .configured
 fi
 
-if [ ! -f .built ]; then
+if ! [[ -f .built ]]; then
 	$MAKE
 	touch .built
 fi
 
-if [ ! -f .installed ]; then
+if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
@@ -235,7 +235,7 @@ JANSSON_VERSION=2.11
 
 cd $SRC/jansson
 
-if [ ! -f .extracted ]; then
+if ! [[ -f .extracted ]]; then
 	rm -rf jansson-${JANSSON_VERSION}
 	tar zxvf jansson-${JANSSON_VERSION}.tar.gz
 	touch .extracted
@@ -243,7 +243,7 @@ fi
 
 cd jansson-${JANSSON_VERSION}
 
-if [ ! -f .configured ]; then
+if ! [[ -f .configured ]]; then
 	LDFLAGS=$LDFLAGS \
 	CPPFLAGS=$CPPFLAGS \
 	CFLAGS=$CFLAGS \
@@ -252,12 +252,12 @@ if [ ! -f .configured ]; then
 	touch .configured
 fi
 
-if [ ! -f .built ]; then
+if ! [[ -f .built ]]; then
 	$MAKE
 	touch .built
 fi
 
-if [ ! -f .installed ]; then
+if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
@@ -272,7 +272,7 @@ export PKG_CONFIG_LIBDIR=$DEST/lib/pkgconfig
 
 cd $SRC/asterisk
 
-if [ ! -f .extracted ]; then
+if ! [[ -f .extracted ]]; then
 	rm -rf asterisk-${ASTERISK_VERSION}
 	tar zxvf asterisk-${ASTERISK_VERSION}.tar.gz
 	touch .extracted
@@ -280,21 +280,21 @@ fi
 
 cd asterisk-${ASTERISK_VERSION}
 
-if [ ! -f .patched ]; then
+if ! [[ -f .patched ]]; then
 	patch < $PATCHES/asterisk/010-asterisk-configure-undef-res-ninit.patch
 	sed -i 's,\/etc\/localtime,'"$PREFIX"'\/etc\/localtime,g' main/stdtime/localtime.c
 	touch .patched
 fi
 
-if [ "$DESTARCH" == "mipsel" ];then
+if [[ "$DESTARCH" == "mipsel" ]]; then
 	os=mipsel-buildroot-linux-uclibc
 fi
 
-if [ "$DESTARCH" == "arm" ];then
+if [[ "$DESTARCH" == "arm"  ]]; then
 	os=arm-buildroot-linux-uclibcgnueabi
 fi
 
-if [ ! -f .configured ]; then
+if ! [[ -f .configured ]]; then
 	LDFLAGS=$LDFLAGS \
 	CPPFLAGS="-I$DEST/include/libxml2 $CPPFLAGS $CFLAGS" \
 	CFLAGS="-I$DEST/include/libxml2 $CPPFLAGS $CFLAGS" \
@@ -325,19 +325,19 @@ if [ ! -f .configured ]; then
 	touch .configured
 fi
 
-if [ ! -f .built ]; then
+if ! [[ -f .built ]]; then
 	ASTLDFLAGS=$LDFLAGS \
 	ASTCFLAGS="-I$DEST/include/libxml2 $CPPFLAGS $CFLAGS" \
 	$MAKE
 	touch .built
 fi
 
-if [ ! -f .installed ]; then
+if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
 
-if [ ! -f .installed_example ]; then
+if ! [[ -f .installed_example ]]; then
 	tar zxvf ../asterisk_gv.tgz -C $DEST/etc
 	mkdir $DEST/etc/config
 	cp ../asterisk.wanup $DEST/etc/config
@@ -353,21 +353,21 @@ unset PKG_CONFIG_LIBDIR
 
 cd $SRC/asterisk
 
-if [ ! -f .extracted_chan_dongle ]; then
+if ! [[ -f .extracted_chan_dongle ]]; then
 	rm -rf asterisk-chan-dongle
-	tar zxvf asterisk-chan-dongle.tgz
+	tar xzf asterisk-chan-dongle.tgz
 	touch .extracted_chan_dongle
 fi
 
 cd asterisk-chan-dongle
 
-if [ ! -f .pre-configured ]; then
+if ! [[ -f .pre-configured ]]; then
 	patch < $PATCHES/asterisk/asterisk-chan-dongle.patch
 	./bootstrap
 	touch .pre-configured
 fi
 
-if [ ! -f .configured ]; then
+if ! [[ -f .configured ]]; then
 	DEST=$DEST \
 	LDFLAGS=$LDFLAGS \
 	CPPFLAGS=$CPPFLAGS \
@@ -379,12 +379,12 @@ if [ ! -f .configured ]; then
 	touch .configured
 fi
 
-if [ ! -f .built ]; then
+if ! [[ -f .built ]]; then
 	$MAKE
 	touch .built
 fi
 
-if [ ! -f .installed ]; then
+if ! [[ -f .installed ]]; then
 	make install
 	touch .installed
 fi
@@ -395,7 +395,7 @@ fi
 
 cd $SRC/tz
 
-if [ ! -f .extracted ]; then
+if ! [[ -f .extracted ]]; then
 	rm -rf tz tz-native
 	mkdir tz
 	tar zxvf tzcode2018c.tar.gz -C ./tz
@@ -406,7 +406,7 @@ fi
 
 cd tz-native
 
-if [ ! -f .installed ]; then
+if ! [[ -f .installed ]]; then
         make \
         TOPDIR=$PREFIX \
         DESTDIR=$BASE
@@ -415,7 +415,7 @@ fi
 
 cd ../tz
 
-if [ ! -f .installed ]; then
+if ! [[ -f .installed ]]; then
 	make install \
 	cc=$DESTARCH-linux-gcc \
 	LFLAGS="$LDFLAGS" \
