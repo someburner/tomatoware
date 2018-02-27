@@ -88,13 +88,14 @@ libmysqlclient/mysql-connector-c-6.1.6-src-native
 libpar2/.extracted
 libpar2/libpar2-0.4/
 libpcap/.extracted
-libpcap/libpcap-git-1.8.1/
+libpcap/libpcap-1.8.1/
 libreadline/.extracted
 libreadline/readline-7.0/
 libsigc++/.extracted
 libsigc++/libsigc++-2.4.1/
 libtins/.extracted-*
-libtins/libtins-4.0
+libtins/libtins-4.0-*
+!libtins/libtins-4.0.tar.gz
 libtool/.extracted
 libtool/libtool-2.4.6/
 libxml2/.extracted
@@ -168,7 +169,7 @@ upx/.extracted
 upx/ucl-1.03/
 upx/upx/
 util-linux/.extracted
-util-linux/util-linux-2.32/
+util-linux/util-linux-2.31/
 vim/.extracted
 vim/vim80/
 wget/.extracted

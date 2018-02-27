@@ -18,63 +18,6 @@ MAKE="make -j`nproc`"
 BOOST_BLD_DIR="/tmp/build-boost"
 
 
-base_main() {
-	# do_BZIP2;
-	# do_LBZIP2;
-	# do_ZLIB;
-	# do_LZO;
-	# do_XZ_UTILS;
-	# do_GZIP;
-	# do_UNZIP;
-	# do_UNRAR;
-	# do_OPENSSL;
-	# do_LIBICONV;
-	# do_GETTEXT;
-	# do_FLEX;
-	# do_CURL;
-	# do_EXPAT;
-	# do_LIBPCAP;
-	#
-	# do_LIBFFI;
-	# do_NCURSES;
-	# do_LIBREADLINE;
-	# do_LIBGDBM;
-	# do_TCL;
-	# do_BDB;
-	# do_SQLITE;
-	# do_LIBXML;
-	# do_LIBXSLT;
-	# do_LIBSIGCpp;
-	# do_LIBEVENT;
-	#
-	# do_PCRE;
-	# do_STRACE;
-	# do_PAM;
-	# do_OPENSSH;
-	# do_BASH;
-	# do_SCREEN;
-	#
-	# do_BOOST;
-	# do_LIBTINS;
-	#
-	# do_GIT;
-	# do_LIBMYSQLCLIENT;
-	# do_PERL;
-	# do_PYTHON27
-	# do_LIBPAR2;
-	# do_CHEETAH;
-	# do_YENC;
-	# do_pyOpenSSL;
-	# do_PAR2CMDLINE;
-	#
-	# do_HTOP;
-	# do_TMUX;
-	#
-	# do_ZSH;
-	# do_VIM;
-}
-
-
 base_original_order() {
 	do_BZIP2; do_LBZIP2; do_ZLIB; do_LZO; do_XZ_UTILS; do_OPENSSL; do_LIBICONV;
 	do_GETTEXT; do_FLEX; do_CURL; do_EXPAT; do_LIBPCAP; do_LIBFFI; do_NCURSES;
@@ -2032,8 +1975,8 @@ TOOLPT1="gcc"
 TOOLPT2=" "
 TOOLPT3="arm-linux-g++"
 
-# I have done this for a long time by modifying my user-config.jam as follows:
-#  using gcc : : /<path to custom gcc>/bin/g++ : <linkflags>"-Wl,-rpath -Wl,/<path to custom gcc>/lib64"
+### More advanced usage, not sure if needed: user-config.jam
+#### using gcc : : /<path to custom gcc>/bin/g++ : <linkflags>"-Wl,-rpath -Wl,/<path to custom gcc>/lib64"
 
 echo  "using $TOOLPT1 : $TOOLPT2 : $TOOLPT3 ;" > $HOME/user-config.jam
 
@@ -2056,12 +1999,13 @@ if ! [[ -f .configured ]]; then
 	touch .configured
 fi
 
+## TODO (maybe, python so slow)
 #-with-python-root=../Python-${PYTHON_VERSION}-native
-# https://github.com/someburner/libtins/commit/4330cb8e54cb9d415a966227bf44bfeae5c48b89
-#BOOST_BLD_DBG="-d+13 -o/tmp/test"
-BOOST_BLD_DBG=""
 
-## NOTE: bjam == b2 >.<
+## example for using debug switches on build:
+#BOOST_BLD_DBG="-d+13 -o/tmp/test"
+
+## NOTE: b2 == bjam (bjam is old name)
 ## http://www.boost.org/build/doc/html/bbv2/overview/invocation.html
 if ! [[ -f .built ]]; then
 	echo; echo "BUILDING"; echo; echo; echo "using $TOOLPT1 : $TOOLPT2 : $TOOLPT3 ;"; echo; echo;
@@ -2070,7 +2014,7 @@ if ! [[ -f .built ]]; then
 	LDFLAGS=$LDFLAGS CPPFLAGS=$CPPFLAGS CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS && \
 	./b2 -a install \
 		--no-mpi --no-python --no-samples --no-tests --disable-long-double \
-		--toolset=gcc-7.3.0 --build-dir="$BOOST_BLD_DIR" \
+		--toolset=gcc-7.2.0 --build-dir="$BOOST_BLD_DIR" \
 		include=static,shared link=static,shared cxxflags=-fPIC
 	## operations are: "install" or "stage"
 	touch .built
@@ -2157,6 +2101,64 @@ do_LIBTINS_STEP "shared";
 ################## ##########################################################
 # END            # ##########################################################
 ################## ##########################################################
+
+
+base_main() {
+	# do_BZIP2;
+	# do_LBZIP2;
+	# do_ZLIB;
+	# do_LZO;
+	# do_XZ_UTILS;
+	# do_GZIP;
+	# do_UNZIP;
+	# do_UNRAR;
+	# do_OPENSSL;
+	# do_LIBICONV;
+	# do_GETTEXT;
+	# do_FLEX;
+	# do_CURL;
+	# do_EXPAT;
+	# do_LIBPCAP;
+	#
+	# do_LIBFFI;
+	# do_NCURSES;
+	# do_LIBREADLINE;
+	# do_LIBGDBM;
+	# do_TCL;
+	# do_BDB;
+	# do_SQLITE;
+	# do_LIBXML;
+	# do_LIBXSLT;
+	# do_LIBSIGCpp;
+	# do_LIBEVENT;
+	#
+	# do_PCRE;
+	# do_STRACE;
+	# do_PAM;
+	# do_OPENSSH;
+	# do_BASH;
+	# do_SCREEN;
+	#
+	# do_BOOST;
+	# do_LIBTINS;
+	#
+	# do_GIT;
+	# do_LIBMYSQLCLIENT;
+	# do_PERL;
+	# do_PYTHON27
+	# do_LIBPAR2;
+	# do_CHEETAH;
+	# do_YENC;
+	# do_pyOpenSSL;
+	# do_PAR2CMDLINE;
+	#
+	# do_HTOP;
+	# do_TMUX;
+	#
+	# do_ZSH;
+	# do_VIM;
+echo "blah"
+}
 
 # base_main;
 base_original_order;

@@ -353,9 +353,9 @@ unset PKG_CONFIG_LIBDIR
 
 cd $SRC/asterisk
 
-if ! [[ -f .extracted_chan_dongle ]]; then
+if ! [[ -f ".extracted_chan_dongle" ]]; then
 	rm -rf asterisk-chan-dongle
-	tar xzf asterisk-chan-dongle.tgz
+	tar -xzf asterisk-chan-dongle.tgz
 	touch .extracted_chan_dongle
 fi
 

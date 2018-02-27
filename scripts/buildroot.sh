@@ -896,8 +896,8 @@ if ! [[ -f .configured ]]; then
 fi
 
 if ! [[ -f .edit_sed ]]; then
-	#sed -i '/cmake_install/s/bin\/cmake/\/usr\/bin\/cmake/g' Makefile
-	sed -i "s|/usr/bin/cmake|$HOST_CMAKE|g" Makefile
+	sed -i '/cmake_install/s/bin\/cmake/\/usr\/bin\/cmake/g' Makefile
+	#sed -i "s|/usr/bin/cmake|$HOST_CMAKE|g" Makefile
 	# sed -i "s|/cmake_install/s/bin|$HOST_CMAKE|g" Makefile
 	touch .edit_sed
 fi
