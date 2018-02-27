@@ -19,7 +19,7 @@ reset:
 
 toolchain-clean:
 	rm -rf toolchain
-	rm -rf /opt/tomatoware/$(DESTARCH)-$(FLOAT)$(subst /,-,$(PREFIX))
+	rm -rf /opt/tomatoware/*-soft-*
 
 clean: toolchain-clean
 	rm -rf mmc usr home lib var

@@ -19,10 +19,80 @@ MAKE="make -j`nproc`"
 
 BOOST_BLD_DIR="/tmp/build-boost"
 
+
+
+base_main() {
+	do_BZIP2;
+	do_LBZIP2;
+	do_ZLIB;
+	do_LZO;
+	do_XZ_UTILS;
+	do_GZIP;
+	do_UNZIP;
+	do_UNRAR;
+	do_OPENSSL;
+	do_LIBICONV;
+	do_GETTEXT;
+	do_FLEX;
+	do_CURL;
+	do_EXPAT;
+	do_LIBPCAP;
+
+	do_LIBFFI;
+	do_NCURSES;
+	do_LIBREADLINE;
+	do_LIBGDBM;
+	do_TCL;
+	do_BDB;
+	# do_SQLITE;
+	do_LIBXML;
+	do_LIBXSLT;
+	do_LIBSIGCpp;
+	do_LIBEVENT;
+
+	do_PCRE;
+	do_STRACE;
+	do_PAM;
+	do_OPENSSH;
+	do_BASH;
+	do_SCREEN;
+
+	do_BOOST;
+	do_LIBTINS;
+
+	do_GIT;
+	# do_LIBMYSQLCLIENT;
+	# do_PERL;
+	# do_PYTHON27
+	# do_LIBPAR2;
+	# do_CHEETAH;
+	# do_YENC;
+	# do_pyOpenSSL;
+	# do_PAR2CMDLINE;
+
+	do_HTOP;
+	do_TMUX;
+
+	# do_ZSH;
+	do_VIM;
+}
+
+
+base_original_order() {
+	do_BZIP2; do_LBZIP2; do_ZLIB; do_LZO; do_XZ_UTILS; do_OPENSSL; do_LIBICONV;
+	do_GETTEXT; do_FLEX; do_CURL; do_EXPAT; do_LIBPCAP; do_LIBFFI; do_NCURSES;
+	do_LIBREADLINE; do_LIBGDBM; do_TCL; do_BDB; do_SQLITE; do_LIBXML; do_LIBXSLT;
+	do_LIBSIGCpp; do_LIBPAR2; do_LIBEVENT; do_LIBMYSQLCLIENT; do_PERL; do_PCRE;
+	do_PYTHON27; do_CHEETAH; do_YENC; do_pyOpenSSL; do_PAR2CMDLINE; do_UNRAR;
+	do_GIT; do_STRACE; do_PAM; do_OPENSSH; do_HTOP; do_SCREEN; do_BASH; do_ZSH;
+	do_VIM; do_TMUX; do_UNZIP; do_GZIP; do_BOOST; do_LIBTINS;
+}
+
+
 ######### ###################################################################
 # BZIP2 # ###################################################################
 ######### ###################################################################
-
+do_BZIP2() {
 BZIP2_VERSION=1.0.6
 
 cd $SRC/bzip2
@@ -51,11 +121,12 @@ if ! [[ -f .installed ]]; then
 	make install PREFIX=$DEST
 	touch .installed
 fi
+}
 
 ######### ###################################################################
 # LBZIP2 # ###################################################################
 ######### ###################################################################
-
+do_LBZIP2() {
 LBZIP2_VERSION=2.5
 
 cd $SRC/lbzip2
@@ -87,13 +158,12 @@ if ! [[ -f .installed ]]; then
         make install DESTDIR=$BASE
         touch .installed
 fi
-
-
+}
 
 ######## ####################################################################
 # ZLIB # ####################################################################
 ######## ####################################################################
-
+do_ZLIB() {
 ZLIB_VERSION=1.2.11
 
 cd $SRC/zlib
@@ -126,11 +196,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ####### #####################################################################
 # LZO # #####################################################################
 ####### #####################################################################
-
+do_LZO() {
 LZO_VERSION=2.10
 
 cd $SRC/lzo
@@ -162,11 +233,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ############ ################################################################
-# XZ UTILS # ################################################################
+# XZ_UTILS # ################################################################
 ############ ################################################################
-
+do_XZ_UTILS() {
 XZ_UTILS_VERSION=5.2.3
 
 cd $SRC/xz
@@ -197,11 +269,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########### #################################################################
 # OPENSSL # #################################################################
 ########### #################################################################
-
+do_OPENSSL() {
 OPENSSL_VERSION=1.0.2n
 
 cd $SRC/openssl
@@ -237,11 +310,12 @@ if ! [[ -f .installed ]]; then
 	make install CC=$DESTARCH-linux-gcc INSTALLTOP=$DEST OPENSSLDIR=$DEST/ssl
 	touch .installed
 fi
+}
 
 ############ ################################################################
 # LIBICONV # ################################################################
 ############ ################################################################
-
+do_LIBICONV() {
 LIBICONV_VERSION=1.15
 
 cd $SRC/libiconv
@@ -273,11 +347,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########### #################################################################
 # GETTEXT # #################################################################
 ########### #################################################################
-
+do_GETTEXT() {
 GETTEXT_VERSION=0.19.8.1
 
 cd $SRC/gettext
@@ -319,11 +394,12 @@ if ! [[ -f .edit_sed ]]; then
         $DEST/lib/libintl.la
         touch .edit_sed
 fi
+}
 
 ######## ####################################################################
 # FLEX # ####################################################################
 ######## ####################################################################
-
+do_FLEX() {
 FLEX_VERSION=2.6.0
 
 cd $SRC/flex
@@ -361,11 +437,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ######## ####################################################################
 # CURL # ####################################################################
 ######## ####################################################################
-
+do_CURL() {
 CURL_VERSION=7.58.0
 
 cd $SRC/curl
@@ -407,11 +484,12 @@ if ! [[ -f .certs_installed ]]; then
 	c_rehash .
 	touch $SRC/curl/curl-${CURL_VERSION}/.certs_installed
 fi
+}
 
 ######### ###################################################################
 # EXPAT # ###################################################################
 ######### ###################################################################
-
+do_EXPAT() {
 EXPAT_VERSION=2.2.5
 
 cd $SRC/expat
@@ -442,11 +520,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########### #################################################################
 # LIBPCAP # #################################################################
 ########### #################################################################
-
+do_LIBPCAP() {
 LIBPCAP_VERSION=git-1.8.1
 
 cd $SRC/libpcap
@@ -479,11 +558,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########## ##################################################################
 # LIBFFI # ##################################################################
 ########## ##################################################################
-
+do_LIBFFI() {
 LIBFFI_VERSION=3.2.1
 
 cd $SRC/libffi
@@ -519,11 +599,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########### #################################################################
 # NCURSES # #################################################################
 ########### #################################################################
-
+do_NCURSES() {
 NCURSES_VERSION=6.1
 
 cd $SRC/ncurses
@@ -574,11 +655,12 @@ if ! [[ -f .linked ]]; then
 	ln -sf libcurses.so $DEST/lib/libtinfo.so
 	touch .linked
 fi
+}
 
 ############### #############################################################
 # LIBREADLINE # #############################################################
 ############### #############################################################
-
+do_LIBREADLINE() {
 LIBREADLINE_VERSION=7.0
 
 cd $SRC/libreadline
@@ -616,11 +698,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########### #################################################################
 # LIBGDBM # #################################################################
 ########### #################################################################
-
+do_LIBGDBM() {
 LIBGDBM_VERSION=1.14.1
 
 cd $SRC/libgdbm
@@ -651,11 +734,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ####### #####################################################################
-# tcl # #####################################################################
+# TCL # #####################################################################
 ####### #####################################################################
-
+do_TCL() {
 TCL_VERSION=8.6.8
 
 cd $SRC/tcl
@@ -691,11 +775,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ####### #####################################################################
-# bdb # #####################################################################
+# BDB # #####################################################################
 ####### #####################################################################
-
+do_BDB() {
 BDB_VERSION=4.7.25
 
 cd $SRC/bdb
@@ -730,11 +815,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########## ##################################################################
 # SQLITE # ##################################################################
 ########## ##################################################################
-
+do_SQLITE() {
 SQLITE_VERSION=3220000
 
 cd $SRC/sqlite
@@ -765,11 +851,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########## ##################################################################
 # LIBXML # ##################################################################
 ########## ##################################################################
-
+do_LIBXML() {
 LIBXML2_VERSION=2.9.7
 
 cd $SRC/libxml2
@@ -817,11 +904,12 @@ if ! [[ -f .edit_sed2 ]]; then
 	$DEST/lib/libxml2.la
 	touch .edit_sed2
 fi
+}
 
 ########### #################################################################
 # LIBXSLT # #################################################################
 ########### #################################################################
-
+do_LIBXSLT() {
 LIBXSLT_VERSION=1.1.32
 
 cd $SRC/libxslt
@@ -855,11 +943,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ############# ###############################################################
 # LIBSIGC++ # ###############################################################
 ############# ###############################################################
-
+do_LIBSIGCpp() {
 LIBSIGCPLUSPLUS_VERSION=2.4.1
 
 cd $SRC/libsigc++
@@ -891,11 +980,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########### #################################################################
 # LIBPAR2 # #################################################################
 ########### #################################################################
-
+do_LIBPAR2() {
 LIBPAR2_VERSION=0.4
 
 export PKG_CONFIG_LIBDIR=$DEST/lib/pkgconfig
@@ -930,11 +1020,12 @@ if ! [[ -f .installed ]]; then
 fi
 
 unset PKG_CONFIG_LIBDIR
+}
 
 ############ ################################################################
 # LIBEVENT # ################################################################
 ############ ################################################################
-
+do_LIBEVENT() {
 LIBEVENT_VERSION=2.0.22
 
 cd $SRC/libevent
@@ -965,11 +1056,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ################## ##########################################################
 # LIBMYSQLCLIENT # ##########################################################
 ################## ##########################################################
-
+do_LIBMYSQLCLIENT() {
 LIBMYSQLCLIENT_VERSION=6.1.6
 
 cd $SRC/libmysqlclient
@@ -1023,11 +1115,12 @@ if ! [[ -f .installed ]]; then
 	rm -rf $DEST/include/mysql/mysql
 	touch .installed
 fi
+}
 
 ######## ####################################################################
 # PERL # ####################################################################
 ######## ####################################################################
-
+do_PERL() {
 PERL_VERSION=5.26.1
 PERL_CROSS_VERSION=1.1.7
 
@@ -1064,11 +1157,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ######## ####################################################################
 # PCRE # ####################################################################
 ######## ####################################################################
-
+do_PCRE() {
 PCRE_VERSION=8.41
 
 cd $SRC/pcre
@@ -1109,11 +1203,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########## ##################################################################
 # PYTHON # ##################################################################
 ########## ##################################################################
-
+do_PYTHON27() {
 PYTHON_VERSION=2.7.3
 
 cd $SRC/python
@@ -1198,11 +1293,12 @@ if ! [[ -f .rename_and_move ]]; then
 	cp -R ../../Python-${PYTHON_VERSION}-native/build/lib.linux-`uname -m`-2.7/ .
 	touch .rename_and_move
 fi
+}
 
 ########### #################################################################
 # CHEETAH # #################################################################
 ########### #################################################################
-
+do_CHEETAH() {
 CHEETAH_VERSION=3.0.0
 
 cd $SRC/cheetah
@@ -1232,11 +1328,12 @@ if ! [[ -f .installed ]]; then
 	--root=$BASE
 	touch .installed
 fi
+}
 
 ######## ####################################################################
 # YENC # ####################################################################
 ######## ####################################################################
-
+do_YENC() {
 YENC_VERSION=0.4.0
 
 cd $SRC/yenc
@@ -1266,11 +1363,12 @@ if ! [[ -f .installed ]]; then
 	--root=$BASE
 	touch .installed
 fi
+}
 
 ############# ###############################################################
 # pyOpenSSL # ###############################################################
 ############# ###############################################################
-
+do_pyOpenSSL() {
 PYOPENSSL_VERSION=0.13.1
 
 cd $SRC/pyopenssl
@@ -1309,11 +1407,12 @@ if ! [[ -f .installed ]]; then
 	--root=$BASE
 	touch .installed
 fi
+}
 
 ############### #############################################################
 # PAR2CMDLINE # #############################################################
 ############### #############################################################
-
+do_PAR2CMDLINE() {
 PAR2CMDLINE_VERSION=0.8.0
 
 cd $SRC/par2cmdline
@@ -1348,11 +1447,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ######### ###################################################################
 # UNRAR # ###################################################################
 ######### ###################################################################
-
+do_UNRAR() {
 UNRAR_VERSION=5.5.8
 
 cd $SRC/unrar
@@ -1379,11 +1479,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$DEST
 	touch .installed
 fi
+}
 
 ####### #####################################################################
 # GIT # #####################################################################
 ####### #####################################################################
-
+do_GIT() {
 GIT_VERSION=2.16.2
 
 cd $SRC/git
@@ -1433,11 +1534,12 @@ if ! [[ -f .installed ]]; then
 	install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########## ##################################################################
 # STRACE # ##################################################################
 ########## ##################################################################
-
+do_STRACE() {
 STRACE_VERSION=4.21
 
 cd $SRC/strace
@@ -1471,11 +1573,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ####### #####################################################################
 # PAM # #####################################################################
 ####### #####################################################################
-
+do_PAM() {
 LINUX_PAM_VERSION=1.3.0
 
 cd $SRC/pam
@@ -1522,11 +1625,12 @@ if ! [[ -f .installed ]]; then
 	cp -r libpam/include/security/ $DEST/include
 	touch .installed
 fi
+}
 
 ########### #################################################################
 # OPENSSH # #################################################################
 ########### #################################################################
-
+do_OPENSSH() {
 OPENSSH_VERSION=7.6p1
 
 cd $SRC/openssh
@@ -1571,11 +1675,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE STRIP_OPT="-s --strip-program=$DESTARCH-linux-strip"
 	touch .installed
 fi
+}
 
 ######## ####################################################################
 # HTOP # ####################################################################
 ######## ####################################################################
-
+do_HTOP() {
 HTOP_VERSION=2.1.0
 
 cd $SRC/htop
@@ -1607,11 +1712,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########## ##################################################################
 # SCREEN # ##################################################################
 ########## ##################################################################
-
+do_SCREEN() {
 SCREEN_VERSION=4.6.2
 
 cd $SRC/screen
@@ -1647,11 +1753,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ######## ####################################################################
 # BASH # ####################################################################
 ######## ####################################################################
-
+do_BASH() {
 BASH_VERSION=4.4.18
 
 cd $SRC/bash
@@ -1710,11 +1817,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ####### #####################################################################
 # ZSH # #####################################################################
 ####### #####################################################################
-
+do_ZSH() {
 ZSH_VERSION=5.4.2
 
 cd $SRC/zsh
@@ -1745,11 +1853,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ####### #####################################################################
 # VIM # #####################################################################
 ####### #####################################################################
-
+do_VIM() {
 VIM_VERSION=8.0
 
 cd $SRC/vim
@@ -1797,11 +1906,12 @@ fi
 if ! [[ -f $DEST/bin/vi ]]; then
 	ln -s vim $DEST/bin/vi
 fi
+}
 
 ######## ####################################################################
 # TMUX # ####################################################################
 ######## ####################################################################
-
+do_TMUX() {
 TMUX_VERSION=2.6
 
 cd $SRC/tmux
@@ -1832,11 +1942,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ######### ###################################################################
 # UNZIP # ###################################################################
 ######### ###################################################################
-
+do_UNZIP() {
 UNZIP_VERSION=60
 
 cd $SRC/unzip
@@ -1865,11 +1976,12 @@ if ! [[ -f .installed ]]; then
 	make prefix=$DEST install
 	touch .installed
 fi
+}
 
 ######## ####################################################################
 # GZIP # ####################################################################
 ######## ####################################################################
-
+do_GZIP() {
 GZIP_VERSION=1.9
 
 cd $SRC/gzip
@@ -1900,10 +2012,12 @@ if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
 	touch .installed
 fi
+}
 
 ########### #################################################################
 # BOOST   # #################################################################
 ########### #################################################################
+do_BOOST() {
 BOOST_VERSION=1-66-0
 
 cd $SRC/boost
@@ -1930,31 +2044,38 @@ if ! [[ -f .configured ]]; then
 	CXXFLAGS=$CXXFLAGS \
 	./bootstrap.sh \
 		--prefix=$DEST \
+		--libdir=$DEST/lib \
+		--includedir=$DEST/include \
+		--layout=tagged \
+		--without-libraries=python \
 		address-model=32 \
 		link=shared \
-		--without-libraries=python \
+		runtime-link=shared \
 		threading=multi
 	touch .configured
 fi
 #-with-python-root=../Python-${PYTHON_VERSION}-native
-https://github.com/someburner/libtins/commit/4330cb8e54cb9d415a966227bf44bfeae5c48b89
+# https://github.com/someburner/libtins/commit/4330cb8e54cb9d415a966227bf44bfeae5c48b89
 #BOOST_BLD_DBG="-d+13 -o/tmp/test"
 BOOST_BLD_DBG=""
 
 if ! [[ -f .built ]]; then
 	echo; echo "BUILDING"; echo; echo; echo "using $TOOLPT1 : $TOOLPT2 : $TOOLPT3 ;"; echo; echo;
-	CC='arm-linux-g++' LDFLAGS=$LDFLAGS CPPFLAGS=$CPPFLAGS CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS && \
-	./bjam --toolset=gcc-7.3.0 "$BOOST_BLD_DBG" --build-dir="$BOOST_BLD_DIR" install || true
+	#####
+	PATH=$BOOST_BLD_DIR:$PATH CC="$DESTARCH-linux-gcc" CXX="$DESTARCH-linux-g++" \
+		LDFLAGS=$LDFLAGS CPPFLAGS=$CPPFLAGS CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS && \
+		./bjam --toolset=gcc-7.3.0 "$BOOST_BLD_DBG" --build-dir="$BOOST_BLD_DIR" install || true
 	## operations are: "install" or "stage"
 	touch .built
 fi
 
 rm -f $HOME/user-config.jam
+}
 
 ################## ##########################################################
 # LIBTINS        # ##########################################################
 ################## ##########################################################
-
+do_LIBTINS() {
 LIBTINS_VERSION=4.0
 _TINS_WPA2_SET=0
 
@@ -1969,11 +2090,13 @@ fi
 cd $SRC/libtins/libtins-${LIBTINS_VERSION}
 
 if ! [[ -f .configured ]]; then
-	PATH=$SRC/libtins/libtins-${LIBTINS_VERSION}/bin:$PATH \
+	PATH=$SRC/libtins/libtins-${LIBTINS_VERSION}/bin:$BOOST_BLD_DIR:$PATH \
 	cmake \
 		-DCMAKE_INSTALL_PREFIX=$PREFIX \
 		-DCMAKE_INCLUDE_PATH=$DEST/include \
 		-DCMAKE_LIBRARY_PATH=$DEST/lib \
+		-DBOOST_ROOT=$BOOST_BLD_DIR/boost \
+		-DBOOST_LIBRARYDIR=$BOOST_BLD_DIR/boost/bin.v2/libs \
 		-DCMAKE_C_COMPILER="$DESTARCH-linux-gcc" \
 		-DCMAKE_CXX_COMPILER="$DESTARCH-linux-g++" \
 		-DCMAKE_C_FLAGS="$CFLAGS" \
@@ -2007,11 +2130,17 @@ if ! [[ -f .installed ]]; then
 	cd ..
 	touch .installed
 fi
+}
 
 
 ################## ##########################################################
 # END            # ##########################################################
 ################## ##########################################################
+
+base_main;
+# base_original_order;
+
+
 
 echo; echo "base.sh install complete"; echo;
 
