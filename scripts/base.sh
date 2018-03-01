@@ -15,17 +15,15 @@ CXXFLAGS=$CFLAGS
 CONFIGURE="./configure --prefix=$PREFIX --host=$DESTARCH-linux"
 MAKE="make -j`nproc`"
 
-BOOST_BLD_DIR="/tmp/build-boost"
 
-
-base_original_order() {
+base_main() {
 	do_BZIP2; do_LBZIP2; do_ZLIB; do_LZO; do_XZ_UTILS; do_OPENSSL; do_LIBICONV;
 	do_GETTEXT; do_FLEX; do_CURL; do_EXPAT; do_LIBPCAP; do_LIBFFI; do_NCURSES;
 	do_LIBREADLINE; do_LIBGDBM; do_TCL; do_BDB; do_SQLITE; do_LIBXML; do_LIBXSLT;
 	do_LIBSIGCpp; do_LIBPAR2; do_LIBEVENT; do_LIBMYSQLCLIENT; do_PERL; do_PCRE;
 	do_PYTHON27; do_CHEETAH; do_YENC; do_pyOpenSSL; do_PAR2CMDLINE; do_UNRAR;
 	do_GIT; do_STRACE; do_PAM; do_OPENSSH; do_HTOP; do_SCREEN; do_BASH; do_ZSH;
-	do_VIM; do_TMUX; do_UNZIP; do_GZIP; do_BOOST; do_LIBTINS;
+	do_VIM; do_TMUX; do_UNZIP; do_GZIP; do_BOOST; do_LIBTINS; do_RAPIDJSON;
 }
 
 
@@ -330,9 +328,9 @@ if ! [[ -f .installed ]]; then
 fi
 
 if ! [[ -f .edit_sed ]]; then
-        sed -i 's,'"$PREFIX"'\/lib\/libiconv.la,'"$DEST"'\/lib\/libiconv.la,g' \
-        $DEST/lib/libintl.la
-        touch .edit_sed
+	sed -i 's,'"$PREFIX"'\/lib\/libiconv.la,'"$DEST"'\/lib\/libiconv.la,g' \
+	$DEST/lib/libintl.la
+	touch .edit_sed
 fi
 }
 
@@ -1959,6 +1957,8 @@ fi
 ########### #################################################################
 do_BOOST() {
 BOOST_VERSION=1-66-0
+BOOST_BLD_DIR="/tmp/build-boost"
+BOOST_LIBRARIES=atomic,chrono,date_time,exception,filesystem,log,math,program_options,random,regex,serialization,thread,signals,thread,timer,system
 
 cd $SRC/boost
 
@@ -1975,12 +1975,8 @@ TOOLPT1="gcc"
 TOOLPT2=" "
 TOOLPT3="arm-linux-g++"
 
-### More advanced usage, not sure if needed: user-config.jam
-#### using gcc : : /<path to custom gcc>/bin/g++ : <linkflags>"-Wl,-rpath -Wl,/<path to custom gcc>/lib64"
-
 echo  "using $TOOLPT1 : $TOOLPT2 : $TOOLPT3 ;" > $HOME/user-config.jam
-
-BOOST_LIBRARIES=atomic,chrono,date_time,filesystem,regex,serialization,thread,signals,thread,timer,system
+### using gcc : : /<path to custom gcc>/bin/g++ : <linkflags>"-Wl,-rpath -Wl,/<path to custom gcc>/lib64"
 
 if ! [[ -f .configured ]]; then
 	LDFLAGS=$LDFLAGS \
@@ -1999,12 +1995,6 @@ if ! [[ -f .configured ]]; then
 	touch .configured
 fi
 
-## TODO (maybe, python so slow)
-#-with-python-root=../Python-${PYTHON_VERSION}-native
-
-## example for using debug switches on build:
-#BOOST_BLD_DBG="-d+13 -o/tmp/test"
-
 ## NOTE: b2 == bjam (bjam is old name)
 ## http://www.boost.org/build/doc/html/bbv2/overview/invocation.html
 if ! [[ -f .built ]]; then
@@ -2015,7 +2005,10 @@ if ! [[ -f .built ]]; then
 	./b2 -a install \
 		--no-mpi --no-python --no-samples --no-tests --disable-long-double \
 		--toolset=gcc-7.2.0 --build-dir="$BOOST_BLD_DIR" \
-		include=static,shared link=static,shared cxxflags=-fPIC
+		include=static,shared link=static,shared cxxflags=-fPIC \
+		-sBZIP2_INCLUDE=$DEST/include -sBZIP2_LIBPATH=$DEST/lib \
+		-sZLIB_INCLUDE=$DEST/include -sZLIB_LIBPATH=$DEST/lib \
+		-sLZMA_INCLUDE=$DEST/include -sLZMA_LIBPATH=$DEST/lib
 	## operations are: "install" or "stage"
 	touch .built
 fi
@@ -2078,7 +2071,7 @@ if ! [[ -f ".configured-$1" ]]; then
 		-DCROSS_COMPILING=1 \
 		./ && \
 		touch .configured
-	echo "configured"
+	echo "libtins-$1 configured"
 fi
 
 cd $SRC/libtins/libtins-${LIBTINS_VERSION}-$1
@@ -2095,7 +2088,6 @@ fi
 
 do_LIBTINS() {
 LIBTINS_VERSION=4.0
-## NOTE: this requires ssl/libcrypto
 
 cd $SRC/libtins
 
@@ -2105,75 +2097,65 @@ do_LIBTINS_STEP "shared" "1";
 
 }
 
+################## ##########################################################
+# RAPIDJSON      # ##########################################################
+################## ##########################################################
+do_RAPIDJSON() {
+RAPIDJSON_VERSION=1.1.0
+
+cd $SRC/rapidjson
+
+if ! [[ -f .extracted ]]; then
+	rm -rf rapidjson-${RAPIDJSON_VERSION}
+	tar xzf rapidjson-${RAPIDJSON_VERSION}.tar.gz
+	touch .extracted
+fi
+
+cd rapidjson-${RAPIDJSON_VERSION}
+
+if ! [[ -f .configured ]]; then
+	cmake \
+		-DCMAKE_INSTALL_PREFIX=$PREFIX \
+		-DCMAKE_INCLUDE_PATH=$DEST/include \
+		-DCMAKE_LIBRARY_PATH=$DEST/lib \
+		-DCMAKE_C_COMPILER="$DESTARCH-linux-gcc" \
+		-DCMAKE_CXX_COMPILER="$DESTARCH-linux-g++" \
+		-DCMAKE_C_FLAGS="$CFLAGS" \
+		-DCMAKE_CXX_FLAGS="$CFLAGS" \
+		-DRAPIDJSON_BUILD_DOC=OFF \
+		-DRAPIDJSON_BUILD_EXAMPLES=OFF \
+		-DRAPIDJSON_BUILD_TESTS=OFF \
+		-DCMAKE_CROSSCOMPILING=1 \
+		./ && \
+		touch .configured
+	echo "rapidjson-${RAPIDJSON_VERSION} configured"
+fi
+
+if ! [[ -f .built ]]; then
+	$MAKE
+	echo "rapidjson-${RAPIDJSON_VERSION} built"
+	touch .built
+fi
+
+if ! [[ -f .installed ]]; then
+	make install DESTDIR=$BASE
+	echo "rapidjson-${RAPIDJSON_VERSION} installed"
+	touch .installed
+fi
+}
+
+
+
 
 ################## ##########################################################
 # END            # ##########################################################
 ################## ##########################################################
 
 
-base_main() {
-	# do_BZIP2;
-	# do_LBZIP2;
-	# do_ZLIB;
-	# do_LZO;
-	# do_XZ_UTILS;
-	# do_GZIP;
-	# do_UNZIP;
-	# do_UNRAR;
-	# do_OPENSSL;
-	# do_LIBICONV;
-	# do_GETTEXT;
-	# do_FLEX;
-	# do_CURL;
-	# do_EXPAT;
-	# do_LIBPCAP;
-	#
-	# do_LIBFFI;
-	# do_NCURSES;
-	# do_LIBREADLINE;
-	# do_LIBGDBM;
-	# do_TCL;
-	# do_BDB;
-	# do_SQLITE;
-	# do_LIBXML;
-	# do_LIBXSLT;
-	# do_LIBSIGCpp;
-	# do_LIBEVENT;
-	#
-	# do_PCRE;
-	# do_STRACE;
-	# do_PAM;
-	# do_OPENSSH;
-	# do_BASH;
-	# do_SCREEN;
-	#
-	# do_BOOST;
-	# do_LIBTINS;
-	#
-	# do_GIT;
-	# do_LIBMYSQLCLIENT;
-	# do_PERL;
-	# do_PYTHON27
-	# do_LIBPAR2;
-	# do_CHEETAH;
-	# do_YENC;
-	# do_pyOpenSSL;
-	# do_PAR2CMDLINE;
-	#
-	# do_HTOP;
-	# do_TMUX;
-	#
-	# do_ZSH;
-	# do_VIM;
-echo "blah"
-}
-
-# base_main;
-base_original_order;
+base_main;
 
 
 
 echo; echo "base.sh install complete"; echo;
-
 
 #### end

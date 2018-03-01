@@ -12,6 +12,4 @@ toolchain/
 !src/toolchain/
 
 # Build artifacts
-*-mmc.tar.bz2
-*-mnt.tar.bz2
-*-opt.tar.bz2
+*.tgz

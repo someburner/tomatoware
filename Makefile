@@ -17,6 +17,6 @@ toolchain-clean:
 clean: toolchain-clean
 	rm -rf mmc usr home lib var
 	./scripts/clean.sh
-
+	rm -f .packaged
 
 #	git clean -fdxq && git reset --hard

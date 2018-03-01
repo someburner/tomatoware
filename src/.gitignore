@@ -20,6 +20,7 @@ binutils/build-binutils/
 bison/.extracted
 bison/bison-3.0.4/
 boost/.extracted
+boost/user-config.jam
 boost/boost-1-66-0
 bzip2/.extracted
 bzip2/bzip2-1.0.6/
@@ -139,6 +140,8 @@ pyopenssl/pyOpenSSL-0.13.1/
 python/.extracted
 python/Python-2.7.3-native/
 python/Python-2.7.3/
+rapidjson/.extracted
+rapidjson/rapidjson-1.1.0/
 screen/.extracted
 screen/screen-4.6.2/
 sed/.extracted
