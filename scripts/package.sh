@@ -24,6 +24,9 @@ fi
 # Script to fix git editor settings if they get messed up
 cp $SRC/git/fixgit.sh $DEST/scripts
 
+# Handy ssh agent script
+cp $SRC/openssh/ssh-find-agent.sh $DEST/scripts
+
 #Copy lib and include files from toolchain for use in the deployment system.
 cp -rf /opt/tomatoware/$DESTARCH-$FLOAT${PREFIX////-}/usr/$DESTARCH-buildroot-linux-uclibc$GNUEABI/sysroot/lib $DEST
 cp -rf /opt/tomatoware/$DESTARCH-$FLOAT${PREFIX////-}/usr/$DESTARCH-buildroot-linux-uclibc$GNUEABI/sysroot/usr $DEST
@@ -65,7 +68,7 @@ sed -i 's,\/opt,'"$PREFIX"',g' $DEST/.autorun
 mkdir -p $DEST/tmp
 cd $DEST/etc
 
-echo "#!/bin/sh" > profile
+echo "#!/bin/bash" > profile
 echo "" >> profile
 echo "# Please note it's not a system-wide settings, it's only for a current" >> profile
 echo "# terminal session. Point your f\w (if necessery) to execute $PREFIX/etc/profile" >> profile
@@ -98,6 +101,17 @@ echo "#export LANG='ru_RU.UTF-8'" >> profile
 echo "#export LC_ALL='ru_RU.UTF-8'" >> profile
 echo "" >> profile
 echo "alias ls='ls --color'" >> profile
+echo "" >> profile
+
+echo '# execute ssh-agent if script is present' >> profile
+echo '# NOTE: To add a key, just execute:' >> profile
+echo '# NOTE: ssh-add /path/to/id_private_key' >> profile
+echo "if [[ -f $PREFIX/home/.local/ssh-find-agent.sh ]]; then" >> profile
+echo "	source $PREFIX/home/.local/ssh-find-agent.sh" >> profile
+echo '	# automatically choose the first agent' >> profile
+echo '	ssh-find-agent -a || eval $(ssh-agent) > /dev/null' >> profile
+echo "fi" >> profile
+echo "" >> profile
 
 chmod +x profile
 
