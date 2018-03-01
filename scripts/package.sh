@@ -21,6 +21,9 @@ if [ "$DESTARCH" = "arm" ]; then
 	SCRIPTS=scripts
 fi
 
+# Script to fix git editor settings if they get messed up
+cp $SRC/git/fixgit.sh $DEST/scripts
+
 #Copy lib and include files from toolchain for use in the deployment system.
 cp -rf /opt/tomatoware/$DESTARCH-$FLOAT${PREFIX////-}/usr/$DESTARCH-buildroot-linux-uclibc$GNUEABI/sysroot/lib $DEST
 cp -rf /opt/tomatoware/$DESTARCH-$FLOAT${PREFIX////-}/usr/$DESTARCH-buildroot-linux-uclibc$GNUEABI/sysroot/usr $DEST
