@@ -33,22 +33,22 @@ _debug_print() {
 }
 
 find_all_ssh_agent_sockets() {
-	_SSH_AGENT_SOCKETS=`find /mmc/tmp/ -type s -name agent.\* 2> /dev/null | grep '/mmc/tmp/ssh-.*/agent.*'`
+	_SSH_AGENT_SOCKETS=`find ReplaceWithPrefix/tmp/ -type s -name agent.\* 2> /dev/null | grep 'ReplaceWithPrefix/tmp/ssh-.*/agent.*'`
 	_debug_print "$_SSH_AGENT_SOCKETS"
 }
 
 find_all_gpg_agent_sockets() {
-	_GPG_AGENT_SOCKETS=`find /mmc/tmp/ -type s -name S.gpg-agent.ssh 2> /dev/null | grep '/mmc/tmp/gpg-.*/S.gpg-agent.ssh'`
+	_GPG_AGENT_SOCKETS=`find ReplaceWithPrefix/tmp/ -type s -name S.gpg-agent.ssh 2> /dev/null | grep 'ReplaceWithPrefix/tmp/gpg-.*/S.gpg-agent.ssh'`
 	_debug_print "$_GPG_AGENT_SOCKETS"
 }
 
 find_all_gnome_keyring_agent_sockets() {
-	_GNOME_KEYRING_AGENT_SOCKETS=`find /mmc/tmp/ -type s -name ssh 2> /dev/null | grep '/mmc/tmp/keyring-.*/ssh$'`
+	_GNOME_KEYRING_AGENT_SOCKETS=`find ReplaceWithPrefix/tmp/ -type s -name ssh 2> /dev/null | grep 'ReplaceWithPrefix/tmp/keyring-.*/ssh$'`
 	_debug_print "$_GNOME_KEYRING_AGENT_SOCKETS"
 }
 
 find_all_osx_keychain_agent_sockets() {
-	[[ -n "$TMPDIR" ]] || TMPDIR=/mmc/tmp
+	[[ -n "$TMPDIR" ]] || TMPDIR=ReplaceWithPrefix/tmp
 	_OSX_KEYCHAIN_AGENT_SOCKETS=`find $TMPDIR/ -type s -regex '.*/ssh-.*/agent..*$' 2> /dev/null`
 	_debug_print "$_OSX_KEYCHAIN_AGENT_SOCKETS"
 }

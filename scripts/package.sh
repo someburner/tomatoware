@@ -23,9 +23,11 @@ fi
 
 # Script to fix git editor settings if they get messed up
 cp $SRC/git/fixgit.sh $DEST/scripts
+sed -i "s|ReplaceWithPrefix|$PREFIX|g" $DEST/scripts/fixgit.sh
 
 # Handy ssh agent script
-cp $SRC/openssh/ssh-find-agent.sh $DEST/scripts
+cp -f $SRC/openssh/ssh-find-agent.sh $DEST/scripts
+sed -i "s|ReplaceWithPrefix|$PREFIX|g" $DEST/scripts/ssh-find-agent.sh
 
 #Copy lib and include files from toolchain for use in the deployment system.
 cp -rf /opt/tomatoware/$DESTARCH-$FLOAT${PREFIX////-}/usr/$DESTARCH-buildroot-linux-uclibc$GNUEABI/sysroot/lib $DEST
