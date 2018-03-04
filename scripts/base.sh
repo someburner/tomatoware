@@ -24,6 +24,7 @@ base_main() {
 	do_PYTHON27; do_CHEETAH; do_YENC; do_pyOpenSSL; do_PAR2CMDLINE; do_UNRAR;
 	do_GIT; do_STRACE; do_PAM; do_OPENSSH; do_HTOP; do_SCREEN; do_BASH; do_ZSH;
 	do_VIM; do_TMUX; do_UNZIP; do_GZIP; do_BOOST; do_LIBTINS; do_RAPIDJSON;
+	do_MONIT;
 }
 
 
@@ -2097,6 +2098,45 @@ do_LIBTINS_STEP "shared" "1";
 
 }
 
+######### ####################################################################
+# MONIT # ####################################################################
+######### ####################################################################
+do_MONIT() {
+MONIT_VERSION=5.25.1
+
+cd $SRC/monit
+
+if ! [[ -f .extracted ]]; then
+	rm -rf monit-${MONIT_VERSION}
+	tar xvJf monit-${MONIT_VERSION}.tar.gz
+	touch .extracted
+fi
+
+cd monit-${MONIT_VERSION}
+
+if ! [[ -f configure ]]; then
+	./bootstrap
+fi
+
+if ! [[ -f .configured ]]; then
+	LDFLAGS=$LDFLAGS \
+	CPPFLAGS=$CPPFLAGS \
+	CFLAGS=$CFLAGS \
+	CXXFLAGS=$CXXFLAGS \
+	$CONFIGURE
+	touch .configured
+fi
+
+if ! [[ -f .built ]]; then
+	$MAKE
+	touch .built
+fi
+
+if ! [[ -f .installed ]]; then
+	make install DESTDIR=$BASE
+	touch .installed
+fi
+}
 ################## ##########################################################
 # RAPIDJSON      # ##########################################################
 ################## ##########################################################
