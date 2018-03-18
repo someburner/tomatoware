@@ -266,7 +266,7 @@ fi
 # ASTERISK # ################################################################
 ############ ################################################################
 
-ASTERISK_VERSION=13.19.1
+ASTERISK_VERSION=13.19.2
 
 export PKG_CONFIG_LIBDIR=$DEST/lib/pkgconfig
 
@@ -421,6 +421,7 @@ if ! [[ -f .installed ]]; then
 	LFLAGS="$LDFLAGS" \
 	CFLAGS="$CFLAGS" \
 	TOPDIR=$PREFIX \
+	USRDIR="" \
 	DESTDIR=$BASE \
 	zic=../tz-native/zic
 	touch .installed
