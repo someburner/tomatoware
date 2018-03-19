@@ -24,7 +24,8 @@ base_main() {
 	do_PYTHON27; do_CHEETAH; do_YENC; do_pyOpenSSL; do_PAR2CMDLINE; do_UNRAR;
 	do_GIT; do_STRACE; do_PAM; do_OPENSSH; do_HTOP; do_SCREEN; do_BASH; do_ZSH;
 	do_VIM; do_TMUX; do_UNZIP; do_GZIP; do_BOOST; do_LIBTINS; do_RAPIDJSON;
-	do_MONIT;
+	#do_MONIT;
+echo "base_main - done"
 }
 
 
@@ -2005,7 +2006,7 @@ if ! [[ -f .built ]]; then
 	LDFLAGS=$LDFLAGS CPPFLAGS=$CPPFLAGS CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS && \
 	./b2 -a install \
 		--no-mpi --no-python --no-samples --no-tests --disable-long-double \
-		--toolset=gcc-7.2.0 --build-dir="$BOOST_BLD_DIR" \
+		--toolset=gcc-7.3.0 --build-dir="$BOOST_BLD_DIR" \
 		include=static,shared link=static,shared cxxflags=-fPIC \
 		-sBZIP2_INCLUDE=$DEST/include -sBZIP2_LIBPATH=$DEST/lib \
 		-sZLIB_INCLUDE=$DEST/include -sZLIB_LIBPATH=$DEST/lib \
