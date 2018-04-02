@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -e
 set -x
@@ -14,6 +14,7 @@ CFLAGS=$EXTRACFLAGS
 CXXFLAGS=$CFLAGS
 CONFIGURE="./configure --prefix=$PREFIX --host=$DESTARCH-linux"
 MAKE="make -j`nproc`"
+unset LS_COLORS
 
 
 base_main() {
@@ -24,8 +25,11 @@ base_main() {
 	do_PYTHON27; do_CHEETAH; do_YENC; do_pyOpenSSL; do_PAR2CMDLINE; do_UNRAR;
 	do_GIT; do_STRACE; do_PAM; do_OPENSSH; do_HTOP; do_SCREEN; do_BASH; do_ZSH;
 	do_VIM; do_TMUX; do_UNZIP; do_GZIP; do_BOOST; do_LIBTINS; do_RAPIDJSON;
-	#do_MONIT;
+
+#do_MONIT;
+
 echo "base_main - done"
+
 }
 
 
@@ -1061,42 +1065,52 @@ fi
 # PERL # ####################################################################
 ######## ####################################################################
 do_PERL() {
-PERL_VERSION=5.26.1
-PERL_CROSS_VERSION=1.1.7
+PERL_VERSION='5.26.1'
+PERL_CROSS_VERSION='1.1.7'
 
 cd $SRC/perl
 
 if ! [[ -f .extracted ]]; then
-	rm -rf tar zxvf perl-${PERL_VERSION=}
-	tar zxvf perl-${PERL_VERSION=}.tar.gz
-	tar zxvf perl-cross-${PERL_CROSS_VERSION}.tar.gz -C perl-${PERL_VERSION=} --strip 1
+	rm -rf perl-${PERL_VERSION}
+	tar zxf perl-${PERL_VERSION}.tar.gz
+	tar zxf perl-cross-${PERL_CROSS_VERSION}.tar.gz -C perl-${PERL_VERSION} --strip 1 || exit 1;
 	touch .extracted
 fi
 
-cd perl-${PERL_VERSION=}
-
+cd perl-${PERL_VERSION}
 if ! [[ -f .configured ]]; then
 	LDFLAGS="-Wl,--dynamic-linker=$PREFIX/lib/ld-uClibc.so.1 -Wl,-rpath,$RPATH" \
 	CPPFLAGS=$CPPFLAGS \
 	CFLAGS=$CFLAGS \
 	CXXFLAGS=$CXXFLAGS \
-	./configure \
-	--prefix=$PREFIX \
-	--target=$DESTARCH-linux \
+	./configure --prefix=$PREFIX --target=$DESTARCH-linux \
 	--use-threads \
 	-Duseshrplib
+	exit 1;
 	touch .configured
 fi
+exit 1;
+exit 1;
 
+cd perl-${PERL_VERSION} || exit 1;
 if ! [[ -f .built ]]; then
-	make
-	touch .built
+	make DESTDIR=$BASE
+	[[ $? -eq 0 ]] && touch .built || exit 1;
 fi
 
-if ! [[ -f .installed ]]; then
-	make install DESTDIR=$BASE
-	touch .installed
+cd perl-${PERL_VERSION} || exit 1;
+if ! [[ -f .tested ]]; then
+	make DESTDIR=$BASE test
+	[[ $? -eq 0 ]] && touch .tested || exit 1;
 fi
+
+cd perl-${PERL_VERSION} || exit 1;
+if ! [[ -f .installed ]]; then
+	make DESTDIR=$BASE install
+	[[ $? -eq 0 ]] && touch .installed || exit 1;
+fi
+
+return 0;
 }
 
 ######## ####################################################################

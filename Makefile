@@ -1,5 +1,9 @@
 include config.mk
 
+.PHONY: tomatoware toolchain
+
+all: tomatoware
+
 tomatoware: toolchain
 	./scripts/base.sh
 	./scripts/buildroot.sh
@@ -8,6 +12,11 @@ tomatoware: toolchain
 
 toolchain:
 	./scripts/toolchain.sh
+
+
+################################
+
+.PHONY: toolchain-clean clean
 
 toolchain-clean:
 	rm -rf toolchain

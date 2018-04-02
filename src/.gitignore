@@ -9,7 +9,7 @@ asterisk/asterisk-chan-dongle/
 autoconf/.extracted
 autoconf/autoconf-2.69/
 automake/.extracted
-automake/automake-1.16/
+automake/automake-1.16.1/
 bash/.extracted
 bash/bash-4.4.18/
 bdb/.extracted
@@ -147,7 +147,7 @@ rapidjson/rapidjson-1.1.0/
 screen/.extracted
 screen/screen-4.6.2/
 sed/.extracted
-sed/sed-4.4/
+sed/sed-4.5/
 sqlite/.extracted
 sqlite/sqlite-autoconf-3220000/
 srtp/.extracted
@@ -155,7 +155,7 @@ srtp/libsrtp-2.1.0/
 strace/.extracted
 strace/strace-4.21/
 tar/.extracted
-tar/tar-1.30/
+tar/tar-1.29/
 tcl/.extracted
 tcl/tcl8.6.8/
 texinfo/.extracted
