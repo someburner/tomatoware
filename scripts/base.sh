@@ -1070,43 +1070,35 @@ PERL_CROSS_VERSION='1.1.7'
 
 cd $SRC/perl
 
+rm -f .extracted
 if ! [[ -f .extracted ]]; then
 	rm -rf perl-${PERL_VERSION}
 	tar zxf perl-${PERL_VERSION}.tar.gz
 	tar zxf perl-cross-${PERL_CROSS_VERSION}.tar.gz -C perl-${PERL_VERSION} --strip 1 || exit 1;
 	touch .extracted
 fi
-
 cd perl-${PERL_VERSION}
+
+
 if ! [[ -f .configured ]]; then
 	LDFLAGS="-Wl,--dynamic-linker=$PREFIX/lib/ld-uClibc.so.1 -Wl,-rpath,$RPATH" \
 	CPPFLAGS=$CPPFLAGS \
 	CFLAGS=$CFLAGS \
 	CXXFLAGS=$CXXFLAGS \
-	./configure --prefix=$PREFIX --target=$DESTARCH-linux \
-	--use-threads \
+	./configure \
+	--target=$DESTARCH-linux \
+	--prefix=$PREFIX/usr \
 	-Duseshrplib
-	exit 1;
 	touch .configured
 fi
-exit 1;
-exit 1;
 
-cd perl-${PERL_VERSION} || exit 1;
 if ! [[ -f .built ]]; then
-	make DESTDIR=$BASE
+	DESTDIR=$BASE make DESTDIR=$BASE
 	[[ $? -eq 0 ]] && touch .built || exit 1;
 fi
 
-cd perl-${PERL_VERSION} || exit 1;
-if ! [[ -f .tested ]]; then
-	make DESTDIR=$BASE test
-	[[ $? -eq 0 ]] && touch .tested || exit 1;
-fi
-
-cd perl-${PERL_VERSION} || exit 1;
 if ! [[ -f .installed ]]; then
-	make DESTDIR=$BASE install
+	DESTDIR=$BASE make DESTDIR=$BASE install
 	[[ $? -eq 0 ]] && touch .installed || exit 1;
 fi
 
