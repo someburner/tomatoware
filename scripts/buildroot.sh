@@ -349,15 +349,12 @@ cd ../gcc-build
 
 if [[ "$DESTARCH" == "mipsel" ]]; then
 	os=mipsel-buildroot-linux-uclibc
-	gccextraconfig="--with-abi=32
-			--with-arch=mips32"
+	gccextraconfig="--with-abi=32 --with-arch=mips32"
 fi
 
 if [[ "$DESTARCH" == "arm" ]]; then
 	os=arm-buildroot-linux-uclibcgnueabi
-	gccextraconfig="--with-abi=aapcs-linux
-			--with-cpu=cortex-a9
-			--with-mode=arm"
+	gccextraconfig="--with-abi=aapcs-linux --with-cpu=cortex-a9 --with-mode=arm"
 fi
 
 if ! [[ -f .configured ]]; then
@@ -370,16 +367,14 @@ if ! [[ -f .configured ]]; then
 	--with-mpfr-lib=$DEST/lib \
 	--with-gmp-include=$DEST/include \
 	--with-gmp-lib=$DEST/lib \
-	--enable-languages=c,c++ \
+	--enable-languages=c,c++,go \
 	--enable-shared \
-	--enable-static \
 	--enable-threads=posix \
 	--enable-tls \
 	--enable-version-specific-runtime-libs \
 	--with-float=soft \
 	--with-gnu-as \
 	--with-gnu-ld \
-	--disable-__cxa_atexit \
 	--disable-decimal-float \
 	--disable-libgomp \
 	--disable-libmudflap \
@@ -394,6 +389,8 @@ if ! [[ -f .configured ]]; then
 	touch .configured
 fi
 # --disable-libstdcxx-pch
+#--enable-static
+#--disable-__cxa_atexit
 
 if ! [[ -f .built ]]; then
 	$MAKE
@@ -458,7 +455,7 @@ fi
 # AUTOMAKE # ################################################################
 ############ ################################################################
 do_AUTOMAKE() {
-AUTOMAKE_VERSION=1.16
+AUTOMAKE_VERSION=1.16.1
 
 cd $SRC/automake
 
