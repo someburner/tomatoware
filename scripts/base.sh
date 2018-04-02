@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
 set -x
+set -e
 
 BASE=`pwd`
 SRC=$BASE/src
@@ -1065,44 +1065,34 @@ fi
 # PERL # ####################################################################
 ######## ####################################################################
 do_PERL() {
-PERL_VERSION='5.26.1'
-PERL_CROSS_VERSION='1.1.7'
+PERL_VERSION='5.27.8'
+PERL_CROSS_VERSION='1.1.9'
 
 cd $SRC/perl
 
-rm -f .extracted
-if ! [[ -f .extracted ]]; then
+if ! [[ -f $SRC/perl/.extracted ]]; then
 	rm -rf perl-${PERL_VERSION}
 	tar zxf perl-${PERL_VERSION}.tar.gz
-	tar zxf perl-cross-${PERL_CROSS_VERSION}.tar.gz -C perl-${PERL_VERSION} --strip 1 || exit 1;
+	cd perl-${PERL_VERSION}
+	tar --strip-components=1 -zxf ../perl-cross-${PERL_CROSS_VERSION}.tar.gz
 	touch .extracted
+else
+	cd perl-${PERL_VERSION}
 fi
-cd perl-${PERL_VERSION}
 
-
-if ! [[ -f .configured ]]; then
+if ! [[ -f $SRC/perl/.configured ]]; then
+	unset LS_COLORS;
 	LDFLAGS="-Wl,--dynamic-linker=$PREFIX/lib/ld-uClibc.so.1 -Wl,-rpath,$RPATH" \
-	CPPFLAGS=$CPPFLAGS \
-	CFLAGS=$CFLAGS \
-	CXXFLAGS=$CXXFLAGS \
+	CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
 	./configure \
-	--target=$DESTARCH-linux \
-	--prefix=$PREFIX/usr \
-	-Duseshrplib
-	touch .configured
+	--target="$DESTARCH-linux" \
+	-Dprefix="$PREFIX" \
+	-Duseshrplib && \
+	PWD="$BASE$PREFIX" make DESTDIR="$BASE$PREFIX" \
+	&& PWD="$BASE$PREFIX" make DESTDIR="$BASE$PREFIX" install
+	! [[ $? -eq 0 ]] && exit 1;
+	touch $SRC/perl/.configured
 fi
-
-if ! [[ -f .built ]]; then
-	DESTDIR=$BASE make DESTDIR=$BASE
-	[[ $? -eq 0 ]] && touch .built || exit 1;
-fi
-
-if ! [[ -f .installed ]]; then
-	DESTDIR=$BASE make DESTDIR=$BASE install
-	[[ $? -eq 0 ]] && touch .installed || exit 1;
-fi
-
-return 0;
 }
 
 ######## ####################################################################
