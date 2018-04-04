@@ -13,21 +13,18 @@ if ! [[ -d $PREFIX/bin/go ]]; then
 else
 	cd $PREFIX/bin/go/bootstrap
 fi;
-echo;
+
 cd ./go1.4/src
-echo;
 
-#-O2 -pipe -march=armv7-a -mtune=cortex-a9
-export CFLAGS="-O2 -g -pipe -march=armv7-a -mtune=cortex-a9"
-export CC="arm-buildroot-linux-uclibcgnueabi-gcc-7.2.0"
-export GOGCCFLAGS="$CFLAGS" && \
-export GO_GCFLAGS="$CFLAGS" && \
-export CGO_ENABLED="1" && \
-export PKG_CONFIG="/mmc/bin/pkg-config" && \
-export GOBUILDTIMELOGFILE="/opt/tmp/golog.log" && bash -x ./make.bash -v
-! [[ $? -eq 0 ]] && exit 1;
-echo;
+if ! [[ -f .bootstrapped ]]; then
+	rm -f .bootstrapped
+	#env GOOS=linux GOARCH=arm GOARM=5 GO_TEST_TIMEOUT_SCALE=10 taskset 1 ./make.bash
+	./make.bash
+	! [[ $? -eq 0 ]] && exit 1;
 
+	echo "successfuly built bootstrapped go1.4"
+	touch .bootstrapped
+fi
 
 cd $PREFIX/bin/go
 wget https://redirector.gvt1.com/edgedl/go/go1.10.src.tar.gz

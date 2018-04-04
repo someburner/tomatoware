@@ -354,11 +354,8 @@ fi
 
 if [[ "$DESTARCH" == "arm" ]]; then
 	DST_OS="arm-buildroot-linux-uclibcgnueabi"
-	gccextraconfig="--with-abi=aapcs-linux --with-cpu=cortex-a9"
+	gccextraconfig="--with-abi=aapcs-linux --with-cpu=cortex-a9 --with-mode=arm"
 fi
-
-#--enable-tls
-#--with-gnu-ld
 
 if ! [[ -f .configured ]]; then
 	LDFLAGS=$LDFLAGS \
@@ -373,33 +370,27 @@ if ! [[ -f .configured ]]; then
 	--enable-languages=c,c++ \
 	--enable-shared \
 	--enable-static \
-	--disable-__cxa_atexit \
+	--enable-threads=posix \
+	--enable-tls \
 	--enable-version-specific-runtime-libs \
 	--with-float=soft \
 	--with-gnu-as \
+	--with-gnu-ld \
+	--disable-decimal-float \
 	--disable-libgomp \
 	--disable-libmudflap \
 	--disable-libsanitizer \
 	--disable-libssp \
+	--disable-multilib \
 	--disable-nls \
+	--disable-werror \
 	--without-cloog \
 	--without-isl \
-	$gccextraconfig && cd libgo && \
-	LDFLAGS=$LDFLAGS \
-	CPPFLAGS=$CPPFLAGS \
-	./configure --prefix=$PREFIX --host=$DST_OS --target=$DST_OS --with-pic --enable-version-specific-runtime-libs \
-	$gccextraconfig \
+	$gccextraconfig
 	touch .configured
-fi
-
-#--without-ffi
-#--disable-werror
-#--enable-threads=posix
-#--disable-multilib
-#--disable-libstdcxx-pch
-#--enable-static
 #--disable-__cxa_atexit
-#--disable-decimal-float
+#--disable-libstdcxx-pch
+fi
 
 if ! [[ -f .built ]]; then
 	$MAKE
