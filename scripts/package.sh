@@ -92,6 +92,16 @@ echo "" >> profile
 
 if [[ $PREFIX = "/opt" ]]; then
 	echo "export PATH='/opt/usr/sbin:/opt/sbin:/opt/bin:/opt/bin/go/bin:/opt/go/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin'" >> profile
+	# script to link mmc opt
+	echo '#!/bin/bash' > $DEST/etc/linkmmc.sh;
+	echo '' >> $DEST/etc/linkmmc.sh;
+	echo 'if [[ -f /opt/etc/profile ]] && ! [[ -f /opt/etc/profile.opt ]]; then' >> $DEST/etc/linkmmc.sh;
+	echo '    mv /opt/etc/profile /opt/etc/profile.opt' >> $DEST/etc/linkmmc.sh;
+	echo 'fi' >> $DEST/etc/linkmmc.sh;
+	echo '' >> $DEST/etc/linkmmc.sh;
+	echo 'ln -sf /mmc/etc/profile profile' >> $DEST/etc/linkmmc.sh;
+	echo '' >> $DEST/etc/linkmmc.sh;
+	chmod +x $DEST/etc/linkmmc.sh;
 else
 	echo '## uncomment if you want opt in path' >> profile;
 	echo '#_POPT=":/opt/usr/sbin:/opt/sbin:/opt/bin"' >> profile;
