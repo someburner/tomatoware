@@ -17,6 +17,7 @@ if [ "$DESTARCH" = "arm" ]; then
 	# copy golang build script for arm builds
 	mkdir -p $DEST/scripts
 	cp $SRC/golang/build_go.sh $DEST/scripts
+	cp -f $BASE/scripts/package/*.sh $DEST/scripts/
 	sed -i 's,\/mmc,'"$PREFIX"',g' $DEST/scripts/build_go.sh
 	SCRIPTS=scripts
 fi
@@ -88,47 +89,53 @@ cd $DEST/etc
 
 echo "#!/bin/bash" > profile
 echo "" >> profile
-echo "# Please note it's not a system-wide settings, it's only for a current" >> profile
-echo "# terminal session. Point your f\w (if necessery) to execute $PREFIX/etc/profile" >> profile
-echo "# at console logon." >> profile
-echo "" >> profile
 
-if [ $PREFIX = "/opt" ];
-then
+if [[ $PREFIX = "/opt" ]]; then
 	echo "export PATH='/opt/usr/sbin:/opt/sbin:/opt/bin:/opt/bin/go/bin:/opt/go/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin'" >> profile
 else
-	echo "export PATH='$PREFIX/sbin:$PREFIX/bin:$PREFIX/bin/go/bin:$PREFIX/go/bin:/opt/usr/sbin:/opt/sbin:/opt/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin'" >> profile
+	echo '## uncomment if you want opt in path' >> profile;
+	echo '#_POPT=":/opt/usr/sbin:/opt/sbin:/opt/bin"' >> profile;
+	echo "export PATH='$PREFIX/sbin:$PREFIX/bin:$PREFIX/bin/go/bin:$PREFIX/go/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin$_POPT'" >> profile
 fi
+echo "" >> profile
 
-echo "export TERM=xterm" >> profile
-echo "export TERMINFO=$PREFIX/share/terminfo" >> profile
+echo "## Misc env" >> profile
+echo "export TERM=xterm-256color" >> profile
 echo "export TMP=$PREFIX/tmp" >> profile
 echo "export TEMP=$PREFIX/tmp" >> profile
 echo "export TMPDIR=$PREFIX/tmp" >> profile
 echo "export PKG_CONFIG_LIBDIR=$PREFIX/lib/pkgconfig" >> profile
 echo "export CONFIG_SHELL=$PREFIX/bin/bash" >> profile
 echo "export M4=$PREFIX/bin/m4" >> profile
-echo "export GOPATH=$PREFIX/go" >> profile
-echo "" >> profile
-echo "# An influential go environment variable for creating static binaries." >> profile
-echo "# Build static by default." >> profile
-echo "export CGO_ENABLED=0" >> profile
-echo "" >> profile
-echo "# You may define localization" >> profile
-echo "#export LANG='ru_RU.UTF-8'" >> profile
-echo "#export LC_ALL='ru_RU.UTF-8'" >> profile
-echo "" >> profile
-echo "alias ls='ls --color'" >> profile
 echo "" >> profile
 
-echo '# execute ssh-agent if script is present' >> profile
-echo '# NOTE: To add a key, just execute:' >> profile
-echo '# NOTE: ssh-add /path/to/id_private_key' >> profile
-echo "if [[ -f $PREFIX/home/.local/ssh-find-agent.sh ]]; then" >> profile
-echo "	source $PREFIX/home/.local/ssh-find-agent.sh" >> profile
-echo '	# automatically choose the first agent' >> profile
-echo '	ssh-find-agent -a || eval $(ssh-agent) > /dev/null' >> profile
+echo "## golang" >> profile
+echo "export GOPATH=$PREFIX/go" >> profile
+echo "export CGO_ENABLED=0" >> profile
+echo "" >> profile
+
+# NOTE: present in sysroot already.
+echo "## Uncomment if/as needed:" >> profile
+echo "#export TERMINFO=$PREFIX/share/terminfo" >> profile
+echo "#export LANG='C.UTF-8'" >> profile
+echo "#export LC_ALL='en_US.UTF-8'" >> profile
+echo "" >> profile
+
+## Aliases
+echo "## Session aliases" >> profile
+echo "alias ls='ls --color'" >> profile
+echo "alias la='ls -lah'" >> profile
+echo "alias grep='grep --color'" >> profile
+echo "alias diff='diff --color'" >> profile
+echo "" >> profile
+
+## SSH-agent
+echo '## (ssh-agent) - uncomment below to enable' >> profile
+echo "if [[ -f $PREFIX/scripts/ssh-find-agent.sh ]]; then" >> profile
+echo "	# source $PREFIX/scripts/ssh-find-agent.sh" >> profile
+echo '	# ssh-find-agent -a || eval $(ssh-agent) > /dev/null' >> profile
 echo "fi" >> profile
+echo '## NOTE (To add a key): ssh-add /mmc/.ssh/id_private_key' >> profile
 echo "" >> profile
 
 chmod +x profile
