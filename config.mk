@@ -4,6 +4,7 @@ export DESTARCH ?= arm
 #export DESTARCH ?= mipsel
 
 export PREFIX ?= /mmc
+#export PREFIX ?= /opt
 #export PREFIX ?= /mnt
 
 # Do Not Edit

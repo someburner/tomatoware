@@ -130,10 +130,11 @@ echo "alias diff='diff --color'" >> profile
 echo "" >> profile
 
 ## SSH-agent
-echo '## (ssh-agent) - uncomment below to enable' >> profile
+echo '## ssh-agent: uncomment below to enable (colon is nop)' >> profile
 echo "if [[ -f $PREFIX/scripts/ssh-find-agent.sh ]]; then" >> profile
-echo "	# source $PREFIX/scripts/ssh-find-agent.sh" >> profile
-echo '	# ssh-find-agent -a || eval $(ssh-agent) > /dev/null' >> profile
+echo "#	source $PREFIX/scripts/ssh-find-agent.sh" >> profile
+echo '#	ssh-find-agent -a || eval $(ssh-agent) > /dev/null;' >> profile
+echo '	: ' >> profile
 echo "fi" >> profile
 echo '## NOTE (To add a key): ssh-add /mmc/.ssh/id_private_key' >> profile
 echo "" >> profile

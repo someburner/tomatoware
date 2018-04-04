@@ -120,6 +120,8 @@ fi
 
 IKSEMEL_VERSION=1.5
 
+apt-get install texinfo -y;
+
 export PKG_CONFIG_PATH=$DEST/lib/pkgconfig
 
 cd $SRC/iksemel
