@@ -348,49 +348,58 @@ fi
 cd ../gcc-build
 
 if [[ "$DESTARCH" == "mipsel" ]]; then
-	os=mipsel-buildroot-linux-uclibc
+	DST_OS="mipsel-buildroot-linux-uclibc"
 	gccextraconfig="--with-abi=32 --with-arch=mips32"
 fi
 
 if [[ "$DESTARCH" == "arm" ]]; then
-	os=arm-buildroot-linux-uclibcgnueabi
-	gccextraconfig="--with-abi=aapcs-linux --with-cpu=cortex-a9 --with-mode=arm"
+	DST_OS="arm-buildroot-linux-uclibcgnueabi"
+	gccextraconfig="--with-abi=aapcs-linux --with-cpu=cortex-a9"
 fi
+
+#--enable-tls
+#--with-gnu-ld
 
 if ! [[ -f .configured ]]; then
 	LDFLAGS=$LDFLAGS \
 	CPPFLAGS=$CPPFLAGS \
-	../gcc-${GCC_VERSION}/configure --prefix=$PREFIX --host=$os --target=$os \
+	../gcc-${GCC_VERSION}/configure --prefix=$PREFIX --host=$DST_OS --target=$DST_OS \
 	--with-mpc-include=$DEST/include \
 	--with-mpc-lib=$DEST/lib \
 	--with-mpfr-include=$DEST/include \
 	--with-mpfr-lib=$DEST/lib \
 	--with-gmp-include=$DEST/include \
 	--with-gmp-lib=$DEST/lib \
-	--enable-languages=c,c++,go \
+	--enable-languages=c,c++ \
 	--enable-shared \
-	--enable-threads=posix \
-	--enable-tls \
+	--enable-static \
+	--disable-__cxa_atexit \
 	--enable-version-specific-runtime-libs \
 	--with-float=soft \
 	--with-gnu-as \
-	--with-gnu-ld \
-	--disable-decimal-float \
 	--disable-libgomp \
 	--disable-libmudflap \
 	--disable-libsanitizer \
 	--disable-libssp \
-	--disable-multilib \
 	--disable-nls \
-	--disable-werror \
 	--without-cloog \
 	--without-isl \
-	$gccextraconfig
+	$gccextraconfig && cd libgo && \
+	LDFLAGS=$LDFLAGS \
+	CPPFLAGS=$CPPFLAGS \
+	./configure --prefix=$PREFIX --host=$DST_OS --target=$DST_OS --with-pic --enable-version-specific-runtime-libs \
+	$gccextraconfig \
 	touch .configured
 fi
-# --disable-libstdcxx-pch
+
+#--without-ffi
+#--disable-werror
+#--enable-threads=posix
+#--disable-multilib
+#--disable-libstdcxx-pch
 #--enable-static
 #--disable-__cxa_atexit
+#--disable-decimal-float
 
 if ! [[ -f .built ]]; then
 	$MAKE
@@ -1130,6 +1139,7 @@ fi
 cd sed-${SED_VERSION}
 
 if ! [[ -f .configured ]]; then
+	autoreconf
         LDFLAGS=$LDFLAGS \
         CPPFLAGS=$CPPFLAGS \
         CFLAGS=$CFLAGS \
@@ -1158,13 +1168,12 @@ TEXINFO_VERSION=6.5
 cd $SRC/texinfo
 
 if ! [[ -f .extracted ]]; then
-        rm -rf texinfo-${TEXINFO_VERSION}
-        tar zxvf texinfo-${TEXINFO_VERSION}.tar.gz
-        touch .extracted
+	rm -rf texinfo-${TEXINFO_VERSION}
+	tar zxvf texinfo-${TEXINFO_VERSION}.tar.gz
+	touch .extracted
 fi
 
 cd texinfo-${TEXINFO_VERSION}
-
 if ! [[ -f .configured ]]; then
         LDFLAGS=$LDFLAGS \
         CPPFLAGS=$CPPFLAGS \
