@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 set -x
 set -e
@@ -1064,6 +1064,12 @@ fi
 ######## ####################################################################
 # PERL # ####################################################################
 ######## ####################################################################
+do_FIXPERL() {
+cd $SRC
+cd ..
+./fixperl.sh
+}
+
 do_PERL() {
 PERL_VERSION='5.27.8'
 PERL_CROSS_VERSION='1.1.9'
@@ -1092,6 +1098,7 @@ if ! [[ -f $SRC/perl/.configured ]]; then
 	&& PWD="$BASE$PREFIX" make DESTDIR="$BASE$PREFIX" install
 	! [[ $? -eq 0 ]] && exit 1;
 	touch $SRC/perl/.configured
+	do_FIXPERL;
 fi
 }
 
