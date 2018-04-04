@@ -17,7 +17,7 @@ if [ "$DESTARCH" = "arm" ]; then
 	# copy golang build script for arm builds
 	mkdir -p $DEST/scripts
 	cp $SRC/golang/build_go.sh $DEST/scripts
-	cp -f $BASE/scripts/package/*.sh $DEST/scripts/
+	cp -f $BASE/scripts/package/*.sh $DEST/scripts/ || true
 	sed -i 's,\/mmc,'"$PREFIX"',g' $DEST/scripts/build_go.sh
 	SCRIPTS=scripts
 fi
