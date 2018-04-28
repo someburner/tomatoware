@@ -22,14 +22,14 @@ base_main() {
 	do_GETTEXT; do_FLEX; do_CURL; do_EXPAT; do_LIBPCAP; do_LIBFFI; do_NCURSES;
 	do_LIBREADLINE; do_LIBGDBM; do_TCL; do_BDB; do_SQLITE; do_LIBXML; do_LIBXSLT;
 	do_LIBSIGCpp; do_LIBPAR2; do_LIBEVENT; do_LIBMYSQLCLIENT; do_PERL; do_PCRE;
-	do_PYTHON27; do_CHEETAH; do_YENC; do_pyOpenSSL; do_PAR2CMDLINE; do_UNRAR;
+	do_PYTHON27; do_CHEETAH; do_YENC; do_pyOpenSSL;
+	#do_PAR2CMDLINE; do_UNRAR;
 	do_GIT; do_STRACE; do_PAM; do_OPENSSH; do_HTOP; do_SCREEN; do_BASH; do_ZSH;
 	do_VIM; do_TMUX; do_UNZIP; do_GZIP; do_BOOST; do_LIBTINS; do_RAPIDJSON;
 
 #do_MONIT;
 
 echo "base_main - done"
-
 }
 
 
@@ -219,13 +219,13 @@ fi
 # OPENSSL # #################################################################
 ########### #################################################################
 do_OPENSSL() {
-OPENSSL_VERSION=1.0.2n
+OPENSSL_VERSION=1.0.2o
 
 cd $SRC/openssl
 
 if ! [[ -f .extracted ]]; then
 	rm -rf openssl-${OPENSSL_VERSION}
-	tar xzf openssl-${OPENSSL_VERSION}.tar.gz
+	tar xjf openssl-${OPENSSL_VERSION}.tar.bz2
 	touch .extracted
 fi
 
@@ -387,13 +387,13 @@ fi
 # CURL # ####################################################################
 ######## ####################################################################
 do_CURL() {
-CURL_VERSION=7.58.0
+CURL_VERSION=7.59.0
 
 cd $SRC/curl
 
 if ! [[ -f .extracted ]]; then
 	rm -rf curl-${CURL_VERSION}
-	tar xzf curl-${CURL_VERSION}.tar.gz
+	tar xjf curl-${CURL_VERSION}.tar.bz2
 	touch .extracted
 fi
 
@@ -1106,22 +1106,17 @@ fi
 # PCRE # ####################################################################
 ######## ####################################################################
 do_PCRE() {
-PCRE_VERSION=8.41
+PCRE_VERSION=8.42
 
 cd $SRC/pcre
 
 if ! [[ -f .extracted ]]; then
 	rm -rf pcre-${PCRE_VERSION}
-	tar xzf pcre-${PCRE_VERSION}.tar.gz
+	tar xjf pcre-${PCRE_VERSION}.tar.bz2
 	touch .extracted
 fi
 
 cd pcre-${PCRE_VERSION}
-
-if ! [[ -f .patched ]]; then
-	patch -p1 < $PATCHES/libpcre/libpcre-8.41-sljit_mips-label-statement-fix.patch
-	touch .patched
-fi
 
 if ! [[ -f .configured ]]; then
 	LDFLAGS=$LDFLAGS \
@@ -1428,13 +1423,13 @@ fi
 # GIT # #####################################################################
 ####### #####################################################################
 do_GIT() {
-GIT_VERSION=2.16.2
+GIT_VERSION=2.17.0
 
 cd $SRC/git
 
 if ! [[ -f .extracted ]]; then
 	rm -rf git-${GIT_VERSION}
-	tar xzf git-${GIT_VERSION}.tar.gz
+	tar xjf git-${GIT_VERSION}.tar.bz2
 	touch .extracted
 fi
 
@@ -1574,13 +1569,13 @@ fi
 # OPENSSH # #################################################################
 ########### #################################################################
 do_OPENSSH() {
-OPENSSH_VERSION=7.6p1
+OPENSSH_VERSION=7.7p1
 
 cd $SRC/openssh
 
 if ! [[ -f .extracted ]]; then
 	rm -rf openssh-${OPENSSH_VERSION}
-	tar xzf openssh-${OPENSSH_VERSION}.tar.gz
+	tar xjf openssh-${OPENSSH_VERSION}.tar.bz2
 	touch .extracted
 fi
 
@@ -2198,7 +2193,6 @@ fi
 ################## ##########################################################
 # END            # ##########################################################
 ################## ##########################################################
-
 
 base_main;
 

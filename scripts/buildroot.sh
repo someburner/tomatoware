@@ -847,13 +847,13 @@ fi
 # CMAKE # ###################################################################
 ######### ###################################################################
 do_CMAKE() {
-CMAKE_VERSION=3.10.2
+CMAKE_VERSION=3.11.0
 
 cd $SRC/cmake
 
 if ! [[ -f .extracted ]]; then
 	rm -rf cmake-${CMAKE_VERSION} cmake-${CMAKE_VERSION}-native
-	tar xzf cmake-${CMAKE_VERSION}.tar.gz
+	tar xjf cmake-${CMAKE_VERSION}.tar.bz2
 	cp -r cmake-${CMAKE_VERSION} cmake-${CMAKE_VERSION}-native
 	touch .extracted
 fi
@@ -1123,7 +1123,7 @@ cd $SRC/sed
 
 if ! [[ -f .extracted ]]; then
         rm -rf sed-${SED_VERSION}
-        tar xJf sed-${SED_VERSION}.tar.xz
+        tar xjf sed-${SED_VERSION}.tar.bz2
         touch .extracted
 fi
 

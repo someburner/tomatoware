@@ -9,7 +9,7 @@ export PATCHES=$BASE/patches
 
 GCCVER="7.3.0"
 UCLIBCVER="1.0.29"
-BUILDROOTVER="2018.02"
+BUILDROOTVER="2018.02.1"
 TOOLCHAINDIR="/opt/tomatoware/$DESTARCH-$FLOAT${PREFIX////-}"
 
 
@@ -33,7 +33,7 @@ fi
 
 if ! [[ -f $TOOLCHAINDIR/bin/$DESTARCH-linux-gcc ]]; then
 	mkdir $BASE/toolchain
-	tar zxf $SRC/toolchain/buildroot-${BUILDROOTVER}.tar.gz -C $BASE/toolchain
+	tar xjf $SRC/toolchain/buildroot-${BUILDROOTVER}.tar.bz2 -C $BASE/toolchain
 	cp $SRC/toolchain/defconfig.$DESTARCH $BASE/toolchain/buildroot-${BUILDROOTVER}/defconfig
 	cp -r $SRC/toolchain/patches $BASE/toolchain
 	mv $BASE/toolchain/patches/linux-headers.$DESTARCH $BASE/toolchain/patches/linux-headers

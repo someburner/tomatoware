@@ -29,14 +29,14 @@ check/check-0.10.0/
 cheetah/.extracted
 cheetah/Cheetah3-3.0.0/
 cmake/.extracted
-cmake/cmake-3.10.2-native/
-cmake/cmake-3.10.2/
+cmake/cmake-3.11.0/
+cmake/cmake-3.11.0-native/
 coreutils/.extracted
 coreutils/coreutils-8.25/
 cpio/.extracted
 cpio/cpio-2.12/
 curl/.extracted
-curl/curl-7.58.0/
+curl/curl-7.59.0/
 diffutils/.extracted
 diffutils/diffutils-3.6/
 distcc/.extracted
@@ -56,7 +56,7 @@ gcc/
 gettext/.extracted
 gettext/gettext-0.19.8.1/
 git/.extracted
-git/git-2.16.2/
+git/git-2.17.0/
 glib/.extracted
 glib/glib-2.26.1/
 gmp/.extracted
@@ -122,9 +122,9 @@ nettle/nettle-3.4/
 odbc/.extracted
 odbc/unixODBC-2.3.5/
 openssh/.extracted
-openssh/openssh-7.6p1/
+openssh/openssh-7.7p1/
 openssl/.extracted
-openssl/openssl-1.0.2n/
+openssl/openssl-1.0.2o/
 pam/.extracted
 pam/Linux-PAM-1.3.0/
 par2cmdline/.extracted
@@ -132,7 +132,7 @@ par2cmdline/par2cmdline-0.8.0/
 patch/.extracted
 patch/patch-2.7.6/
 pcre/.extracted
-pcre/pcre-8.41/
+pcre/pcre-8.42/
 perl/.extracted
 perl/.configured
 perl/perl-5.27.8/
