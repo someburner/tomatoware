@@ -1071,13 +1071,18 @@ PERL_CROSS_VERSION='1.1.9'
 cp -f /usr/bin/perl /tmp/sysperl
 cp -f /usr/bin/perl /tmp/sysperl-backup
 
+#https://www.cpan.org/src/5.0/perl-5.26.2.tar.gz
+
 cd $SRC/perl
 
 if ! [[ -f .extracted ]]; then
 	rm -rf perl-${PERL_VERSION}
-	tar xjf perl-${PERL_VERSION}.tar.bz2
-	tar xjf perl-cross-${PERL_CROSS_VERSION}.tar.bz2 -C perl-${PERL_VERSION} --strip-components=1
+	tar -xjf perl-${PERL_VERSION}.tar.bz2
+	ls
+	cd perl-${PERL_VERSION}
+	tar --strip-components=1 -xjf ../perl-cross-${PERL_CROSS_VERSION}.tar.bz2
 	#--strip 1
+	cd ..
 	touch .extracted
 fi
 
@@ -1088,8 +1093,7 @@ if ! [[ -f .configured ]]; then
 	CPPFLAGS=$CPPFLAGS \
 	CFLAGS=$CFLAGS \
 	CXXFLAGS=$CXXFLAGS \
-	./configure --prefix=../../$PREFIX --target=$DESTARCH-linux --use-threads \
-	-Duseshrplib
+	./configure --target=$DESTARCH-linux --use-threads --prefix=$PREFIX -Duseshrplib
 	! [[ $? -eq 0 ]] && (cd .. && rm -rf perl-${PERL_VERSION} && rm -f .extracted) && exit 1;
 	touch .configured
 fi
@@ -1100,18 +1104,20 @@ if ! [[ -f .built ]]; then
 fi
 
 if ! [[ -f .installed ]]; then
+	rm -f $BASE$PREFIX/lib/libperl.so $BASE$PREFIX/bin/perl
 	cd $SRC/perl/perl-${PERL_VERSION}
 	make install DESTDIR="../"
 	cd $BASE$PREFIX/lib && \
 		ln -s perl5/${PERL_VERSION}/arm-linux/CORE/libperl.so libperl.so
-	rm -f $BASE/$PREFIX/bin/perl
+	rm -f $BASE$PREFIX/bin/perl
 	sleep "0.5";
-	cp -f /usr/bin/perl $BASE/$PREFIX/bin/perl
+	cp -f /usr/bin/perl $BASE$PREFIX/bin/perl
 	sleep "0.5";
-	touch .installed
 	rm -f /usr/bin/perl
 	sleep "0.5";
 	cp -f /tmp/sysperl /usr/bin/perl
+	cd $SRC/perl/perl-${PERL_VERSION}
+	touch .installed
 fi
 
 }
@@ -2084,7 +2090,7 @@ if ! [[ -f ".configured-$1" ]]; then
 		-DLIBTINS_ENABLE_WPA2=$2 \
 		-DLIBTINS_ENABLE_ACK_TRACKER=1 \
 		-DCROSS_COMPILING=1
-		touch .configured
+		touch ../.configured-$1
 	echo "libtins-$1 configured"
 fi
 
