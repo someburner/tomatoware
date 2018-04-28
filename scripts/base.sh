@@ -43,7 +43,7 @@ cd $SRC/bzip2
 
 if ! [[ -f .extracted ]]; then
 	rm -rf bzip2-${BZIP2_VERSION}
-	tar zxvf bzip2-${BZIP2_VERSION}.tar.gz
+	tar xzf bzip2-${BZIP2_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -77,7 +77,7 @@ cd $SRC/lbzip2
 
 if ! [[ -f .extracted ]]; then
 	rm -rf lbzip2-${LBZIP2_VERSION}
-	tar zxvf lbzip2-${LBZIP2_VERSION}.tar.gz
+	tar xzf lbzip2-${LBZIP2_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -114,7 +114,7 @@ cd $SRC/zlib
 
 if ! [[ -f .extracted ]]; then
 	rm -rf zlib-${ZLIB_VERSION}
-	tar zxvf zlib-${ZLIB_VERSION}.tar.gz
+	tar xzf zlib-${ZLIB_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -152,7 +152,7 @@ cd $SRC/lzo
 
 if ! [[ -f .extracted ]]; then
 	rm -rf lzo-${LZO_VERSION}
-	tar zxvf lzo-${LZO_VERSION}.tar.gz
+	tar xzf lzo-${LZO_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -189,7 +189,7 @@ cd $SRC/xz
 
 if ! [[ -f .extracted ]]; then
 	rm -rf xz-${XZ_UTILS_VERSION}
-	tar zxvf xz-${XZ_UTILS_VERSION}.tar.gz
+	tar xzf xz-${XZ_UTILS_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -225,7 +225,7 @@ cd $SRC/openssl
 
 if ! [[ -f .extracted ]]; then
 	rm -rf openssl-${OPENSSL_VERSION}
-	tar zxvf openssl-${OPENSSL_VERSION}.tar.gz
+	tar xzf openssl-${OPENSSL_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -266,7 +266,7 @@ cd $SRC/libiconv
 
 if ! [[ -f .extracted ]]; then
 	rm -rf libiconv-${LIBICONV_VERSION}
-	tar zxvf libiconv-${LIBICONV_VERSION}.tar.gz
+	tar xzf libiconv-${LIBICONV_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -303,7 +303,7 @@ cd $SRC/gettext
 
 if ! [[ -f .extracted ]]; then
 	rm -rf gettext-${GETTEXT_VERSION}
-	tar zxvf gettext-${GETTEXT_VERSION}.tar.gz
+	tar xzf gettext-${GETTEXT_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -350,7 +350,7 @@ cd $SRC/flex
 
 if ! [[ -f .extracted ]]; then
 	rm -rf flex-${FLEX_VERSION}
-	tar zxvf flex-${FLEX_VERSION}.tar.gz
+	tar xzf flex-${FLEX_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -393,7 +393,7 @@ cd $SRC/curl
 
 if ! [[ -f .extracted ]]; then
 	rm -rf curl-${CURL_VERSION}
-	tar zxvf curl-${CURL_VERSION}.tar.gz
+	tar xzf curl-${CURL_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -440,7 +440,7 @@ cd $SRC/expat
 
 if ! [[ -f .extracted ]]; then
 	rm -rf cd expat-${EXPAT_VERSION}
-	tar xvjf expat-${EXPAT_VERSION}.tar.bz2
+	tar xjf expat-${EXPAT_VERSION}.tar.bz2
 	touch .extracted
 fi
 
@@ -470,13 +470,13 @@ fi
 # LIBPCAP # #################################################################
 ########### #################################################################
 do_LIBPCAP() {
-LIBPCAP_VERSION=1.8.1
+LIBPCAP_VERSION=1.9.0
 
 cd $SRC/libpcap
 
 if ! [[ -f .extracted ]]; then
 	rm -rf libpcap-${LIBPCAP_VERSION}
-	tar xvf libpcap-${LIBPCAP_VERSION}.tar.gz
+	tar xjf libpcap-${LIBPCAP_VERSION}.tar.bz2
 	touch .extracted
 fi
 
@@ -514,7 +514,7 @@ cd $SRC/libffi
 
 if ! [[ -f .extracted ]]; then
 	rm -rf libffi-${LIBFFI_VERSION}
-	tar zxvf libffi-${LIBFFI_VERSION}.tar.gz
+	tar xzf libffi-${LIBFFI_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -555,7 +555,7 @@ cd $SRC/ncurses
 
 if ! [[ -f .extracted ]]; then
 	rm -rf ncurses-${NCURSES_VERSION}
-	tar zxvf ncurses-${NCURSES_VERSION}.tar.gz
+	tar xzf ncurses-${NCURSES_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -611,7 +611,7 @@ cd $SRC/libreadline
 
 if ! [[ -f .extracted ]]; then
 	rm -rf readline-${LIBREADLINE_VERSION}
-	tar zxvf readline-${LIBREADLINE_VERSION}.tar.gz
+	tar xzf readline-${LIBREADLINE_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -654,7 +654,7 @@ cd $SRC/libgdbm
 
 if ! [[ -f .extracted ]]; then
 	rm -rf gdbm-${LIBGDBM_VERSION}
-	tar zxvf gdbm-${LIBGDBM_VERSION}.tar.gz
+	tar xzf gdbm-${LIBGDBM_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -690,7 +690,7 @@ cd $SRC/tcl
 
 if ! [[ -f .extracted ]]; then
 	rm -rf cd tcl${TCL_VERSION}/unix
-	tar zxvf tcl${TCL_VERSION}-src.tar.gz
+	tar xzf tcl${TCL_VERSION}-src.tar.gz
 	touch .extracted
 fi
 
@@ -731,7 +731,7 @@ cd $SRC/bdb
 
 if ! [[ -f .extracted ]]; then
 	rm -rf db-${BDB_VERSION}
-	tar zxvf db-${BDB_VERSION}.tar.gz
+	tar xzf db-${BDB_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -771,7 +771,7 @@ cd $SRC/sqlite
 
 if ! [[ -f .extracted ]]; then
 	rm -rf sqlite-autoconf-${SQLITE_VERSION}
-	tar zxvf sqlite-autoconf-${SQLITE_VERSION}.tar.gz
+	tar xzf sqlite-autoconf-${SQLITE_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -807,7 +807,7 @@ cd $SRC/libxml2
 
 if ! [[ -f .extracted ]]; then
 	rm -rf libxml2-${LIBXML2_VERSION}
-	tar zxvf libxml2-${LIBXML2_VERSION}.tar.gz
+	tar xzf libxml2-${LIBXML2_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -860,7 +860,7 @@ cd $SRC/libxslt
 
 if ! [[ -f .extracted ]]; then
 	rm -rf libxslt-${LIBXSLT_VERSION}
-	tar zxvf libxslt-${LIBXSLT_VERSION}.tar.gz
+	tar xzf libxslt-${LIBXSLT_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -899,7 +899,7 @@ cd $SRC/libsigc++
 
 if ! [[ -f .extracted ]]; then
 	rm -rf libsigc++-${LIBSIGCPLUSPLUS_VERSION}
-	tar xvJf libsigc++-${LIBSIGCPLUSPLUS_VERSION}.tar.xz
+	tar xJf libsigc++-${LIBSIGCPLUSPLUS_VERSION}.tar.xz
 	touch .extracted
 fi
 
@@ -938,7 +938,7 @@ cd $SRC/libpar2
 
 if ! [[ -f .extracted ]]; then
 	rm -rf libpar2-${LIBPAR2_VERSION}
-	tar zxvf libpar2-${LIBPAR2_VERSION}.tar.gz
+	tar xzf libpar2-${LIBPAR2_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -976,7 +976,7 @@ cd $SRC/libevent
 
 if ! [[ -f .extracted ]]; then
 	rm -rf libevent-${LIBEVENT_VERSION}-stable
-	tar zxvf libevent-${LIBEVENT_VERSION}-stable.tar.gz
+	tar xzf libevent-${LIBEVENT_VERSION}-stable.tar.gz
 	touch .extracted
 fi
 
@@ -1012,7 +1012,7 @@ cd $SRC/libmysqlclient
 
 if ! [[ -f .extracted ]]; then
 	rm -rf mysql-connector-c-${LIBMYSQLCLIENT_VERSION}-src mysql-connector-c-${LIBMYSQLCLIENT_VERSION}-src-native
-	tar zxvf mysql-connector-c-${LIBMYSQLCLIENT_VERSION}-src.tar.gz
+	tar xzf mysql-connector-c-${LIBMYSQLCLIENT_VERSION}-src.tar.gz
 	cp -r mysql-connector-c-${LIBMYSQLCLIENT_VERSION}-src mysql-connector-c-${LIBMYSQLCLIENT_VERSION}-src-native
 	touch .extracted
 fi
@@ -1112,7 +1112,7 @@ cd $SRC/pcre
 
 if ! [[ -f .extracted ]]; then
 	rm -rf pcre-${PCRE_VERSION}
-	tar zxvf pcre-${PCRE_VERSION}.tar.gz
+	tar xzf pcre-${PCRE_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1158,7 +1158,7 @@ cd $SRC/python
 
 if ! [[ -f .extracted ]]; then
 	rm -rf Python-${PYTHON_VERSION} Python-${PYTHON_VERSION}-native
-	tar zxvf Python-${PYTHON_VERSION}.tgz
+	tar xzf Python-${PYTHON_VERSION}.tgz
 	cp -r Python-${PYTHON_VERSION} Python-${PYTHON_VERSION}-native
 	touch .extracted
 fi
@@ -1248,7 +1248,7 @@ cd $SRC/cheetah
 
 if ! [[ -f .extracted ]]; then
 	rm -rf Cheetah3-${CHEETAH_VERSION}
-	tar zxvf Cheetah3-${CHEETAH_VERSION}.tar.gz
+	tar xzf Cheetah3-${CHEETAH_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1283,7 +1283,7 @@ cd $SRC/yenc
 
 if ! [[ -f .extracted ]]; then
 	rm -rf yenc-${YENC_VERSION}
-	tar zxvf yenc-${YENC_VERSION}.tar.gz
+	tar xzf yenc-${YENC_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1318,7 +1318,7 @@ cd $SRC/pyopenssl
 
 if ! [[ -f .extracted ]]; then
 	rm -rf pyOpenSSL-${PYOPENSSL_VERSION}
-	tar zxvf pyOpenSSL-${PYOPENSSL_VERSION}.tar.gz
+	tar xzf pyOpenSSL-${PYOPENSSL_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1362,7 +1362,7 @@ cd $SRC/par2cmdline
 
 if ! [[ -f .extracted ]]; then
 	rm -rf par2cmdline-${PAR2CMDLINE_VERSION}
-	tar zxvf par2cmdline-${PAR2CMDLINE_VERSION}.tar.gz
+	tar xzf par2cmdline-${PAR2CMDLINE_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1402,7 +1402,7 @@ cd $SRC/unrar
 
 if ! [[ -f .extracted ]]; then
 	rm -rf unrar
-	tar zxvf unrarsrc-${UNRAR_VERSION}.tar.gz
+	tar xzf unrarsrc-${UNRAR_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1434,7 +1434,7 @@ cd $SRC/git
 
 if ! [[ -f .extracted ]]; then
 	rm -rf git-${GIT_VERSION}
-	tar zxvf git-${GIT_VERSION}.tar.gz
+	tar xzf git-${GIT_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1489,7 +1489,7 @@ cd $SRC/strace
 
 if ! [[ -f .extracted ]]; then
 	rm -rf strace-${STRACE_VERSION}
-	tar xvJf strace-${STRACE_VERSION}.tar.xz
+	tar xJf strace-${STRACE_VERSION}.tar.xz
 	touch .extracted
 fi
 
@@ -1528,7 +1528,7 @@ cd $SRC/pam
 
 if ! [[ -f .extracted ]]; then
 	rm -rf Linux-PAM-${LINUX_PAM_VERSION}
-	tar zxvf Linux-PAM-${LINUX_PAM_VERSION}.tar.gz
+	tar xzf Linux-PAM-${LINUX_PAM_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1580,7 +1580,7 @@ cd $SRC/openssh
 
 if ! [[ -f .extracted ]]; then
 	rm -rf openssh-${OPENSSH_VERSION}
-	tar zxvf openssh-${OPENSSH_VERSION}.tar.gz
+	tar xzf openssh-${OPENSSH_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1630,7 +1630,7 @@ cd $SRC/htop
 
 if ! [[ -f .extracted ]]; then
 	rm -rf htop-${HTOP_VERSION}
-	tar zxvf htop-${HTOP_VERSION}.tar.gz
+	tar xzf htop-${HTOP_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1667,7 +1667,7 @@ cd $SRC/screen
 
 if ! [[ -f .extracted ]]; then
 	rm -rf screen-${SCREEN_VERSION}
-	tar zxvf screen-${SCREEN_VERSION}.tar.gz
+	tar xzf screen-${SCREEN_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1708,7 +1708,7 @@ cd $SRC/bash
 
 if ! [[ -f .extracted ]]; then
 	rm -rf bash-${BASH_VERSION}
-	tar zxvf bash-${BASH_VERSION}.tar.gz
+	tar xzf bash-${BASH_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1772,7 +1772,7 @@ cd $SRC/zsh
 
 if ! [[ -f .extracted ]]; then
 	rm -rf zsh-${ZSH_VERSION}
-	tar zxvf zsh-${ZSH_VERSION}.tar.gz
+	tar xzf zsh-${ZSH_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1808,7 +1808,7 @@ cd $SRC/vim
 
 if ! [[ -f .extracted ]]; then
 	rm -rf vim80
-	tar xvjf vim-${VIM_VERSION}.tar.bz2
+	tar xjf vim-${VIM_VERSION}.tar.bz2
 	touch .extracted
 fi
 
@@ -1861,7 +1861,7 @@ cd $SRC/tmux
 
 if ! [[ -f .extracted ]]; then
 	rm -rf tmux-${TMUX_VERSION}
-	tar zxvf tmux-${TMUX_VERSION}.tar.gz
+	tar xzf tmux-${TMUX_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1897,7 +1897,7 @@ cd $SRC/unzip
 
 if ! [[ -f .extracted ]]; then
 	rm -rf unzip${UNZIP_VERSION}
-	tar zxvf unzip${UNZIP_VERSION}.tar.gz
+	tar xzf unzip${UNZIP_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1931,7 +1931,7 @@ cd $SRC/gzip
 
 if ! [[ -f .extracted ]]; then
 	rm -rf gzip-${GZIP_VERSION}
-	tar xvJf gzip-${GZIP_VERSION}.tar.xz
+	tar xJf gzip-${GZIP_VERSION}.tar.xz
 	touch .extracted
 fi
 
@@ -2048,7 +2048,7 @@ esac
 
 if ! [[ -f ".extracted-$1" ]]; then
 	rm -rf "libtins-${LIBTINS_VERSION}-$1"
-	tar xf libtins-${LIBTINS_VERSION}.tar.gz
+	tar xzf libtins-${LIBTINS_VERSION}.tar.gz
 	mv libtins-${LIBTINS_VERSION} libtins-${LIBTINS_VERSION}-$1
 	touch ".extracted-$1"
 fi
@@ -2056,8 +2056,9 @@ fi
 cd $SRC/libtins/libtins-${LIBTINS_VERSION}-$1
 
 if ! [[ -f ".configured-$1" ]]; then
-	PATH=$SRC/libtins/libtins-${LIBTINS_VERSION}-$1/bin:$BOOST_BLD_DIR:$PATH \
-	cmake \
+	rm -rf build && mkdir build && cd build
+	env PATH="$SRC/libtins/libtins-${LIBTINS_VERSION}-$1/bin:$BOOST_BLD_DIR:$PATH" \
+	cmake ../ \
 		-DCMAKE_INSTALL_PREFIX=$PREFIX \
 		-DCMAKE_INCLUDE_PATH=$DEST/include \
 		-DCMAKE_LIBRARY_PATH=$DEST/lib \
@@ -2073,19 +2074,21 @@ if ! [[ -f ".configured-$1" ]]; then
 		-DLIBTINS_BUILD_SHARED=$SHARED_OR_STATIC \
 		-DLIBTINS_ENABLE_WPA2=$2 \
 		-DLIBTINS_ENABLE_ACK_TRACKER=1 \
-		-DCROSS_COMPILING=1 \
-		./ && \
+		-DCROSS_COMPILING=1
 		touch .configured
 	echo "libtins-$1 configured"
 fi
 
 cd $SRC/libtins/libtins-${LIBTINS_VERSION}-$1
 if ! [[ -f ".built-$1" ]]; then
+	cd build
 	make
 	touch ".built-$1"
 fi
 
+cd $SRC/libtins/libtins-${LIBTINS_VERSION}-$1
 if ! [[ -f ".installed-$1" ]]; then
+	cd build
 	make install DESTDIR=$BASE
 	touch ".installed-$1"
 fi
@@ -2112,7 +2115,7 @@ cd $SRC/monit
 
 if ! [[ -f .extracted ]]; then
 	rm -rf monit-${MONIT_VERSION}
-	tar xvJf monit-${MONIT_VERSION}.tar.gz
+	tar xJf monit-${MONIT_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -2159,7 +2162,8 @@ fi
 cd rapidjson-${RAPIDJSON_VERSION}
 
 if ! [[ -f .configured ]]; then
-	cmake \
+	rm -rf build && mkdir build && cd build
+	cmake ../ \
 		-DCMAKE_INSTALL_PREFIX=$PREFIX \
 		-DCMAKE_INCLUDE_PATH=$DEST/include \
 		-DCMAKE_LIBRARY_PATH=$DEST/lib \
@@ -2170,8 +2174,7 @@ if ! [[ -f .configured ]]; then
 		-DRAPIDJSON_BUILD_DOC=OFF \
 		-DRAPIDJSON_BUILD_EXAMPLES=OFF \
 		-DRAPIDJSON_BUILD_TESTS=OFF \
-		-DCMAKE_CROSSCOMPILING=1 \
-		./ && \
+		-DCMAKE_CROSSCOMPILING=1
 		touch .configured
 	echo "rapidjson-${RAPIDJSON_VERSION} configured"
 fi

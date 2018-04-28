@@ -33,7 +33,7 @@ fi
 
 if ! [[ -f $TOOLCHAINDIR/bin/$DESTARCH-linux-gcc ]]; then
 	mkdir $BASE/toolchain
-	tar zxvf $SRC/toolchain/buildroot-${BUILDROOTVER}.tar.gz -C $BASE/toolchain
+	tar zxf $SRC/toolchain/buildroot-${BUILDROOTVER}.tar.gz -C $BASE/toolchain
 	cp $SRC/toolchain/defconfig.$DESTARCH $BASE/toolchain/buildroot-${BUILDROOTVER}/defconfig
 	cp -r $SRC/toolchain/patches $BASE/toolchain
 	mv $BASE/toolchain/patches/linux-headers.$DESTARCH $BASE/toolchain/patches/linux-headers

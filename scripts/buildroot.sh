@@ -70,7 +70,7 @@ cd $SRC/glib
 
 if ! [[ -f .extracted ]]; then
 	rm -rf glib-${GLIB_VERSION}
-	tar zxvf glib-${GLIB_VERSION}.tar.gz
+	tar xzf glib-${GLIB_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -127,7 +127,7 @@ cd $SRC/pkg-config
 
 if ! [[ -f .extracted ]]; then
 	rm -rf pkg-config-${PKG_CONFIG_VERSION}
-	tar zxvf pkg-config-${PKG_CONFIG_VERSION}.tar.gz
+	tar xzf pkg-config-${PKG_CONFIG_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -166,7 +166,7 @@ cd $SRC/gmp
 
 if ! [[ -f .extracted ]]; then
 	rm -rf gmp-${GMP_VERSION}
-	tar xvjf gmp-${GMP_VERSION}.tar.bz2
+	tar xjf gmp-${GMP_VERSION}.tar.bz2
 	touch .extracted
 fi
 
@@ -204,7 +204,7 @@ cd $SRC/mpfr
 
 if ! [[ -f .extracted ]]; then
 	rm -rf mpfr-${MPFR_VERSION}
-	tar zxvf mpfr-${MPFR_VERSION}.tar.gz
+	tar xzf mpfr-${MPFR_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -247,7 +247,7 @@ cd $SRC/mpc
 
 if ! [[ -f .extracted ]]; then
 	rm -rf mpc-${MPC_VERSION}
-	tar zxvf mpc-${MPC_VERSION}.tar.gz
+	tar xzf mpc-${MPC_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -285,7 +285,7 @@ cd $SRC/binutils
 
 if ! [[ -f .extracted ]]; then
 	rm -rf binutils-${BINUTILS_VERSION} build-binutils
-	tar zxvf binutils-${BINUTILS_VERSION}.tar.gz
+	tar xzf binutils-${BINUTILS_VERSION}.tar.gz
 	mkdir build-binutils
 	touch .extracted
 fi
@@ -330,7 +330,7 @@ mkdir -p $SRC/gcc && cd $SRC/gcc
 
 if ! [[ -f .extracted ]]; then
 	rm -rf gcc-${GCC_VERSION} gcc-build
-	tar xvJf $SRC/toolchain/dl/gcc-${GCC_VERSION}.tar.xz -C $SRC/gcc
+	tar xJf $SRC/toolchain/dl/gcc-${GCC_VERSION}.tar.xz -C $SRC/gcc
 	mkdir gcc-build
 	touch .extracted
 fi
@@ -425,7 +425,7 @@ cd $SRC/autoconf
 
 if ! [[ -f .extracted ]]; then
 	rm -rf autoconf-${AUTOCONF_VERSION}
-	tar zxvf autoconf-${AUTOCONF_VERSION}.tar.gz
+	tar xzf autoconf-${AUTOCONF_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -461,7 +461,7 @@ cd $SRC/automake
 
 if ! [[ -f .extracted ]]; then
 	rm -rf automake-${AUTOMAKE_VERSION}
-	tar zxvf automake-${AUTOMAKE_VERSION}.tar.gz
+	tar xzf automake-${AUTOMAKE_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -497,7 +497,7 @@ cd $SRC/bison
 
 if ! [[ -f .extracted ]]; then
 	rm -rf bison-${BISON_VERSION}
-	tar zxvf bison-${BISON_VERSION}.tar.gz
+	tar xzf bison-${BISON_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -539,7 +539,7 @@ cd $SRC/check
 
 if ! [[ -f .extracted ]]; then
 	rm -rf check-${CHECK_VERSION}
-	tar zxvf check-${CHECK_VERSION}.tar.gz
+	tar xzf check-${CHECK_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -575,7 +575,7 @@ cd $SRC/coreutils
 
 if ! [[ -f .extracted ]]; then
 	rm -rf coreutils-${COREUTILS_VERSION}
-	tar xvJf coreutils-${COREUTILS_VERSION}.tar.xz
+	tar xJf coreutils-${COREUTILS_VERSION}.tar.xz
 	touch .extracted
 fi
 
@@ -622,7 +622,7 @@ cd $SRC/diffutils
 
 if ! [[ -f .extracted ]]; then
 	rm -rf diffutils-${DIFFUTILS_VERSION}
-	tar xvJf diffutils-${DIFFUTILS_VERSION}.tar.xz
+	tar xJf diffutils-${DIFFUTILS_VERSION}.tar.xz
 	touch .extracted
 fi
 
@@ -658,7 +658,7 @@ cd $SRC/findutils
 
 if ! [[ -f .extracted ]]; then
 	rm -rf findutils-${FINDUTILS_VERSION}
-	tar zxvf findutils-${FINDUTILS_VERSION}.tar.gz
+	tar xzf findutils-${FINDUTILS_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -696,7 +696,7 @@ cd $SRC/gawk
 
 if ! [[ -f .extracted ]]; then
 	rm -rf gawk-${GAWK_VERSION}
-	tar zxvf gawk-${GAWK_VERSION}.tar.gz
+	tar xzf gawk-${GAWK_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -738,7 +738,7 @@ cd $SRC/libtool
 
 if ! [[ -f .extracted ]]; then
 	rm -rf libtool-${LIBTOOL_VERSION}
-	tar zxvf libtool-${LIBTOOL_VERSION}.tar.gz
+	tar xzf libtool-${LIBTOOL_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -775,7 +775,7 @@ cd $SRC/m4
 
 if ! [[ -f .extracted ]]; then
 	rm -rf m4-${M4_VERSION}
-	tar zxvf m4-${M4_VERSION}.tar.gz
+	tar xzf m4-${M4_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -817,7 +817,7 @@ cd $SRC/make
 
 if ! [[ -f .extracted ]]; then
 	rm -rf make-${MAKE_VERSION}
-	tar zxvf make-${MAKE_VERSION}.tar.gz
+	tar xzf make-${MAKE_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -853,7 +853,7 @@ cd $SRC/cmake
 
 if ! [[ -f .extracted ]]; then
 	rm -rf cmake-${CMAKE_VERSION} cmake-${CMAKE_VERSION}-native
-	tar zxvf cmake-${CMAKE_VERSION}.tar.gz
+	tar xzf cmake-${CMAKE_VERSION}.tar.gz
 	cp -r cmake-${CMAKE_VERSION} cmake-${CMAKE_VERSION}-native
 	touch .extracted
 fi
@@ -970,7 +970,7 @@ cd $SRC/patch
 
 if ! [[ -f .extracted ]]; then
 	rm -rf  patch-${PATCH_VERSION}
-	tar zxvf patch-${PATCH_VERSION}.tar.gz
+	tar xzf patch-${PATCH_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1009,7 +1009,7 @@ cd $SRC/wget
 
 if ! [[ -f .extracted ]]; then
 	rm -rf wget-${WGET_VERSION}
-	tar zxvf wget-${WGET_VERSION}.tar.gz
+	tar xzf wget-${WGET_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1049,7 +1049,7 @@ cd $SRC/grep
 
 if ! [[ -f .extracted ]]; then
 	rm -rf grep-${GREP_VERSION}
-	tar xvJf grep-${GREP_VERSION}.tar.xz
+	tar xJf grep-${GREP_VERSION}.tar.xz
 	touch .extracted
 fi
 
@@ -1086,7 +1086,7 @@ cd $SRC/tar
 
 if ! [[ -f .extracted ]]; then
 	rm -rf tar-${TAR_VERSION}
-	tar zxvf tar-${TAR_VERSION}.tar.gz
+	tar xzf tar-${TAR_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1123,7 +1123,7 @@ cd $SRC/sed
 
 if ! [[ -f .extracted ]]; then
         rm -rf sed-${SED_VERSION}
-        tar xvJf sed-${SED_VERSION}.tar.xz
+        tar xJf sed-${SED_VERSION}.tar.xz
         touch .extracted
 fi
 
@@ -1160,7 +1160,7 @@ cd $SRC/texinfo
 
 if ! [[ -f .extracted ]]; then
 	rm -rf texinfo-${TEXINFO_VERSION}
-	tar zxvf texinfo-${TEXINFO_VERSION}.tar.gz
+	tar xzf texinfo-${TEXINFO_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1196,7 +1196,7 @@ cd $SRC/cpio
 
 if ! [[ -f .extracted ]]; then
 	rm -rf cpio-${CPIO_VERSION}
-	tar zxvf cpio-${CPIO_VERSION}.tar.gz
+	tar xzf cpio-${CPIO_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1287,7 +1287,7 @@ cd $SRC/distcc
 
 if ! [[ -f .extracted ]]; then
 	rm -rf distcc-distcc-${DISTCC_VERSION}
-	tar zxvf distcc-${DISTCC_VERSION}.tar.gz
+	tar xzf distcc-${DISTCC_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -1333,8 +1333,8 @@ cd $SRC/upx
 
 if ! [[ -f .extracted ]]; then
 	rm -rf ucl-${UCL_VERSION} upx-${UPX_VERSION}-src upx
-	tar zxvf ucl-${UCL_VERSION}.tar.gz
-	tar xvJf upx-${UPX_VERSION}-src.tar.xz
+	tar xzf ucl-${UCL_VERSION}.tar.gz
+	tar xJf upx-${UPX_VERSION}-src.tar.xz
 	mv upx-${UPX_VERSION}-src upx
 	touch .extracted
 fi

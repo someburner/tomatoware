@@ -25,7 +25,7 @@ cd $SRC/nettle
 
 if ! [[ -f .extracted ]]; then
 	rm -rf nettle-${NETTLE_VERSION}
-	tar zxvf nettle-${NETTLE_VERSION}.tar.gz
+	tar xzf nettle-${NETTLE_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -62,7 +62,7 @@ cd $SRC/gnutls
 
 if ! [[ -f .extracted ]]; then
 	rm -rf gnutls-${GNUTLS_VERSION}
-	tar xvJf gnutls-${GNUTLS_VERSION}.tar.xz
+	tar xJf gnutls-${GNUTLS_VERSION}.tar.xz
 	touch .extracted
 fi
 
@@ -128,7 +128,7 @@ cd $SRC/iksemel
 
 if ! [[ -f .extracted ]]; then
 	rm -rf iksemel-${IKSEMEL_VERSION}
-	tar zxvf iksemel-${IKSEMEL_VERSION}.tar.gz
+	tar xzf iksemel-${IKSEMEL_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -168,7 +168,7 @@ cd $SRC/srtp
 
 if ! [[ -f .extracted ]]; then
 	rm -rf libsrtp-${SRTP_VERSION}
-	tar zxvf libsrtp-${SRTP_VERSION}.tar.gz
+	tar xzf libsrtp-${SRTP_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -203,7 +203,7 @@ cd $SRC/odbc
 
 if ! [[ -f .extracted ]]; then
 	rm -rf unixODBC-${UNIXODBC_VERSION}
-	tar zxvf unixODBC-${UNIXODBC_VERSION}.tar.gz
+	tar xzf unixODBC-${UNIXODBC_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -239,7 +239,7 @@ cd $SRC/jansson
 
 if ! [[ -f .extracted ]]; then
 	rm -rf jansson-${JANSSON_VERSION}
-	tar zxvf jansson-${JANSSON_VERSION}.tar.gz
+	tar xzf jansson-${JANSSON_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -277,7 +277,7 @@ cd $SRC/asterisk
 
 if ! [[ -f .extracted ]]; then
 	rm -rf asterisk-${ASTERISK_VERSION}
-	tar zxvf asterisk-${ASTERISK_VERSION}.tar.gz
+	tar xzf asterisk-${ASTERISK_VERSION}.tar.gz
 	touch .extracted
 fi
 
@@ -341,7 +341,7 @@ if ! [[ -f .installed ]]; then
 fi
 
 if ! [[ -f .installed_example ]]; then
-	tar zxvf ../asterisk_gv.tgz -C $DEST/etc
+	tar xzf ../asterisk_gv.tgz -C $DEST/etc
 	mkdir $DEST/etc/config
 	cp ../asterisk.wanup $DEST/etc/config
 	sed -i 's,\/opt,'"$PREFIX"',g' $DEST/etc/config/asterisk.wanup
@@ -405,8 +405,8 @@ cd $SRC/tz
 if ! [[ -f .extracted ]]; then
 	rm -rf tz tz-native
 	mkdir tz
-	tar zxvf tzcode2018c.tar.gz -C ./tz
-	tar zxvf tzdata2018c.tar.gz -C ./tz
+	tar xzf tzcode2018c.tar.gz -C ./tz
+	tar xzf tzdata2018c.tar.gz -C ./tz
 	cp -r tz tz-native
         touch .extracted
 fi

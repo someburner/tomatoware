@@ -19,7 +19,7 @@ rm -f /mmc/.vimrc /mmc/.autorun
 ## tbz
 tar xf arm-soft-mmc.tgz -C /mmc
 ## bz2
-tar xjvf arm-soft-mmc.tar.bz2
+tar xjf arm-soft-mmc.tar.bz2
 
 ## restore home
 mv /mnt/mmc_home /mmc/home
