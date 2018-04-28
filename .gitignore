@@ -1,5 +1,6 @@
 # Build flags
 .packaged
+.perlbangs
 
 # build data
 home/
@@ -14,3 +15,6 @@ toolchain/
 
 # Build artifacts
 *.tgz
+
+# misc
+.local
