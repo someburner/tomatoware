@@ -1068,12 +1068,16 @@ do_PERL() {
 PERL_VERSION='5.27.11'
 PERL_CROSS_VERSION='1.1.9'
 
+cp -f /usr/bin/perl /tmp/sysperl
+cp -f /usr/bin/perl /tmp/sysperl-backup
+
 cd $SRC/perl
 
 if ! [[ -f .extracted ]]; then
 	rm -rf perl-${PERL_VERSION}
 	tar xjf perl-${PERL_VERSION}.tar.bz2
-	tar xjf --strip-components=2 perl-cross-${PERL_CROSS_VERSION}.tar.bz2 -C perl-${PERL_VERSION} --strip 1
+	tar xjf perl-cross-${PERL_CROSS_VERSION}.tar.bz2 -C perl-${PERL_VERSION} --strip-components=1
+	#--strip 1
 	touch .extracted
 fi
 
@@ -1084,12 +1088,9 @@ if ! [[ -f .configured ]]; then
 	CPPFLAGS=$CPPFLAGS \
 	CFLAGS=$CFLAGS \
 	CXXFLAGS=$CXXFLAGS \
-	./configure \
-	--prefix=$PREFIX \
-	--target=$DESTARCH-linux \
-	--use-threads \
+	./configure --prefix=../../$PREFIX --target=$DESTARCH-linux --use-threads \
 	-Duseshrplib
-	! [[ $? -eq 0 ]] && exit 1;
+	! [[ $? -eq 0 ]] && (cd .. && rm -rf perl-${PERL_VERSION} && rm -f .extracted) && exit 1;
 	touch .configured
 fi
 
@@ -1099,22 +1100,21 @@ if ! [[ -f .built ]]; then
 fi
 
 if ! [[ -f .installed ]]; then
-	cp -f /usr/bin/perl /tmp/sysperl
 	cd $SRC/perl/perl-${PERL_VERSION}
-	make install DESTDIR="../../mmc"
-	cp -f $SRC/perl/perl-${PERL_VERSION}/libperl.so $BASE/$PREFIX/lib/
-	cp -f $SRC/perl/perl-${PERL_VERSION}/perl $BASE/$PREFIX/bin/
+	make install DESTDIR="../"
+	cd $BASE$PREFIX/lib && \
+		ln -s perl5/${PERL_VERSION}/arm-linux/CORE/libperl.so libperl.so
+	rm -f $BASE/$PREFIX/bin/perl
+	sleep "0.5";
+	cp -f /usr/bin/perl $BASE/$PREFIX/bin/perl
+	sleep "0.5";
 	touch .installed
+	rm -f /usr/bin/perl
+	sleep "0.5";
 	cp -f /tmp/sysperl /usr/bin/perl
 fi
 
 }
-
-#-Dprefix="$PREFIX"
-#-Duseshrplib &&
-#PWD="$BASE$PREFIX" make DESTDIR="$BASE$PREFIX"
-#&& PWD="$BASE$PREFIX" make DESTDIR="$BASE$PREFIX" install
-#	do_FIXPERL;
 
 ######## ####################################################################
 # PCRE # ####################################################################

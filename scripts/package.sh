@@ -66,10 +66,13 @@ find $DEST/lib -iname \*.la -exec sed -i 's,\/opt\/tomatoware\/'"$DESTARCH"'-'"$
 
 
 ##################################### PERL #####################################
+_replace_perl_shebangs() {
 ag -lQ '#!/usr/bin/perl' $DEST > /tmp/.sw_perl; readarray -t INLIST <<<$(cat /tmp/.sw_perl);
 for i in "${INLIST[@]}"; do sed -i -e 's|#!/usr/bin/perl|#!'"$PREFIX"'/bin/perl|g' $i; done;
 ag -l '#!.*/usr/bin/perl' $DEST > /tmp/.sw_perl; readarray -t INLIST <<<$(cat /tmp/.sw_perl);
 for i in "${INLIST[@]}"; do sed -i -e 's|#!.*/usr/bin/perl|#!'"$PREFIX"'/bin/perl|g' $i; done;
+}
+_replace_perl_shebangs;
 #################################### SHELLS ####################################
 ag -lQ '#!/bin/bash' $DEST > /tmp/.sw_bash; readarray -t INLIST <<<$(cat /tmp/.sw_bash);
 for i in "${INLIST[@]}"; do sed -i -e 's|#!/bin/bash|#!'"$PREFIX"'/bin/bash|g' $i; done;

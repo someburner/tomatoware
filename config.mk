@@ -9,7 +9,7 @@ export PREFIX ?= /mmc
 
 # Do Not Edit
 
-export FLOAT=soft
+export FLOAT = soft
 export PATH := /opt/tomatoware/$(DESTARCH)-$(FLOAT)$(subst /,-,$(PREFIX))/usr/bin/:$(PATH)
 
 ifeq ($(DESTARCH), arm)
