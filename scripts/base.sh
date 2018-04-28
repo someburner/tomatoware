@@ -1064,43 +1064,57 @@ fi
 ######## ####################################################################
 # PERL # ####################################################################
 ######## ####################################################################
-do_FIXPERL() {
-cd $SRC
-cd ..
-./fixperl.sh
-}
-
 do_PERL() {
-PERL_VERSION='5.27.8'
+PERL_VERSION='5.27.11'
 PERL_CROSS_VERSION='1.1.9'
 
 cd $SRC/perl
 
-if ! [[ -f $SRC/perl/.extracted ]]; then
+if ! [[ -f .extracted ]]; then
 	rm -rf perl-${PERL_VERSION}
-	tar zxf perl-${PERL_VERSION}.tar.gz
-	cd perl-${PERL_VERSION}
-	tar --strip-components=1 -zxf ../perl-cross-${PERL_CROSS_VERSION}.tar.gz
+	tar xjf perl-${PERL_VERSION}.tar.bz2
+	tar xjf --strip-components=2 perl-cross-${PERL_CROSS_VERSION}.tar.bz2 -C perl-${PERL_VERSION} --strip 1
 	touch .extracted
-else
-	cd perl-${PERL_VERSION}
 fi
 
-if ! [[ -f $SRC/perl/.configured ]]; then
-	unset LS_COLORS;
+cd perl-${PERL_VERSION}
+
+if ! [[ -f .configured ]]; then
 	LDFLAGS="-Wl,--dynamic-linker=$PREFIX/lib/ld-uClibc.so.1 -Wl,-rpath,$RPATH" \
-	CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" \
+	CPPFLAGS=$CPPFLAGS \
+	CFLAGS=$CFLAGS \
+	CXXFLAGS=$CXXFLAGS \
 	./configure \
-	--target="$DESTARCH-linux" \
-	-Dprefix="$PREFIX" \
-	-Duseshrplib && \
-	PWD="$BASE$PREFIX" make DESTDIR="$BASE$PREFIX" \
-	&& PWD="$BASE$PREFIX" make DESTDIR="$BASE$PREFIX" install
+	--prefix=$PREFIX \
+	--target=$DESTARCH-linux \
+	--use-threads \
+	-Duseshrplib
 	! [[ $? -eq 0 ]] && exit 1;
-	touch $SRC/perl/.configured
-	do_FIXPERL;
+	touch .configured
 fi
+
+if ! [[ -f .built ]]; then
+	make
+	touch .built
+fi
+
+if ! [[ -f .installed ]]; then
+	cp -f /usr/bin/perl /tmp/sysperl
+	cd $SRC/perl/perl-${PERL_VERSION}
+	make install DESTDIR="../../mmc"
+	cp -f $SRC/perl/perl-${PERL_VERSION}/libperl.so $BASE/$PREFIX/lib/
+	cp -f $SRC/perl/perl-${PERL_VERSION}/perl $BASE/$PREFIX/bin/
+	touch .installed
+	cp -f /tmp/sysperl /usr/bin/perl
+fi
+
 }
+
+#-Dprefix="$PREFIX"
+#-Duseshrplib &&
+#PWD="$BASE$PREFIX" make DESTDIR="$BASE$PREFIX"
+#&& PWD="$BASE$PREFIX" make DESTDIR="$BASE$PREFIX" install
+#	do_FIXPERL;
 
 ######## ####################################################################
 # PCRE # ####################################################################
