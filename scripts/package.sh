@@ -54,8 +54,8 @@ find $DEST/lib -iname \*.la -exec sed -i 's,\/opt\/tomatoware\/'"$DESTARCH"'-'"$
 
 #########################################################################################################################################################
 #Make sure all perl scripts have the correct interpreter path.
-#grep -Irl "\#\!\/usr\/bin\/perl" $DEST | xargs sed -i -e '1,1s,\#\!\/usr\/bin\/perl,\#\!'"$PREFIX"'\/bin\/perl,g'
-#grep -Irl "\#\! \/usr\/bin\/perl" $DEST | xargs sed -i -e '1,1s,\#\! \/usr\/bin\/perl,\#\! '"$PREFIX"'\/bin\/perl,g'
+grep -Irl "\#\!\/usr\/bin\/perl" $DEST | xargs sed -i -e '1,1s,\#\!\/usr\/bin\/perl,\#\!'"$PREFIX"'\/bin\/perl,g'
+grep -Irl "\#\! \/usr\/bin\/perl" $DEST | xargs sed -i -e '1,1s,\#\! \/usr\/bin\/perl,\#\! '"$PREFIX"'\/bin\/perl,g'
 #Make sure all bash scripts have the correct interpreter path.
 #grep -Irl "\#\!\/bin\/bash" $DEST | xargs sed -i -e '1,1s,\#\!\/bin\/bash,\#\!'"$PREFIX"'\/bin\/bash,g'
 #grep -Irl "\#\! \/bin\/bash" $DEST | xargs sed -i -e '1,1s,\#\! \/bin\/bash,\#\! '"$PREFIX"'\/bin\/bash,g'
@@ -66,13 +66,10 @@ find $DEST/lib -iname \*.la -exec sed -i 's,\/opt\/tomatoware\/'"$DESTARCH"'-'"$
 
 
 ##################################### PERL #####################################
-if ! [[ -f $BASE/.perlbangs ]]; then
-ag -lQ '#!/usr/bin/perl' $DEST > /tmp/.sw_perl; readarray -t INLIST <<<$(cat /tmp/.sw_perl);
-for i in "${INLIST[@]}"; do sed -i -e 's|#!/usr/bin/perl|#!'"$PREFIX"'/bin/perl|g' $i; done;
-ag -l '#!.*/usr/bin/perl' $DEST > /tmp/.sw_perl; readarray -t INLIST <<<$(cat /tmp/.sw_perl);
-for i in "${INLIST[@]}"; do sed -i -e 's|#!.*/usr/bin/perl|#!'"$PREFIX"'/bin/perl|g' $i; done;
-touch $BASE/.perlbangs;
-fi
+#ag -lQ '#!/bin/perl' $DEST > /tmp/.sw_perl; readarray -t INLIST <<<$(cat /tmp/.sw_perl);
+#for i in "${INLIST[@]}"; do sed -i -e 's|#!/bin/perl|#!'"$PREFIX"'/bin/perl|g' $i; done;
+#ag -l '#!/bin/perl' $DEST > /tmp/.sw_perl; readarray -t INLIST <<<$(cat /tmp/.sw_perl);
+#for i in "${INLIST[@]}"; do sed -i -e 's|#!/bin/perl|#!'"$PREFIX"'/bin/perl|g' $i; done;
 #################################### SHELLS ####################################
 ag -lQ '#!/bin/bash' $DEST > /tmp/.sw_bash; readarray -t INLIST <<<$(cat /tmp/.sw_bash);
 for i in "${INLIST[@]}"; do sed -i -e 's|#!/bin/bash|#!'"$PREFIX"'/bin/bash|g' $i; done;
@@ -119,6 +116,7 @@ echo "export TEMP=$PREFIX/tmp" >> profile
 echo "export TMPDIR=$PREFIX/tmp" >> profile
 echo "export PKG_CONFIG_LIBDIR=$PREFIX/lib/pkgconfig" >> profile
 echo "export CONFIG_SHELL=$PREFIX/bin/bash" >> profile
+echo "#export PERL5LIB=$PREFIX/lib/perl5/5.27.11" >> profile
 echo "export M4=$PREFIX/bin/m4" >> profile
 echo "" >> profile
 

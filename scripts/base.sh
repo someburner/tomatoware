@@ -1071,14 +1071,11 @@ PERL_CROSS_VERSION='1.1.9'
 cp -f /usr/bin/perl /tmp/sysperl
 cp -f /usr/bin/perl /tmp/sysperl-backup
 
-#https://www.cpan.org/src/5.0/perl-5.26.2.tar.gz
-
 cd $SRC/perl
 
 if ! [[ -f .extracted ]]; then
 	rm -rf perl-${PERL_VERSION}
 	tar -xjf perl-${PERL_VERSION}.tar.bz2
-	ls
 	cd perl-${PERL_VERSION}
 	tar --strip-components=1 -xjf ../perl-cross-${PERL_CROSS_VERSION}.tar.bz2
 	#--strip 1
@@ -1106,7 +1103,7 @@ fi
 if ! [[ -f .installed ]]; then
 	rm -f $BASE$PREFIX/lib/libperl.so $BASE$PREFIX/bin/perl
 	cd $SRC/perl/perl-${PERL_VERSION}
-	make install DESTDIR="../"
+	make DESTDIR="$BASE" install
 	cd $BASE$PREFIX/lib && \
 		ln -s perl5/${PERL_VERSION}/arm-linux/CORE/libperl.so libperl.so
 	rm -f $BASE$PREFIX/bin/perl
