@@ -1,6 +1,10 @@
 #!/bin/bash
+__THISDIR=`dirname "$0"`
 
-set -x
+# Print commands and their arguments as they are executed.
+#set -x
+
+# Exit upon error
 set -e
 
 BASE=`pwd`
@@ -16,21 +20,27 @@ CONFIGURE="./configure --prefix=$PREFIX --host=$DESTARCH-linux"
 MAKE="make -j`nproc`"
 unset LS_COLORS
 
+################################ Base Loop ################################
+source $__THISDIR/base_lists.sh;
+source $__THISDIR/package/utils.sh;
+#BASELIST="FULL"
+BASELIST="MINI"
 
+# base_main "FULL"/"MINI"
 base_main() {
-	do_BZIP2; do_LBZIP2; do_ZLIB; do_LZO; do_XZ_UTILS; do_OPENSSL; do_LIBICONV;
-	do_GETTEXT; do_FLEX; do_CURL; do_EXPAT; do_LIBPCAP; do_LIBFFI; do_NCURSES;
-	do_LIBREADLINE; do_LIBGDBM; do_TCL; do_BDB; do_SQLITE; do_LIBXML; do_LIBXSLT;
-	do_LIBSIGCpp; do_LIBPAR2; do_LIBEVENT; do_LIBMYSQLCLIENT; do_PERL; do_PCRE;
-	do_PYTHON27; do_CHEETAH; do_YENC; do_pyOpenSSL;
-	#do_PAR2CMDLINE; do_UNRAR;
-	do_GIT; do_STRACE; do_PAM; do_OPENSSH; do_HTOP; do_SCREEN; do_BASH; do_ZSH;
-	do_VIM; do_TMUX; do_UNZIP; do_GZIP; do_BOOST; do_LIBTINS; do_RAPIDJSON;
-
-#do_MONIT;
-
-echo "base_main - done"
+	local m; local n; local a;
+	typeset -n a="BASE_$1";
+	((n=${#a[@]},m=n-1));
+	paintln "wht" "Using list=$1"
+	for ((i=0;i<=m;i++)); do
+		do_warn "do_${a[i]}";
+		eval "do_${a[i]}";
+	done;
+	do_okay "base_main - done"
+	return 0;
 }
+################################ Base Loop ################################
+
 
 
 ######### ###################################################################
@@ -797,9 +807,9 @@ if ! [[ -f .installed ]]; then
 fi
 }
 
-########## ##################################################################
-# LIBXML # ##################################################################
-########## ##################################################################
+#############################################################################
+# LIBXML - Depends: lzma (do_XZ_UTILS), z (do_ZLIB)
+#############################################################################
 do_LIBXML() {
 LIBXML2_VERSION=2.9.8
 
@@ -2211,10 +2221,10 @@ fi
 # END            # ##########################################################
 ################## ##########################################################
 
-base_main;
-
-
+base_main "$BASELIST";
+exitres=$?
 
 echo; echo "base.sh install complete"; echo;
 
+exit $exitres;
 #### end

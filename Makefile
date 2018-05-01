@@ -15,6 +15,12 @@ toolchain:
 
 
 ################################
+.PHONY: test
+
+test:
+	./scripts/base.sh
+
+################################
 
 .PHONY: toolchain-clean clean
 
@@ -23,7 +29,7 @@ toolchain-clean:
 	rm -rf src/gcc
 	rm -rf /opt/tomatoware/*-soft-*
 
-clean: toolchain-clean
+clean:
 	rm -rf mmc usr home lib var
 	./scripts/clean.sh
 	rm -f .packaged
