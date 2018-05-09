@@ -1,7 +1,10 @@
 #!/bin/bash
+__THISDIR=`dirname "$0"`
+
+# Print commands and their arguments as they are executed.
+#set -x
 
 set -e
-set -x
 
 BASE=`pwd`
 SRC=$BASE/src
@@ -16,38 +19,28 @@ CONFIGURE="./configure --prefix=$PREFIX --host=$DESTARCH-linux"
 MAKE="make -j`nproc`"
 HOST_CMAKE=`which cmake`
 
-buildroot_main() {
-	do_GLIB;
-	do_PKG_CONFIG;
-	do_GMP;
-	do_MPFR;
-	do_MPC;
-	do_BINUTILS;
-	do_GCC;
-	do_AUTOCONF;
-	do_AUTOMAKE;
-	do_BISON;
-	do_CHECK;
-	do_COREUTILS;
-	do_DIFFUTILS;
-	do_FINDUTILS;
-	do_GAWK;
-	do_LIBTOOL;
-	do_M4;
-	do_MAKE;
-	do_CMAKE;
-	do_UTIL_LINUX;
-	do_PATCH;
-	do_WGET;
-	do_GREP;
-	do_TAR;
-	do_SED;
-	do_TEXINFO;
-	do_CPIO;
-	do_FILE;
-	do_DISTCC;
-	do_UPX;
+
+############################## Buildroot Loop #############################
+source $__THISDIR/br_lists.sh;
+source $__THISDIR/package/utils.sh;
+#BRLIST="FULL"
+BRLIST="MINI"
+
+# br_main "FULL"/"MINI"
+br_main() {
+	local m; local n; local a;
+	typeset -n a="BR_$1";
+
+	((n=${#a[@]},m=n-1));
+	paintln "wht" "Using list=$1"
+	for ((i=0;i<=m;i++)); do
+		do_warn "do_${a[i]}";
+		eval "do_${a[i]}";
+	done;
+	do_okay "br_main - done"
+	return 0;
 }
+############################## Buildroot Loop #############################
 
 buildroot_original_order() {
 do_GLIB; do_PKG_CONFIG; do_GMP; do_MPFR; do_MPC; do_BINUTILS; do_GCC;
@@ -1378,7 +1371,7 @@ unset UPX_UCLDIR
 ####### #####################################################################
 
 
-buildroot_main;
+br_main "$BRLIST";
 # buildroot_original_order;
 
 
