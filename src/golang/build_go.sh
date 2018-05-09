@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PREFIX=/mmc
-_GOVERS="1.10.1"
+_GOVERS="1.10.2"
 
 set -e
 set -x
