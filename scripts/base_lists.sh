@@ -28,8 +28,8 @@ LIBXSLT
 #LIBPAR2
 LIBEVENT
 #LIBMYSQLCLIENT
-PERL
-PCRE
+#PERL
+PCRE # required by git
 PYTHON27
 #CHEETAH
 #YENC
@@ -40,12 +40,12 @@ GIT
 STRACE
 PAM
 OPENSSH
-HTOP
+#HTOP
 SCREEN
 #BASH
 #ZSH
 #VIM
-TMUX
+#TMUX
 #UNZIP
 #GZIP
 BOOST
@@ -54,6 +54,7 @@ RAPIDJSON
 #MONIT
 );
 
+BOOST_MINI_LIBS="atomic,chrono,regex,thread,signals,thread,timer,system"
 
 BASE_FULL=(
 BZIP2
@@ -106,6 +107,8 @@ LIBTINS
 RAPIDJSON
 #MONIT
 );
+
+BOOST_FULL_LIBS="atomic,chrono,date_time,exception,filesystem,log,math,program_options,random,regex,serialization,thread,signals,thread,timer,system"
 
 echo "Sourced base_lists.sh"
 

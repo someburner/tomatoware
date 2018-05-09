@@ -30,6 +30,8 @@ BASELIST="MINI"
 base_main() {
 	local m; local n; local a;
 	typeset -n a="BASE_$1";
+	typeset -n BOOST_LIBS="BOOST_$1_LIBS";
+
 	((n=${#a[@]},m=n-1));
 	paintln "wht" "Using list=$1"
 	for ((i=0;i<=m;i++)); do
@@ -1985,7 +1987,6 @@ fi
 do_BOOST() {
 BOOST_VERSION=1-66-0
 BOOST_BLD_DIR="/tmp/build-boost"
-BOOST_LIBRARIES=atomic,chrono,date_time,exception,filesystem,log,math,program_options,random,regex,serialization,thread,signals,thread,timer,system
 
 cd $SRC/boost
 
@@ -2014,7 +2015,7 @@ if ! [[ -f .configured ]]; then
 		--prefix=$DEST \
 		--libdir=$DEST/lib \
 		--includedir=$DEST/include \
-		--with-libraries=$BOOST_LIBRARIES \
+		--with-libraries=$BOOST_LIBS \
 		address-model=32 \
 		link=shared \
 		runtime-link=shared \
