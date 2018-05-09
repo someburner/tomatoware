@@ -1001,7 +1001,7 @@ fi
 ######## ####################################################################
 do_WGET() {
 
-WGET_VERSION=1.19.4
+WGET_VERSION=1.19.5
 
 export PKG_CONFIG_LIBDIR=$DEST/lib/pkgconfig
 
