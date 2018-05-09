@@ -21,7 +21,7 @@ bison/.extracted
 bison/bison-3.0.4/
 boost/.extracted
 boost/user-config.jam
-boost/boost-1-66-0
+boost/boost_1_67_0
 bzip2/.extracted
 bzip2/bzip2-1.0.6/
 check/.extracted
