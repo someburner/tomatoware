@@ -1973,7 +1973,7 @@ fi
 # BOOST   # #################################################################
 ########### #################################################################
 do_BOOST() {
-BOOST_VERSION=1-66-0
+BOOST_VERSION=boost_1_67_0
 BOOST_BLD_DIR="/tmp/build-boost"
 BOOST_LIBRARIES=atomic,chrono,date_time,exception,filesystem,log,math,program_options,random,regex,serialization,thread,signals,thread,timer,system
 
@@ -1981,12 +1981,12 @@ cd $SRC/boost
 
 if ! [[ -f .extracted ]]; then
 	rm -rf $BOOST_BLD_DIR && mkdir $BOOST_BLD_DIR
-	rm -rf boost-${BOOST_VERSION}
-	tar xjf boost-${BOOST_VERSION}.tar.bz2
+	rm -rf boost_${BOOST_VERSION}
+	tar xjf boost_${BOOST_VERSION}.tar.bz2
 	touch .extracted
 fi
 
-cd boost-${BOOST_VERSION}
+cd boost_${BOOST_VERSION}
 
 TOOLPT1="gcc"
 TOOLPT2=" "
