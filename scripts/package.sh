@@ -51,7 +51,7 @@ find $DEST/lib -iname \*.la -exec sed -i 's,'"$BASE"',,g' {} \;
 #Change the base library libtool (.la) files to reference their correct location in the target system.
 find $DEST/lib -iname \*.la -exec sed -i 's,\/opt\/tomatoware\/'"$DESTARCH"'-'"$FLOAT"''"${PREFIX////-}"'\/'"$DESTARCH"'-linux-uclibc,'"$PREFIX"',g' {} \;
 
-
+set +e
 #########################################################################################################################################################
 #Make sure all perl scripts have the correct interpreter path.
 grep -Irl "\#\!\/usr\/bin\/perl" $DEST | xargs sed -i -e '1,1s,\#\!\/usr\/bin\/perl,\#\!'"$PREFIX"'\/bin\/perl,g'
@@ -77,6 +77,8 @@ ag -l '#!.*/bin/bash' $DEST > /tmp/.sw_bash; readarray -t INLIST <<<$(cat /tmp/.
 for i in "${INLIST[@]}"; do sed -i -e 's|#!.*/bin/bash|#!'"$PREFIX"'/bin/bash|g' $i; done;
 ##################################### AUTOTOOLS #####################################
 sed -i 's,\/opt\/tomatoware\/'"$DESTARCH"'-'"$FLOAT"''"${PREFIX////-}"'\/usr\/bin\/\/m4,'"$PREFIX"'\/bin\/m4,g' $DEST/bin/autom4te $DEST/bin/autoupdate
+
+set -e
 
 #Copy and set correct interpreter path for the .autorun file
 cp $SRC/.autorun $DEST
@@ -155,6 +157,14 @@ chmod +x profile
 #Create tarball of the compiled project.
 cd $BASE$PREFIX
 chmod 1777 tmp/
+
+GEN_IF_EMPTY=(
+var
+);
+
+for item in "${GEN_IF_EMPTY[@]}"; do
+	mkdir -p $item
+done
 
 fakeroot-tcp tar zcf $BASE/$DESTARCH-$FLOAT${PREFIX////-}.tgz $DESTARCH-buildroot-linux-uclibc$GNUEABI bin/ etc/ include/ lib/ libexec/ man/ sbin/ $SCRIPTS share/ ssl/ tmp/ usr/ var/ .autorun
 touch $BASE/.packaged
