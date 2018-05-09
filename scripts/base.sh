@@ -7,6 +7,9 @@ __THISDIR=`dirname "$0"`
 # Exit upon error
 set -e
 
+#TODO: checks for installed tools
+#apt install libtool-bin
+
 BASE=`pwd`
 SRC=$BASE/src
 PATCHES=$BASE/patches
@@ -195,13 +198,13 @@ fi
 # XZ_UTILS # ################################################################
 ############ ################################################################
 do_XZ_UTILS() {
-XZ_UTILS_VERSION=5.2.3
+XZ_UTILS_VERSION=5.2.4
 
 cd $SRC/xz
 
 if ! [[ -f .extracted ]]; then
 	rm -rf xz-${XZ_UTILS_VERSION}
-	tar xzf xz-${XZ_UTILS_VERSION}.tar.gz
+	tar xjf xz-${XZ_UTILS_VERSION}.tar.bz2
 	touch .extracted
 fi
 
@@ -212,7 +215,8 @@ if ! [[ -f .configured ]]; then
 	CPPFLAGS=$CPPFLAGS \
 	CFLAGS=$CFLAGS \
 	CXXFLAGS=$CXXFLAGS \
-	$CONFIGURE
+	libtoolize && \
+	$CONFIGURE --prefix=$PREFIX
 	touch .configured
 fi
 
@@ -289,8 +293,7 @@ if ! [[ -f .configured ]]; then
 	CPPFLAGS=$CPPFLAGS \
 	CFLAGS=$CFLAGS \
 	CXXFLAGS=$CXXFLAGS \
-	$CONFIGURE \
-	--enable-static
+	$CONFIGURE --prefix=$PREFIX --enable-static
 	touch .configured
 fi
 
@@ -1985,7 +1988,7 @@ fi
 # BOOST   # #################################################################
 ########### #################################################################
 do_BOOST() {
-BOOST_VERSION=boost_1_67_0
+BOOST_VERSION=1_67_0
 BOOST_BLD_DIR="/tmp/build-boost"
 
 cd $SRC/boost
