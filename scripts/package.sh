@@ -93,7 +93,7 @@ echo "#!/bin/bash" > profile
 echo "" >> profile
 
 if [[ $PREFIX = "/opt" ]]; then
-	echo "export PATH='/opt/usr/sbin:/opt/sbin:/opt/bin:/opt/bin/go/bin:/opt/go/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin'" >> profile
+	echo "export PATH='/opt/usr/sbin:/opt/sbin:/opt/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin'" >> profile
 	# script to link mmc opt
 	echo '#!/bin/bash' > $DEST/etc/linkmmc.sh;
 	echo '' >> $DEST/etc/linkmmc.sh;
@@ -107,7 +107,7 @@ if [[ $PREFIX = "/opt" ]]; then
 else
 	echo '## uncomment if you want opt in path' >> profile;
 	echo '#_POPT=":/opt/usr/sbin:/opt/sbin:/opt/bin"' >> profile;
-	echo "export PATH='$PREFIX/sbin:$PREFIX/bin:$PREFIX/bin/go/bin:$PREFIX/go/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin$_POPT'" >> profile
+	echo "export PATH='$PREFIX/sbin:$PREFIX/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin$_POPT'" >> profile
 fi
 echo "" >> profile
 
@@ -121,11 +121,23 @@ echo "export CONFIG_SHELL=$PREFIX/bin/bash" >> profile
 echo "#export PERL5LIB=$PREFIX/lib/perl5/5.27.11" >> profile
 echo "export M4=$PREFIX/bin/m4" >> profile
 echo "" >> profile
-
-echo "## golang" >> profile
-echo "export GOPATH=$PREFIX/go" >> profile
+echo "export HOME=/$PREFIX/home" >> profile
+echo 'export GOPATH=$HOME/go' >> profile
 echo "export CGO_ENABLED=0" >> profile
 echo "" >> profile
+
+_GOBINDIR="$PREFIX/bin/go/bin"
+echo '## golang' >> profile
+echo "if [[ -f $_GOBINDIR/go ]]; then" >> profile
+echo -e "	export PATH=\$GOPATH/bin:$_GOBINDIR:\$PATH" >> profile
+echo "fi" >> profile
+echo "" >> profile
+#
+# NOTE: the above should look like this after
+#
+#if [[ -f /mmc/bin/go/bin/go ]]; then
+#	export PATH=$GOPATH/bin:/mmc/bin/go/bin:$PATH
+#fi
 
 # NOTE: present in sysroot already.
 echo "## Uncomment if/as needed:" >> profile
