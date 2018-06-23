@@ -16,7 +16,6 @@ if [ "$DESTARCH" = "arm" ]; then
 	GNUEABI=gnueabi
 	# copy golang build script for arm builds
 	mkdir -p $DEST/scripts
-	cp $SRC/golang/build_go.sh $DEST/scripts
 	cp -f $BASE/scripts/package/*.sh $DEST/scripts/ || true
 	sed -i 's,\/mmc,'"$PREFIX"',g' $DEST/scripts/build_go.sh
 	SCRIPTS=scripts
@@ -121,7 +120,7 @@ echo "export CONFIG_SHELL=$PREFIX/bin/bash" >> profile
 echo "#export PERL5LIB=$PREFIX/lib/perl5/5.27.11" >> profile
 echo "export M4=$PREFIX/bin/m4" >> profile
 echo "" >> profile
-echo "export HOME=/$PREFIX/home" >> profile
+echo "export HOME=$PREFIX/home" >> profile
 echo 'export GOPATH=$HOME/go' >> profile
 echo "export CGO_ENABLED=0" >> profile
 echo "" >> profile
