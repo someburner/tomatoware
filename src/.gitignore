@@ -36,7 +36,7 @@ coreutils/coreutils-8.25/
 cpio/.extracted
 cpio/cpio-2.12/
 curl/.extracted
-curl/curl-7.59.0/
+curl/curl-7.60.0/
 diffutils/.extracted
 diffutils/diffutils-3.6/
 distcc/.extracted
