@@ -11,7 +11,7 @@ autoconf/autoconf-2.69/
 automake/.extracted
 automake/automake-1.16.1/
 bash/.extracted
-bash/bash-4.4.18/
+bash/bash-4.4.23/
 bdb/.extracted
 bdb/db-4.7.25/
 binutils/.extracted

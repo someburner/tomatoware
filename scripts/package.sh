@@ -1,5 +1,7 @@
 #!/bin/bash
 
+BRANCH="$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)"
+
 set -e
 set -x
 
@@ -116,7 +118,7 @@ echo "export TMP=$PREFIX/tmp" >> profile
 echo "export TEMP=$PREFIX/tmp" >> profile
 echo "export TMPDIR=$PREFIX/tmp" >> profile
 echo "export PKG_CONFIG_LIBDIR=$PREFIX/lib/pkgconfig" >> profile
-echo "export CONFIG_SHELL=$PREFIX/bin/bash" >> profile
+echo "export CONFIG_SHELL=/bin/bash" >> profile
 echo "#export PERL5LIB=$PREFIX/lib/perl5/5.27.11" >> profile
 echo "export M4=$PREFIX/bin/m4" >> profile
 echo "" >> profile
@@ -177,7 +179,7 @@ for item in "${GEN_IF_EMPTY[@]}"; do
 	mkdir -p $item
 done
 
-fakeroot-tcp tar zcf $BASE/$DESTARCH-$FLOAT${PREFIX////-}.tgz $DESTARCH-buildroot-linux-uclibc$GNUEABI bin/ etc/ include/ lib/ libexec/ man/ sbin/ $SCRIPTS share/ ssl/ tmp/ usr/ var/ .autorun
+fakeroot-tcp tar zcf $BASE/$DESTARCH-$FLOAT${PREFIX////-}-$BRANCH.tgz $DESTARCH-buildroot-linux-uclibc$GNUEABI bin/ etc/ include/ lib/ libexec/ man/ sbin/ $SCRIPTS share/ ssl/ tmp/ usr/ var/ .autorun
 touch $BASE/.packaged
 
 
