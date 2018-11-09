@@ -272,13 +272,13 @@ fi
 # BINUTILS # ################################################################
 ############ ################################################################
 do_BINUTILS() {
-BINUTILS_VERSION=2.30
+BINUTILS_VERSION=2.31.1
 
-cd $SRC/binutils
+mkdir -p $SRC/binutils && cd $SRC/binutils
 
 if ! [[ -f .extracted ]]; then
 	rm -rf binutils-${BINUTILS_VERSION} build-binutils
-	tar xzf binutils-${BINUTILS_VERSION}.tar.gz
+	tar xf $SRC/toolchain/dl/binutils/binutils-${BINUTILS_VERSION}.tar.xz -C $SRC/binutils
 	mkdir build-binutils
 	touch .extracted
 fi
@@ -317,13 +317,13 @@ fi
 ####### #####################################################################
 do_GCC() {
 
-GCC_VERSION=7.3.0
+GCC_VERSION=8.2.0
 
 mkdir -p $SRC/gcc && cd $SRC/gcc
 
 if ! [[ -f .extracted ]]; then
 	rm -rf gcc-${GCC_VERSION} gcc-build
-	tar xJf $SRC/toolchain/dl/gcc-${GCC_VERSION}.tar.xz -C $SRC/gcc
+	tar xJf $SRC/toolchain/dl/gcc/gcc-${GCC_VERSION}.tar.xz -C $SRC/gcc
 	mkdir gcc-build
 	touch .extracted
 fi
@@ -1353,6 +1353,7 @@ if ! [[ -f .built ]]; then
 	$MAKE \
 	CXX=$DESTARCH-linux-g++ \
 	all \
+	CXXFLAGS_WERROR= \
 	CHECK_WHITESPACE=/bin/true
 	touch .built
 fi
