@@ -2035,7 +2035,7 @@ if ! [[ -f .built ]]; then
 	LDFLAGS=$LDFLAGS CPPFLAGS=$CPPFLAGS CFLAGS=$CFLAGS CXXFLAGS=$CXXFLAGS && \
 	./b2 -a install \
 		--no-mpi --no-python --no-samples --no-tests --disable-long-double \
-		--toolset=gcc-7.3.0 --build-dir="$BOOST_BLD_DIR" \
+		--toolset=gcc-8.2.0 --build-dir="$BOOST_BLD_DIR" \
 		include=static,shared link=static,shared cxxflags=-fPIC \
 		-sBZIP2_INCLUDE=$DEST/include -sBZIP2_LIBPATH=$DEST/lib \
 		-sZLIB_INCLUDE=$DEST/include -sZLIB_LIBPATH=$DEST/lib \
