@@ -15,6 +15,7 @@ toolchain/
 
 # Build artifacts
 *.tgz
+*.log
 
 # misc
 .local

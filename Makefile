@@ -5,13 +5,15 @@ include config.mk
 all: tomatoware
 
 tomatoware: toolchain
-	./scripts/base.sh
-	./scripts/buildroot.sh
-	./scripts/asterisk.sh
-	./scripts/package.sh
+	@rm -f $(LOGFILE)
+	@touch $(LOGFILE)
+	(./scripts/base.sh >> $(LOGFILE) 2>&1)
+	(./scripts/buildroot.sh >> $(LOGFILE) 2>&1)
+	(./scripts/asterisk.sh >> $(LOGFILE) 2>&1)
+	(./scripts/package.sh >> $(LOGFILE) 2>&1)
 
 toolchain:
-	./scripts/toolchain.sh
+	(./scripts/toolchain.sh >> $(LOGFILE) 2>&1)
 
 
 ################################

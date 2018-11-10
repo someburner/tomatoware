@@ -1,5 +1,8 @@
 # User Configurable Options
 
+LOGFILE := build.log
+SHELL := /bin/bash
+
 export DESTARCH ?= arm
 #export DESTARCH ?= mipsel
 
