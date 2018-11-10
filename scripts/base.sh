@@ -421,7 +421,7 @@ if ! [[ -f .configured ]]; then
 	CFLAGS=$CFLAGS \
 	CXXFLAGS=$CXXFLAGS \
 	$CONFIGURE \
-	--with-ssl=$PREFIX \
+	--with-ssl=$DEST \
 	--with-ca-path=$PREFIX/ssl/certs
 	touch .configured
 fi
