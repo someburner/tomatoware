@@ -1179,203 +1179,96 @@ fi
 # PYTHON # ##################################################################
 ########## ##################################################################
 do_PYTHON27() {
-PYTHON_VERSION=2.7.3
+PYTHON_VERSION=2.7.15
 
 cd $SRC/python
 
 if ! [[ -f .extracted ]]; then
-	rm -rf Python-${PYTHON_VERSION} Python-${PYTHON_VERSION}-native
-	tar xzf Python-${PYTHON_VERSION}.tgz
-	cp -r Python-${PYTHON_VERSION} Python-${PYTHON_VERSION}-native
+	rm -rf Python-${PYTHON_VERSION} Python-${PYTHON_VERSION}-native native
+	tar xf Python-${PYTHON_VERSION}.tar.xz
 	touch .extracted
 fi
 
-cd Python-${PYTHON_VERSION}-native
+cd Python-${PYTHON_VERSION}
 
-if ! [[ -f .patched_native ]]; then
-	patch -p1 < $PATCHES/python/python_asdl.patch
-	touch .patched_native
+if ! [[ -f .patched ]]; then
+	for file in $PATCHES/python/*.patch; do
+		patch -p1 < "$file"
+	done
+	autoreconf
+	cp -r ../Python-${PYTHON_VERSION} ../Python-${PYTHON_VERSION}-native
+	touch .patched
 fi
 
+cd ../Python-${PYTHON_VERSION}-native
+
 if ! [[ -f .built_native ]]; then
-	./configure
-	$MAKE
+	LDFLAGS=" -Wl,--enable-new-dtags" \
+	./configure \
+	--prefix=$SRC/python/native \
+	--enable-static \
+	--without-cxx-main \
+	--disable-sqlite3 \
+	--disable-tk \
+	--with-expat=system \
+	--disable-curses \
+	--disable-codecs-cjk \
+	--disable-nis \
+	--enable-unicodedata \
+	--disable-dbm \
+	--disable-gdbm \
+	--disable-bsddb \
+	--disable-test-modules \
+	--disable-bz2 \
+	--disable-ssl \
+	--disable-ossaudiodev \
+	--disable-pyo-build \
+	ac_cv_prog_HAS_HG=/bin/false \
+	ac_cv_prog_SVNVERSION=/bin/false
+	make
+	make install
 	touch .built_native
 fi
 
 cd ../Python-${PYTHON_VERSION}
 
-if ! [[ -f .patched ]]; then
-	patch < $PATCHES/python/python-drobo.patch
-	patch -p1 < $PATCHES/python/python_asdl.patch
-	patch -p1 < $PATCHES/python/002_readline63.patch
-	touch .patched
-fi
-
 if ! [[ -f .configured ]]; then
-	CC=$DESTARCH-linux-gcc \
-	CXX=$DESTARCH-linux-g++ \
-	AR=$DESTARCH-linux-ar \
-	RANLIB=$DESTARCH-linux-ranlib \
+	PATH=$SRC/python/native/bin:$PATH \
 	LDFLAGS=$LDFLAGS \
 	CPPFLAGS="-I$DEST/lib/libffi-3.2.1/include $CPPFLAGS" \
 	CFLAGS=$CFLAGS \
 	CXXFLAGS=$CXXFLAGS \
-	$CONFIGURE \
+	./configure \
+	--prefix=$PREFIX \
+	--host=$DESTARCH-linux \
 	--build=`uname -m`-linux-gnu \
-	--with-dbmliborder=gdbm:bdb \
-	--with-threads \
 	--with-system-ffi \
-	--enable-shared
+	--disable-pydoc \
+	--disable-test-modules \
+	--disable-nis \
+	ac_cv_have_long_long_format=yes \
+	ac_cv_file__dev_ptmx=yes \
+	ac_cv_file__dev_ptc=yes \
+	ac_cv_working_tzset=yes \
+	ac_cv_prog_HAS_HG=/bin/false \
+	ac_cv_prog_SVNVERSION=/bin/false
 	touch .configured
 fi
 
-if ! [[ -f .copied ]]; then
-	cp ../Python-${PYTHON_VERSION}-native/python ./hostpython
-	cp ../Python-${PYTHON_VERSION}-native/Parser/pgen Parser/hostpgen
-	touch .copied
-fi
-
 if ! [[ -f .built ]]; then
-	$MAKE \
-	HOSTPYTHON=./hostpython \
-	HOSTPGEN=./Parser/hostpgen \
-	CROSS_COMPILE=$DESTARCH-linux- \
-	CROSS_COMPILE_TARGET=yes \
-	HOSTDESTARCH=$DESTARCH-linux \
-	BUILDDESTARCH=`uname -m`-linux-gnu
+	PATH=$SRC/python/native/bin:$PATH \
+	$MAKE
 	touch .built
 fi
 
 if ! [[ -f .installed ]]; then
-	make install \
-	DESTDIR=$BASE \
-	HOSTPYTHON=../Python-${PYTHON_VERSION}-native/python \
-	CROSS_COMPILE=$DESTARCH-linux- \
-	CROSS_COMPILE_TARGET=yes
+	PATH=$SRC/python/native/bin:$PATH \
+	make install DESTDIR=$BASE
 	touch .installed
 fi
 
-cd $SRC/python/Python-${PYTHON_VERSION}/build/
-
-if ! [[ -f .rename_and_move ]]; then
-	mv lib.linux-`uname -m`-2.7/ lib.linux-$DESTARCH-2.7/
-	cp -R ../../Python-${PYTHON_VERSION}-native/build/lib.linux-`uname -m`-2.7/ .
-	touch .rename_and_move
-fi
-}
-
-########### #################################################################
-# CHEETAH # #################################################################
-########### #################################################################
-do_CHEETAH() {
-CHEETAH_VERSION=3.0.0
-
-cd $SRC/cheetah
-
-if ! [[ -f .extracted ]]; then
-	rm -rf Cheetah3-${CHEETAH_VERSION}
-	tar xzf Cheetah3-${CHEETAH_VERSION}.tar.gz
-	touch .extracted
-fi
-
-cd Cheetah3-${CHEETAH_VERSION}
-
-if ! [[ -f .built ]]; then
-	PYTHONPATH=../../python/Python-${PYTHON_VERSION}/Lib/ \
-	../../python/Python-${PYTHON_VERSION}/hostpython \
-	./setup.py \
-	build
-	touch .built
-fi
-
-if ! [[ -f .installed ]]; then
-	PYTHONPATH=../../python/Python-${PYTHON_VERSION}/Lib/ \
-	../../python/Python-${PYTHON_VERSION}/hostpython \
-	./setup.py \
-	install \
-	--prefix=$PREFIX \
-	--root=$BASE
-	touch .installed
-fi
-}
-
-######## ####################################################################
-# YENC # ####################################################################
-######## ####################################################################
-do_YENC() {
-YENC_VERSION=0.4.0
-
-cd $SRC/yenc
-
-if ! [[ -f .extracted ]]; then
-	rm -rf yenc-${YENC_VERSION}
-	tar xzf yenc-${YENC_VERSION}.tar.gz
-	touch .extracted
-fi
-
-cd yenc-${YENC_VERSION}
-
-if ! [[ -f .built ]]; then
-	PYTHONPATH=../../python/Python-${PYTHON_VERSION}/Lib/ \
-	../../python/Python-${PYTHON_VERSION}/hostpython \
-	./setup.py \
-	build
-	touch .built
-fi
-
-if ! [[ -f .installed ]]; then
-	PYTHONPATH=../../python/Python-${PYTHON_VERSION}/Lib/ \
-	../../python/Python-${PYTHON_VERSION}/hostpython \
-	./setup.py \
-	install \
-	--prefix=$PREFIX \
-	--root=$BASE
-	touch .installed
-fi
-}
-
-############# ###############################################################
-# pyOpenSSL # ###############################################################
-############# ###############################################################
-do_pyOpenSSL() {
-PYOPENSSL_VERSION=0.13.1
-
-cd $SRC/pyopenssl
-
-if ! [[ -f .extracted ]]; then
-	rm -rf pyOpenSSL-${PYOPENSSL_VERSION}
-	tar xzf pyOpenSSL-${PYOPENSSL_VERSION}.tar.gz
-	touch .extracted
-fi
-
-cd pyOpenSSL-${PYOPENSSL_VERSION}
-
-if ! [[ -f .patched ]]; then
-	patch -p1 < $PATCHES/pyopenssl/010-openssl.patch
-        touch .patched
-fi
-
-if ! [[ -f .built ]]; then
-	PYTHONPATH=../../python/Python-${PYTHON_VERSION}/Lib/ \
-	../../python/Python-${PYTHON_VERSION}/hostpython \
-	setup.py \
-	build_ext \
-	-I$DEST/include \
-	-L$DEST/lib \
-	-R$RPATH
-	touch .built
-fi
-
-
-if ! [[ -f .installed ]]; then
-	PYTHONPATH=../../python/Python-${PYTHON_VERSION}/Lib/ \
-	../../python/Python-${PYTHON_VERSION}/hostpython \
-	setup.py \
-	install \
-	--prefix=$PREFIX \
-	--root=$BASE
-	touch .installed
+if ! [[ -f $DEST/bin/python ]]; then
+	ln -s python2 $DEST/bin/python
 fi
 }
 
@@ -1415,6 +1308,93 @@ fi
 
 if ! [[ -f .installed ]]; then
 	make install DESTDIR=$BASE
+	touch .installed
+fi
+}
+
+########### #################################################################
+# PYTHON3 # #################################################################
+########### #################################################################
+do_PYTHON3() {
+PYTHON3_VERSION=3.7.1
+cd $SRC/python3
+
+if ! [[ -f .extracted ]]; then
+	rm -rf Python-${PYTHON3_VERSION} Python-${PYTHON3_VERSION}-native native3
+	tar xf Python-${PYTHON3_VERSION}.tar.xz
+	touch .extracted
+fi
+
+cd Python-${PYTHON3_VERSION}
+if ! [[ -f .patched ]]; then
+	for file in $PATCHES/python3/*.patch; do
+		patch -p1 < "$file"
+	done
+	autoreconf
+	cp -r ../Python-${PYTHON3_VERSION} ../Python-${PYTHON3_VERSION}-native
+	touch .patched
+fi
+
+cd ../Python-${PYTHON3_VERSION}-native
+if ! [[ -f .built_native ]]; then
+	LDFLAGS=" -Wl,--enable-new-dtags" \
+	./configure \
+	--prefix=$SRC/python3/native3 \
+	--without-ensurepip \
+	--without-cxx-main \
+	--disable-sqlite3 \
+	--disable-tk \
+	--with-expat=system \
+	--disable-curses \
+	--disable-codecs-cjk \
+	--disable-nis \
+	--enable-unicodedata \
+	--disable-test-modules \
+	--disable-idle3 \
+	--disable-ossaudiodev \
+	--disable-openssl \
+	ac_cv_prog_HAS_HG=/bin/false
+	make
+	make install
+	touch .built_native
+fi
+
+cd ../Python-${PYTHON3_VERSION}
+if ! [[ -f .configured ]]; then
+	PATH=$SRC/python3/native3/bin:$PATH \
+	LDFLAGS=$LDFLAGS \
+	CPPFLAGS="-I$DEST/lib/libffi-3.2.1/include $CPPFLAGS" \
+	CFLAGS=$CFLAGS \
+	CXXFLAGS=$CXXFLAGS \
+	./configure \
+	--prefix=$PREFIX \
+	--host=$DESTARCH-linux \
+	--build=`uname -m`-linux-gnu \
+	--with-system-ffi \
+	--disable-pydoc \
+	--disable-test-modules \
+	--disable-nis \
+	--disable-idle3 \
+	--disable-pyc-build \
+	ac_cv_little_endian_double=yes \
+	ac_cv_have_long_long_format=yes \
+	ac_cv_file__dev_ptmx=yes \
+	ac_cv_file__dev_ptc=yes \
+	ac_cv_working_tzset=yes \
+	ac_cv_prog_HAS_HG=/bin/false \
+	ac_cv_func_wcsftime=no
+	touch .configured
+fi
+
+if ! [[ -f .built ]]; then
+	PATH=$SRC/python3/native3/bin:$PATH \
+	$MAKE
+	touch .built
+fi
+
+if ! [[ -f .installed ]]; then
+	PATH=$SRC/python3/native3/bin:$PATH \
+	make install DESTDIR=$BASE --keep-going || true
 	touch .installed
 fi
 }

@@ -26,8 +26,6 @@ bzip2/.extracted
 bzip2/bzip2-*/
 check/.extracted
 check/check-*/
-cheetah/.extracted
-cheetah/Cheetah3-*/
 cmake/.extracted
 cmake/cmake-*/
 cmake/cmake-*-native/
@@ -138,11 +136,14 @@ perl/.configured
 perl/perl-*/
 pkg-config/.extracted
 pkg-config/pkg-config-*/
-pyopenssl/.extracted
-pyopenssl/pyOpenSSL-*/
 python/.extracted
+python/native/
 python/Python-*-native/
 python/Python-*/
+python3/.extracted
+python3/Python-*/
+python3/Python-*-native/
+python3/native3/
 rapidjson/.extracted
 rapidjson/rapidjson-*/
 screen/.extracted
@@ -182,8 +183,6 @@ wget/.extracted
 wget/wget-*/
 xz/.extracted
 xz/xz-*/
-yenc/.extracted
-yenc/yenc-*/
 zlib/.extracted
 zlib/zlib-*/
 zsh/.extracted

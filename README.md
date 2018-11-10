@@ -21,8 +21,8 @@ Debian 8 is used to build this project. An included Dockerfile can be used to cr
 
 ```sh
 apt-get install gcc g++ make automake autoconf bc bison build-essential cmake \
-cpio curl flex gettext git libglib2.0-dev libncurses5-dev libtool libxml2-dev \
-locales pkg-config python texinfo unzip silversearcher-ag
+cpio curl flex gettext git libexpat1-dev libffi-dev libglib2.0-dev libncurses5-dev \
+libtool libxml2-dev locales pkg-config python texinfo unzip silversearcher-ag
 ```
 
 
