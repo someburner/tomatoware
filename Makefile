@@ -5,16 +5,26 @@ include config.mk
 all: tomatoware
 
 tomatoware: toolchain
+ifeq ($(LOG_EN),1)
 	@rm -f $(LOGFILE)
 	@touch $(LOGFILE)
 	(./scripts/base.sh >> $(LOGFILE) 2>&1)
 	(./scripts/buildroot.sh >> $(LOGFILE) 2>&1)
 	(./scripts/asterisk.sh >> $(LOGFILE) 2>&1)
 	(./scripts/package.sh >> $(LOGFILE) 2>&1)
+else
+	./scripts/base.sh
+	./scripts/buildroot.sh
+	./scripts/asterisk.sh
+	./scripts/package.sh
+endif
 
 toolchain:
+ifeq ($(LOG_EN),1)
 	(./scripts/toolchain.sh >> $(LOGFILE) 2>&1)
-
+else
+	./scripts/toolchain.sh
+endif
 
 ################################
 .PHONY: test

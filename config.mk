@@ -1,6 +1,7 @@
 # User Configurable Options
 
 LOGFILE := build.log
+LOG_EN := 0
 SHELL := /bin/bash
 
 export DESTARCH ?= arm
