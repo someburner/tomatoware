@@ -2,6 +2,8 @@
 #
 #
 
+BOOST_MINI_LIBS="atomic,chrono,regex,thread,timer,system"
+
 BASE_MINI=(
 #BZIP2
 #LBZIP2
@@ -53,8 +55,6 @@ LIBTINS
 RAPIDJSON
 #MONIT
 );
-
-BOOST_MINI_LIBS="atomic,chrono,regex,thread,signals,thread,timer,system"
 
 BASE_FULL=(
 BZIP2

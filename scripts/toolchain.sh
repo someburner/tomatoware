@@ -1,6 +1,6 @@
 #!/bin/bash
 
-__THISDIR=`dirname "$0"
+__THISDIR=`dirname "$0"`;
 source $__THISDIR/versions.sh;
 
 set -e
