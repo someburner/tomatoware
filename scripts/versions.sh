@@ -4,7 +4,7 @@
 declare -A VMAP=(
 # ------------------ asterisk.sh ------------------ #
 ["nettle"]="3.4.1"
-["gnutls"]="3.6.4"
+["gnutls"]="3.6.5"
 ["iksemel"]="1.5"
 ["srtp"]="2.1.0"
 ["odbc"]="2.3.5"
