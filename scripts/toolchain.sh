@@ -1,5 +1,8 @@
 #!/bin/bash
 
+__THISDIR=`dirname "$0"
+source $__THISDIR/versions.sh;
+
 set -e
 set -x
 
@@ -8,8 +11,8 @@ export SRC=$BASE/src
 export PATCHES=$BASE/patches
 
 GCCVER="8.2.0"
-UCLIBCVER="1.0.30"
-BUILDROOTVER="2018.08"
+UCLIBCVER=${VMAP[uclibc]}
+BUILDROOTVER=${VMAP[buildroot]}
 TOOLCHAINDIR="/opt/tomatoware/$DESTARCH-$FLOAT${PREFIX////-}"
 
 
