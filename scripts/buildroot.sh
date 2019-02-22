@@ -22,6 +22,7 @@ HOST_CMAKE=`which cmake`
 
 ############################## Buildroot Loop #############################
 source $__THISDIR/br_lists.sh;
+source $__THISDIR/versions.sh;
 source $__THISDIR/package/utils.sh;
 #BRLIST="FULL"
 BRLIST="MINI"
@@ -55,7 +56,7 @@ do_DISTCC; do_UPX;
 ######## ####################################################################
 do_GLIB() {
 
-GLIB_VERSION=2.26.1
+GLIB_VERSION=${VMAP[glib]}
 
 export PKG_CONFIG_LIBDIR=$DEST/lib/pkgconfig
 
@@ -114,7 +115,7 @@ fi
 # PKG_CONFIG # ##############################################################
 ############## ##############################################################
 do_PKG_CONFIG() {
-PKG_CONFIG_VERSION=0.29.2
+PKG_CONFIG_VERSION=${VMAP[pkg-config]}
 
 cd $SRC/pkg-config
 
@@ -153,7 +154,7 @@ fi
 # GMP # #####################################################################
 ####### #####################################################################
 do_GMP() {
-GMP_VERSION=6.1.2
+GMP_VERSION=${VMAP[gmp]}
 
 cd $SRC/gmp
 
@@ -191,7 +192,7 @@ fi
 ######## ####################################################################
 do_MPFR() {
 
-MPFR_VERSION=4.0.1
+MPFR_VERSION=${VMAP[mpfr]}
 
 cd $SRC/mpfr
 
@@ -234,7 +235,7 @@ fi
 ####### #####################################################################
 do_MPC() {
 
-MPC_VERSION=1.1.0
+MPC_VERSION=${VMAP[mpc]}
 
 cd $SRC/mpc
 
@@ -272,7 +273,7 @@ fi
 # BINUTILS # ################################################################
 ############ ################################################################
 do_BINUTILS() {
-BINUTILS_VERSION=2.31.1
+BINUTILS_VERSION=${VMAP[binutils]}
 
 mkdir -p $SRC/binutils && cd $SRC/binutils
 
@@ -317,7 +318,7 @@ fi
 ####### #####################################################################
 do_GCC() {
 
-GCC_VERSION=8.2.0
+GCC_VERSION=${VMAP[gcc]}
 
 mkdir -p $SRC/gcc && cd $SRC/gcc
 
@@ -412,7 +413,7 @@ fi
 # AUTOCONF # ################################################################
 ############ ################################################################
 do_AUTOCONF() {
-AUTOCONF_VERSION=2.69
+AUTOCONF_VERSION=${VMAP[autoconf]}
 
 cd $SRC/autoconf
 
@@ -448,7 +449,7 @@ fi
 # AUTOMAKE # ################################################################
 ############ ################################################################
 do_AUTOMAKE() {
-AUTOMAKE_VERSION=1.16.1
+AUTOMAKE_VERSION=${VMAP[automake]}
 
 cd $SRC/automake
 
@@ -484,7 +485,7 @@ fi
 # BISON # ###################################################################
 ######### ###################################################################
 do_BISON() {
-BISON_VERSION=3.2.1
+BISON_VERSION=${VMAP[bison]}
 
 cd $SRC/bison
 
@@ -526,7 +527,7 @@ fi
 # CHECK # ###################################################################
 ######### ###################################################################
 do_CHECK() {
-CHECK_VERSION=0.10.0
+CHECK_VERSION=${VMAP[check]}
 
 cd $SRC/check
 
@@ -562,7 +563,7 @@ fi
 # COREUTILS # ###############################################################
 ############# ###############################################################
 do_COREUTILS() {
-COREUTILS_VERSION=8.25
+COREUTILS_VERSION=${VMAP[coreutils]}
 
 cd $SRC/coreutils
 
@@ -609,7 +610,7 @@ fi
 # DIFFUTILS # ###############################################################
 ############# ###############################################################
 do_DIFFUTILS() {
-DIFFUTILS_VERSION=3.6
+DIFFUTILS_VERSION=${VMAP[diffutils]}
 
 cd $SRC/diffutils
 
@@ -645,7 +646,7 @@ fi
 # FINDUTILS # ###############################################################
 ############# ###############################################################
 do_FINDUTILS() {
-FINDUTILS_VERSION=4.5.19
+FINDUTILS_VERSION=${VMAP[findutils]}
 
 cd $SRC/findutils
 
@@ -683,7 +684,7 @@ fi
 ######## ####################################################################
 do_GAWK() {
 
-GAWK_VERSION=4.2.1
+GAWK_VERSION=${VMAP[gawk]}
 
 cd $SRC/gawk
 
@@ -725,7 +726,7 @@ fi
 # LIBTOOL # #################################################################
 ########### #################################################################
 do_LIBTOOL() {
-LIBTOOL_VERSION=2.4.6
+LIBTOOL_VERSION=${VMAP[libtool]}
 
 cd $SRC/libtool
 
@@ -762,7 +763,7 @@ fi
 ###### ######################################################################
 do_M4() {
 
-M4_VERSION=1.4.18
+M4_VERSION=${VMAP[m4]}
 
 cd $SRC/m4
 
@@ -804,7 +805,7 @@ fi
 ######## ####################################################################
 do_MAKE() {
 
-MAKE_VERSION=4.2.1
+MAKE_VERSION=${VMAP[make]}
 
 cd $SRC/make
 
@@ -840,7 +841,7 @@ fi
 # CMAKE # ###################################################################
 ######### ###################################################################
 do_CMAKE() {
-CMAKE_VERSION=3.12.4
+CMAKE_VERSION=${VMAP[cmake]}
 
 cd $SRC/cmake
 
@@ -906,7 +907,7 @@ fi
 ############## ##############################################################
 do_UTIL_LINUX() {
 
-UTIL_LINUX_VERSION=2.31
+UTIL_LINUX_VERSION=${VMAP[util-linux]}
 
 cd $SRC/util-linux
 
@@ -957,7 +958,7 @@ fi
 ######### ###################################################################
 do_PATCH() {
 
-PATCH_VERSION=2.7.6
+PATCH_VERSION=${VMAP[patch]}
 
 cd $SRC/patch
 
@@ -994,7 +995,7 @@ fi
 ######## ####################################################################
 do_WGET() {
 
-WGET_VERSION=1.19.5
+WGET_VERSION=${VMAP[wget]}
 
 export PKG_CONFIG_LIBDIR=$DEST/lib/pkgconfig
 
@@ -1036,7 +1037,7 @@ unset PKG_CONFIG_LIBDIR
 ######## ####################################################################
 do_GREP() {
 
-GREP_VERSION=3.1
+GREP_VERSION=${VMAP[grep]}
 
 cd $SRC/grep
 
@@ -1073,7 +1074,7 @@ fi
 ####### #####################################################################
 do_TAR() {
 
-TAR_VERSION=1.29
+TAR_VERSION=${VMAP[tar]}
 
 cd $SRC/tar
 
@@ -1110,7 +1111,7 @@ fi
 ####### #####################################################################
 do_SED() {
 
-SED_VERSION=4.5
+SED_VERSION=${VMAP[sed]}
 
 cd $SRC/sed
 
@@ -1147,7 +1148,7 @@ fi
 # TEXINFO # #################################################################
 ########### #################################################################
 do_TEXINFO() {
-TEXINFO_VERSION=6.5
+TEXINFO_VERSION=${VMAP[texinfo]}
 
 cd $SRC/texinfo
 
@@ -1183,7 +1184,7 @@ fi
 ######## ####################################################################
 do_CPIO() {
 
-CPIO_VERSION=2.12
+CPIO_VERSION=${VMAP[cpio]}
 
 cd $SRC/cpio
 
@@ -1220,7 +1221,7 @@ fi
 ######## ####################################################################
 do_FILE() {
 
-FILE_VERSION=5.35
+FILE_VERSION=${VMAP[file]}
 
 cd $SRC/file
 
@@ -1272,7 +1273,7 @@ fi
 ########## ##################################################################
 do_DISTCC() {
 
-DISTCC_VERSION=3.1
+DISTCC_VERSION=${VMAP[distcc]}
 
 PYTHON_CROSS="PYTHONPATH=$SRC/python/Python-2.7.15/Lib $SRC/python/native/bin/python2"
 
@@ -1322,8 +1323,8 @@ unset PYTHON_CROSS
 # UPX # #####################################################################
 ####### #####################################################################
 do_UPX() {
-UCL_VERSION=1.03
-UPX_VERSION=3.94
+UCL_VERSION=${VMAP[ucl]}
+UPX_VERSION=${VMAP[upx]}
 
 export UPX_UCLDIR=$SRC/upx/ucl-${UCL_VERSION}
 

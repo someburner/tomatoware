@@ -1,4 +1,5 @@
 #!/bin/bash
+__THISDIR=`dirname "$0"`
 
 set -e
 set -x
@@ -15,11 +16,13 @@ CXXFLAGS=$CFLAGS
 CONFIGURE="./configure --prefix=$PREFIX --host=$DESTARCH-linux"
 MAKE="make -j`nproc`"
 
+source $__THISDIR/versions.sh;
+
 ########## ##################################################################
 # NETTLE # ##################################################################
 ########## ##################################################################
 
-NETTLE_VERSION=3.4
+NETTLE_VERSION=${VMAP[nettle]}
 
 cd $SRC/nettle
 
@@ -54,7 +57,7 @@ fi
 # GNUTLS # ##################################################################
 ########## ##################################################################
 
-GNUTLS_VERSION=3.6.4
+GNUTLS_VERSION=${VMAP[gnutls]}
 
 export PKG_CONFIG_LIBDIR=$DEST/lib/pkgconfig
 
@@ -118,7 +121,7 @@ fi
 # IKSEMEL # #################################################################
 ########### #################################################################
 
-IKSEMEL_VERSION=1.5
+IKSEMEL_VERSION=${VMAP[iksemel]}
 
 apt-get install texinfo -y;
 
@@ -162,7 +165,7 @@ unset PKG_CONFIG_PATH
 # SRTP # ####################################################################
 ######## ####################################################################
 
-SRTP_VERSION=2.1.0
+SRTP_VERSION=${VMAP[srtp]}
 
 cd $SRC/srtp
 
@@ -197,7 +200,7 @@ fi
 # unixODBC # ################################################################
 ############ ################################################################
 
-UNIXODBC_VERSION=2.3.5
+UNIXODBC_VERSION=${VMAP[odbc]}
 
 cd $SRC/odbc
 
@@ -233,7 +236,7 @@ fi
 # JANSSON # #################################################################
 ########### #################################################################
 
-JANSSON_VERSION=2.11
+JANSSON_VERSION=${VMAP[jansson]}
 
 cd $SRC/jansson
 
@@ -269,7 +272,7 @@ fi
 ############ ################################################################
 do_ASTERISK() {
 
-ASTERISK_VERSION=13.19.2
+ASTERISK_VERSION=${VMAP[asterisk]}
 
 export PKG_CONFIG_LIBDIR=$DEST/lib/pkgconfig
 
@@ -399,14 +402,15 @@ fi
 ###################### ######################################################
 # TIME ZONE DATABASE # ######################################################
 ###################### ######################################################
+TZ_VERSION=${VMAP[tz]}
 
 cd $SRC/tz
 
 if ! [[ -f .extracted ]]; then
 	rm -rf tz tz-native
 	mkdir tz
-	tar xzf tzcode2018g.tar.gz -C ./tz
-	tar xzf tzdata2018g.tar.gz -C ./tz
+	tar xzf tzcode$TZ_VERSION.tar.gz -C ./tz
+	tar xzf tzdata$TZ_VERSION.tar.gz -C ./tz
 	cp -r tz tz-native
         touch .extracted
 fi
