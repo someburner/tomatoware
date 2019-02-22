@@ -123,8 +123,6 @@ fi
 
 IKSEMEL_VERSION=${VMAP[iksemel]}
 
-apt-get install texinfo -y;
-
 export PKG_CONFIG_PATH=$DEST/lib/pkgconfig
 
 cd $SRC/iksemel
