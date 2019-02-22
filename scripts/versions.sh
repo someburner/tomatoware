@@ -95,5 +95,5 @@ declare -A VMAP=(
 # ------------------ toolchain.sh ----------------- #
 #["gcc"]=""
 ["uclibc"]="1.0.31"
-["buildroot"]="2018.08"
+["buildroot"]="2019.02-rc1"
 );
